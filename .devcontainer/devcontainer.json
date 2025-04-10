@@ -30,7 +30,8 @@
     "customizations": {
       "vscode": {
         // Extensiones que se instalarán automáticamente
-        "extensions": [                   
+        "extensions": [
+          "monokai.theme-monokai-pro-vscode", // Tema Monokai Pro para Visual Studio Code, proporcionando un esquema de colores atractivo y fácil de leer. (Me interesa Monokai++)              
           "ms-toolsai.jupyter",           // Soporte para trabajar con Jupyter Notebooks, permitiendo la ejecución y visualización de código interactivo.
           "ms-toolsai.jupyter-keymap",    // Atajos de teclado para trabajar con Jupyter Notebooks, facilitando la navegación y edición.
           "ms-toolsai.jupyter-renderers", // Extensión para mejorar la visualización de datos en Jupyter Notebooks, permitiendo renderizar gráficos y otros tipos de datos de manera más efectiva.      
