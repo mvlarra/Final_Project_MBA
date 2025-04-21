@@ -126,4 +126,43 @@ print(rules)
 
 ---
 
-¿Querés que lo veamos con tus propios datos o transacciones?
+
+### 📋 Tabla resumen: Parámetros clave del algoritmo Apriori (`mlxtend`)
+
+| Etapa              | Función                  | Parámetro        | Tipo       | Descripción                                                                 |
+|--------------------|--------------------------|------------------|------------|-----------------------------------------------------------------------------|
+| Itemsets frecuentes | `apriori()`              | `min_support`    | `float`    | Soporte mínimo requerido para considerar un conjunto de ítems como frecuente |
+|                    |                          | `use_colnames`   | `bool`     | Si es `True`, muestra los nombres de los ítems en lugar de índices          |
+|                    |                          | `max_len`        | `int`      | Longitud máxima del itemset (opcional)                                      |
+|                    |                          | `verbose`        | `int`      | Muestra logs si se activa (opcional)                                        |
+| Reglas de asociación | `association_rules()`   | `metric`         | `str`      | Métrica para evaluar las reglas: `"support"`, `"confidence"`, `"lift"`, etc. |
+|                    |                          | `min_threshold`  | `float`    | Valor mínimo requerido para la métrica elegida                              |
+
+### 🧠 Métricas más comunes usadas en `association_rules()`
+
+| Métrica       | ¿Qué mide?                                                                 |
+|---------------|------------------------------------------------------------------------------|
+| `support`     | Frecuencia conjunta del antecedente y consecuente                           |
+| `confidence`  | Probabilidad de que ocurra el consecuente dado el antecedente               |
+| `lift`        | Relación entre A y B: si es > 1 hay asociación positiva, si < 1 es débil    |
+| `leverage`    | Diferencia entre el soporte real y el esperado si fueran independientes     |
+| `conviction`  | Medida alternativa a la confianza, más sensible a desequilibrios            |
+
+
+### 🚀 Recomendación práctica de valores
+
+| Caso de uso                     | `min_support` | `metric`      | `min_threshold` |
+|----------------------------------|---------------|----------------|------------------|
+| Reglas comunes                   | 0.3 – 0.5     | `"confidence"` | 0.6 – 0.8        |
+| Reglas fuertes (pero raras)      | 0.1 – 0.2     | `"lift"`       | > 1.0            |
+| Exploración general              | 0.01          | `"support"`    | 0.01             |
+
+
+---
+
+
+Ejemplo:
+
+    rules = association_rules(frequent_itemsets, metric="lift", min_threshold=1.0)
+
+Esto filtra solo reglas con lift > 1, es decir, que impliquen una relación positiva.
