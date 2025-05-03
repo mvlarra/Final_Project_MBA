@@ -7,3 +7,8 @@ jupyter
 openpyxl
 pip
 xlrd
+pip
+mlxtend
+
+#! pip install --upgrade pip
+#! pip install mlxtend
