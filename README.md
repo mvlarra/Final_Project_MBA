@@ -1,23 +1,21 @@
-# Final_Project_MBA
-
-### 8 de Abril 2025 | Kleiner Chat:
-
-te quería comentar que revisaras este data set  
- https://www.kaggle.com/datasets/thedevastator/online-retail-sales-and-customer-data/data  
-kaggle.comkaggle.com   
-Online Retail Sales and Customer Data  
-Transactional Data with Product and Customer Details in Online Retail
-
-Ayer conversé con el profesor en calses y el sugirió que podriamos hacer con este data set un trabajo de clustering y aplicar un modelo de Market Basket Analisys (MBA)
+# Projecto Final: 
+## **Market Basket Analysis** for an Online Retail Bussines
 
 
-Cuando tengas oportunidad revisa este paper:
- How To Perform Market Basket Analysis in Python | by Jihargifari | Medium
-MediumMedium
-How To Perform Market Basket Analysis in Python:  
-https://medium.com/@jihargifari/how-to-perform-market-basket-analysis-in-python-bd00b745b106  
-An Implementation of Machine Learning In Retail Business
-Reading time 10 min read
-![alt text](image.png)
+April 2025
 
 
+Analizar las compras realizadas en una tienda online durante un año, para descubrir patrones sobre qué productos suelen comprarse juntos. Estos patrones permiten a la empresa entender mejor los hábitos de sus clientes y tomar decisiones inteligentes, como ofrecer sugerencias de compra, mejorar promociones o reorganizar productos en la tienda para aumentar las ventas.  
+
+*Ejemplos de lo que se puede lograr con este análisis:
+
+- **Sugerencias automáticas:**  
+Si un cliente agrega una tetera al carrito, el sistema puede recomendarle también tazas de té.  
+- **Promociones combinadas:** 
+Ofrecer descuentos si alguien compra papel de regalo y tarjetas de felicitación juntas.  
+- **Organización de la tienda online:** 
+Mostrar cojines decorativos junto a sofás porque muchos clientes los compran juntos.  
+- **Campañas de email personalizadas:** 
+Enviar ofertas de velas perfumadas a clientes que anteriormente compraron ambientadores.  
+- **Optimización del inventario:**  
+Saber que los manteles se venden más cuando hay promociones de vajillas y preparar stock suficiente.
