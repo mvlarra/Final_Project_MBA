@@ -1,4 +1,4 @@
-# ‼️VL: Como aprovechar este template:  
+df[df['nombre_columna'] < 0]# ‼️VL: Como aprovechar este template:  
 
 > ### 1. Descargar archivos de este repo, y subirlos al repo de mi nuevo proyecto.  
 >> devcontainer.json, dockerfile, notebooks, readme devcontainer.md, requirements.txt, .gitignore
