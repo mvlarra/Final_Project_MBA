@@ -10,14 +10,16 @@ from PIL import Image
 
 
 # Configuración inicial
-logo = Image.open("app/images/IMG.png") # Imagen en el sidebar
-st.sidebar.image(logo, use_column_width=True)
-st.sidebar.markdown("### Retail Market Basket Analysis", unsafe_allow_html=True)
 st.set_page_config(page_title="Market Basket Analysis", page_icon="🛒", layout="wide")
+logo = Image.open("app/images/IMG.png") # Imagen en el sidebar
+st.sidebar.image(logo,  use_container_width=True)
+st.sidebar.markdown("### Retail Market Basket Analysis", unsafe_allow_html=True)
+
 
 # Sidebar de navegación
 page = st.sidebar.radio("Navegación", [
     "Introducción", 
+    "¿Qué es el Market Basket Analysis?",
     "Dataset", 
     "Conjuntos Frecuentes", 
     "Reglas de Asociación", 
@@ -48,6 +50,29 @@ if page == "Introducción":
         - Optimizar la organización del catálogo online o físico
 
     A través de esta app interactiva, exploraremos estas combinaciones frecuentes utilizando el algoritmo **Apriori**, generaremos reglas de asociación interpretables y propondremos acciones prácticas basadas en los resultados.
+    """)
+
+# Pagina: Que es el Market Basket Analysis?
+
+elif page == "📘 Que es el Market Basket Analysis?":
+    st.title("📘 Qué es el Market Basket Analysis?")
+    # Mostrar imagen arriba de la sección (opcional: cambiar width)
+    st.image("app/images/Img1.png",  use_container_width=True)
+    st.markdown("""
+    Cuando vamos a un supermercado o compramos en línea, solemos adquirir todos los artículos que necesitamos **en una sola compra**, en lugar de comprarlos por separado.  
+    Por eso, podemos definir una **canasta de compras** como un conjunto de artículos que una persona agrupa y compra en una sola transacción.  
+    Cada visita al mercado representa una **transacción**, y en el caso del comercio electrónico, todos los productos comprados durante una misma sesión de inicio de sesión constituyen una transacción.
+
+    ---
+
+    Este proceso permite **identificar los hábitos de compra de los clientes** al encontrar asociaciones entre los distintos artículos que colocan en su "canasta de compras".  
+    Descubrir este tipo de asociaciones puede ser muy útil para los minoristas o especialistas en marketing, ya que brinda información valiosa sobre **qué productos suelen comprarse juntos con frecuencia**.
+
+    ---
+
+    Por ejemplo:  
+    Si un cliente compra **leche**, ¿qué probabilidad hay de que también compre **pan** (y qué tipo de pan) en ese mismo viaje al supermercado?  
+    Esta información puede ayudar a **aumentar las ventas** al permitir a los minoristas implementar marketing selectivo y planificar mejor la disposición de los productos en las góndolas.
     """)
 
 
