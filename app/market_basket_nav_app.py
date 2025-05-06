@@ -6,8 +6,13 @@ import streamlit as st
 import pandas as pd
 from mlxtend.frequent_patterns import apriori, association_rules
 import pickle
+from PIL import Image
+
 
 # Configuración inicial
+logo = Image.open("app/images/IMG.png") # Imagen en el sidebar
+st.sidebar.image(logo, use_column_width=True)
+st.sidebar.markdown("### Retail Market Basket Analysis", unsafe_allow_html=True)
 st.set_page_config(page_title="Market Basket Analysis", page_icon="🛒", layout="wide")
 
 # Sidebar de navegación
@@ -32,33 +37,19 @@ except FileNotFoundError:
 
 # Página: Introducción
 if page == "Introducción":
-    st.title("🛒 Análisis de Combinaciones de Productos Frecuentes")
+    st.title("🛒 Market Basket Analysis")
     st.markdown("""
-    # --------------------------------------------------------------------------------------
-    # 📊 Market Basket Analysis App - Descripción del Proyecto
-    # --------------------------------------------------------------------------------------
-    # Esta aplicación realiza un análisis de canasta de compras (Market Basket Analysis),
-    # utilizando técnicas de minería de datos para detectar patrones de compra frecuentes
-    # entre productos que aparecen juntos en las transacciones de una tienda online.
-    #
-    # 🔍 Objetivo:
-    # Identificar asociaciones entre productos para:
-    # - Comprender mejor el comportamiento de los clientes
-    # - Optimizar la ubicación de productos en la tienda online
-    # - Sugerir productos relacionados en tiempo real
-    # - Crear promociones cruzadas más efectivas
-    #
-    # Esta técnica es ampliamente utilizada en e-commerce, retail y estrategias de marketing
-    # basadas en datos.
-    # --------------------------------------------------------------------------------------
-  """)
+    **Introduccion**
+    Atualmente, el **Machine Learning** está ayudando a la industria del retail de muchas formas. Desde predecir el rendimiento de las ventas hasta identificar patrones de compra de los clientes, existen múltiples aplicaciones del aprendizaje automático en este sector.
+    Una de las más destacadas es el **Market Basket Analysis** (Análisis de Canasta de Compras), una técnica que analiza el comportamiento de compra histórico para descubrir **qué productos suelen adquirirse juntos con frecuencia**.
+    Esto permite a los negocios:
+        - Ofrecer recomendaciones personalizadas
+        - Diseñar promociones combinadas efectivas
+        - Optimizar la organización del catálogo online o físico
 
+    A través de esta app interactiva, exploraremos estas combinaciones frecuentes utilizando el algoritmo **Apriori**, generaremos reglas de asociación interpretables y propondremos acciones prácticas basadas en los resultados.
+    """)
 
-                
-    #Esta aplicación explora combinaciones de productos frecuentes (productos que se venden en conjunto) en una tienda online usando reglas de asociación.
-
-    #Se utiliza el algoritmo Apriori para descubrir patrones valiosos, generar recomendaciones y apoyar decisiones comerciales basadas en datos.
-    #""")
 
 # Página: Dataset
 elif page == "Dataset":
