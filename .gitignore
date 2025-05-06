@@ -25,7 +25,7 @@ venv/
 
 # Archivos grandes o sensibles
 #*.csv
-#*.xlsx
+*.xlsx
 #*.zip
 #*.bak
 
