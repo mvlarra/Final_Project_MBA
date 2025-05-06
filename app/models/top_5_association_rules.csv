@@ -1,0 +1,6 @@
+antecedents,consequents,support,confidence,lift,Score
+frozenset({'wooden star christmas scandinavian'}),frozenset({'wooden heart christmas scandinavian'}),0.01951092611862643,0.75,26.51034482758621,1
+frozenset({'pink regency teacup and saucer'}),frozenset({'green regency teacup and saucer'}),0.02627471383975026,0.8261758691206544,20.756993731371214,2
+"frozenset({""poppy's playhouse bedroom""})","frozenset({""poppy's playhouse kitchen""})",0.01359261186264308,0.8038461538461539,42.91645299145299,3
+frozenset({'regency tea plate green'}),frozenset({'regency tea plate roses'}),0.012486992715920915,0.8495575221238938,49.2935715478377,4
+frozenset({'wooden heart christmas scandinavian'}),frozenset({'wooden star christmas scandinavian'}),0.01951092611862643,0.689655172413793,26.510344827586206,5
