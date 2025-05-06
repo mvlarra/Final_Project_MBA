@@ -160,8 +160,7 @@ elif page == "Recomendaciones Destacadas":
         st.markdown(interpretar_fija(row, i))
 
 # Página: Métricas
-elif page == "Métricas", 
-    "Referencias":
+elif page == "Métricas": 
     st.title("📐 Métricas de Evaluación de Reglas de Asociación")
     st.markdown("""## 📐 Métricas de Evaluación de Reglas de Asociación
 
