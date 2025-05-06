@@ -34,10 +34,31 @@ except FileNotFoundError:
 if page == "Introducción":
     st.title("🛒 Análisis de Combinaciones de Productos Frecuentes")
     st.markdown("""
-    Esta aplicación explora combinaciones de productos frecuentes (productos que se venden en conjunto) en una tienda online usando reglas de asociación.
+    # --------------------------------------------------------------------------------------
+    # 📊 Market Basket Analysis App - Descripción del Proyecto
+    # --------------------------------------------------------------------------------------
+    # Esta aplicación realiza un análisis de canasta de compras (Market Basket Analysis),
+    # utilizando técnicas de minería de datos para detectar patrones de compra frecuentes
+    # entre productos que aparecen juntos en las transacciones de una tienda online.
+    #
+    # 🔍 Objetivo:
+    # Identificar asociaciones entre productos para:
+    # - Comprender mejor el comportamiento de los clientes
+    # - Optimizar la ubicación de productos en la tienda online
+    # - Sugerir productos relacionados en tiempo real
+    # - Crear promociones cruzadas más efectivas
+    #
+    # Esta técnica es ampliamente utilizada en e-commerce, retail y estrategias de marketing
+    # basadas en datos.
+    # --------------------------------------------------------------------------------------
+  """)
 
-    Se utiliza el algoritmo Apriori para descubrir patrones valiosos, generar recomendaciones y apoyar decisiones comerciales basadas en datos.
-    """)
+
+                
+    #Esta aplicación explora combinaciones de productos frecuentes (productos que se venden en conjunto) en una tienda online usando reglas de asociación.
+
+    #Se utiliza el algoritmo Apriori para descubrir patrones valiosos, generar recomendaciones y apoyar decisiones comerciales basadas en datos.
+    #""")
 
 # Página: Dataset
 elif page == "Dataset":
