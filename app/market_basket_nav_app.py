@@ -126,7 +126,7 @@ elif page == "✅ Ventajas del MBA":
 
 elif page == "🛍️ Perspectiva del Cliente":
     st.title("🛍️ ¿Cómo se ve desde la perspectiva del cliente?")
-    st.image("app/images/Img3.png", use_container_width=True)
+    st.image("app/images/Img3.png", width=100)
     st.markdown("""
     Ejemplo: Amazon muestra productos frecuentemente comprados juntos.  
     Esto simula la experiencia de un supermercado virtual, recomendando artículos relevantes y aumentando la satisfacción.
