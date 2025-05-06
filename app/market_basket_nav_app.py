@@ -5,7 +5,7 @@ port = os.environ.get("PORT", 8501)
 import streamlit as st
 import pandas as pd
 from mlxtend.frequent_patterns import apriori, association_rules
-from joblib import load
+import pickle
 
 # Configuración inicial
 st.set_page_config(page_title="Market Basket Analysis", page_icon="🛒", layout="wide")
@@ -21,7 +21,8 @@ page = st.sidebar.radio("Navegación", [
 
 # Cargar datos preprocesados
 try:
-    basket = load("basket.joblib")
+    with open("app/models/basket.pkl", "rb") as f:
+    basket = pickle.load(f)
 except FileNotFoundError:
     st.error("❌ No se encontró el archivo 'basket.joblib'. Asegúrate de cargarlo en el entorno de ejecución.")
     st.stop()
