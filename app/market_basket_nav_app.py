@@ -27,6 +27,13 @@ page = st.sidebar.radio("Navegación", [
     "🛍️ Perspectiva del Cliente",
     "📦 El Dataset",
     "📊 Reglas en acción",
+    "✔️ Introducción",
+    "✔️ Goals",
+    "✔️ Methodology",
+    "✔️ Key Metrics",
+    "✔️ Top 5 Association Rules",
+    "✔️ Top 5 Cross-Selling Products",
+    "✔️ Recommendations",
     "Dataset", 
     "Conjuntos Frecuentes", 
     "Reglas de Asociación", 
@@ -163,6 +170,109 @@ elif page == "📊 Reglas en acción":
 
     También se encontró alta relación entre ground beef y spaghetti, vino tinto y aceite de oliva.
     """)
+
+
+
+
+
+if page == "✔️ Introducción":
+    st.title("✔️ Introducción")
+    st.markdown("""
+Market Basket Analysis is a data mining technique employed to discover relationships and patterns within large datasets, particularly in the context of market analysis. By identifying frequently co-occurring items in transactions, businesses can gain valuable insights into customer behavior, optimize product placement, and enhance overall marketing strategies.
+    """)
+
+elif page == "✔️ Goals":
+    st.title("✔️ Goals")
+    st.markdown("""
+**Association Rule Discovery:**  
+Identify associations and correlations among products or items in a dataset. Discover rules that indicate the likelihood of certain items being bought together.
+
+**Cross-Selling Opportunities:**  
+Uncover opportunities for cross-selling by understanding which products are frequently purchased together.
+
+**Promotion Planning:**  
+Optimize promotional campaigns by identifying items that are frequently bought together. Design effective promotions and discounts to incentivize the purchase of complementary products.
+
+**Optimizing Product Layout:**  
+Arrange products in-store or online in a way that encourages the purchase of related items, creating a more convenient and satisfying shopping experience.
+    """)
+
+elif page == "✔️ Methodology":
+    st.title("✔️ Methodology")
+    st.markdown("""
+**Data Source:**  
+The data is sourced from **Online Retail II**, which encompasses transactions from a UK-based online retailer (Dec 1, 2009 – Dec 9, 2011), specializing in giftware.
+
+**Algorithm Used:**  
+We utilize the **Apriori algorithm** from the `mlxtend` library to extract frequent itemsets and association rules using support and confidence thresholds.
+
+**Parameters:**
+- **Maximum Combination Length:** 2 items (focus on pairs)
+- **Minimum Co-Occurrence Support Threshold:** 0.5%
+    """)
+
+elif page == "✔️ Key Metrics":
+    st.title("✔️ Key Metrics")
+    st.markdown("""
+### Support  
+The proportion of transactions that contain a specific itemset.  
+- Item Support = Transactions with A / Total transactions  
+- Co-occurrence Support = Transactions with A and B / Total transactions
+
+### Confidence  
+The conditional probability that a transaction containing item A also contains item B.  
+- Confidence(A→B) = Support(A∪B) / Support(A) × 100%  
+- Confidence(B→A) = Support(A∪B) / Support(B) × 100%
+
+### Lift  
+Measures how much more likely B is bought with A compared to random chance.  
+- Lift(A→B) = Support(A∪B) / (Support(A) × Support(B))
+
+### Leverage  
+Difference between observed and expected frequency of A and B together.  
+- Leverage(A→B) = Support(A∪B) − (Support(A) × Support(B))
+
+### Conviction  
+Indicates the likelihood the rule is incorrect.  
+- Conviction(A→B) = (1−Support(B)) / (1−Confidence(A→B))  
+- Conviction(B→A) = (1−Support(A)) / (1−Confidence(B→A))
+    """)
+
+elif page == "✔️ Top 5 Association Rules":
+    st.title("✔️ Top 5 Association Rules")
+    try:
+        df = pd.read_csv("app/models/association_rules_final.csv")
+        top5 = df.sort_values(by=["lift", "confidence", "support"], ascending=False).head(5)
+        st.markdown("Each rule is ranked based on support, confidence, and lift. Below are the top 5 based on the mean composite score:")
+        st.dataframe(top5)
+    except Exception as e:
+        st.error(f"Error loading rules: {e}")
+
+elif page == "✔️ Top 5 Cross-Selling Products":
+    st.title("✔️ Top 5 Cross-Selling Products")
+    try:
+        df = pd.read_csv("app/models/association_rules_final.csv")
+        df["score"] = df["confidence"] + df["support"].str.replace("%", "").astype(float)
+        top5 = df.sort_values(by="score", ascending=False).head(5)
+        st.markdown("Top product pairs based on high support and confidence, ideal for cross-selling:")
+        st.dataframe(top5[["antecedents", "consequents", "support", "confidence", "lift"]])
+    except Exception as e:
+        st.error(f"Error loading rules: {e}")
+
+elif page == "✔️ Recommendations":
+    st.title("✔️ Recommendations")
+    st.markdown("""
+Pairs of items highly recommended for bundling or being displayed together based on strong association rules.
+    """)
+    try:
+        df = pd.read_csv("app/models/association_rules_final.csv")
+        for i, row in df.iterrows():
+            st.markdown(f"#### 🔗 {i+1}. `{row['antecedents']} → {row['consequents']}`")
+            st.markdown(f"\- **Support:** {row['support']}")
+            st.markdown(f"\- **Confidence:** {round(float(row['confidence']) * 100, 2)}%")
+            st.markdown(f"\- **Lift:** {round(float(row['lift']), 2)}")
+    except Exception as e:
+        st.error(f"Error displaying recommendations: {e}")
 
 
 
