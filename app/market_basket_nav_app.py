@@ -22,7 +22,7 @@ page = st.sidebar.radio("Navegación", [
 # Cargar datos preprocesados
 try:
     with open("app/models/basket.pkl", "rb") as f:
-    basket = pickle.load(f)
+        basket = pickle.load(f)
 except FileNotFoundError:
     st.error("❌ No se encontró el archivo 'basket.joblib'. Asegúrate de cargarlo en el entorno de ejecución.")
     st.stop()
