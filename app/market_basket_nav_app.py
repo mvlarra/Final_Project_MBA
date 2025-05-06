@@ -62,7 +62,7 @@ if page == "Introducción":
 # Pagina: Que es el Market Basket Analysis?
 elif page == "📘 ¿Qué es Market Basket Analysis?":
     st.title("📘 ¿Qué es Market Basket Analysis?")
-    st.image("app/images/Img1.png", use_container_width=True)
+    st.image("app/images/Img1.png", width=200)
     st.markdown("""
     Cuando vamos al supermercado o compramos en línea, solemos adquirir todos los artículos que necesitamos en una sola compra.  
     Podemos definir una canasta de compras como un conjunto de artículos que una persona agrupa y compra en una sola transacción.
@@ -126,7 +126,7 @@ elif page == "✅ Ventajas del MBA":
 
 elif page == "🛍️ Perspectiva del Cliente":
     st.title("🛍️ ¿Cómo se ve desde la perspectiva del cliente?")
-    st.image("app/images/Img3.png", width=100)
+    st.image("app/images/Img3.png", width=300)
     st.markdown("""
     Ejemplo: Amazon muestra productos frecuentemente comprados juntos.  
     Esto simula la experiencia de un supermercado virtual, recomendando artículos relevantes y aumentando la satisfacción.
