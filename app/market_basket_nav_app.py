@@ -19,7 +19,7 @@ st.sidebar.markdown("### Retail Market Basket Analysis", unsafe_allow_html=True)
 # Sidebar de navegación
 page = st.sidebar.radio("Navegación", [
     "Introducción", 
-    "¿Qué es el Market Basket Analysis?",
+    "📘 ¿Qué es Market Basket Analysis?",
     "🎯 Objetivo del MBA",
     "🔗 Reglas de Asociación",
     "⚙️ Algoritmo Apriori",
