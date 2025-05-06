@@ -24,7 +24,7 @@ try:
     with open("app/models/basket.pkl", "rb") as f:
         basket = pickle.load(f)
 except FileNotFoundError:
-    st.error("❌ No se encontró el archivo 'basket.joblib'. Asegúrate de cargarlo en el entorno de ejecución.")
+    st.error("❌ No se encontró el archivo 'basket.pkl'. Asegúrate de cargarlo en el entorno de ejecución.")
     st.stop()
 
 # Página: Introducción
@@ -77,8 +77,44 @@ elif page == "Recomendaciones":
     selected_item = st.selectbox("Selecciona un producto:", all_items)
 
     filtered_rules = rules[rules["antecedents"].apply(lambda x: selected_item in x)]
+
+    def interpretar_regla(row, idx):
+        antecedents = ', '.join(row['antecedents'])
+        consequents = ', '.join(row['consequents'])
+        support_pct = round(row['support'] * 100, 2)
+        confidence_pct = round(row['confidence'] * 100, 2)
+        lift = round(row['lift'], 2)
+
+        if lift > 10 and confidence_pct > 70:
+            utilidad = "✅ **Esta es una regla muy útil**"
+            accion = "*Product bundling* → Ofrecer ambos productos como un set o pack."
+        elif lift > 5 and confidence_pct > 40:
+            utilidad = "🟡 **Es útil**, con una asociación fuerte."
+            accion = "*Item placement* → Ubicar los productos cerca o sugerir en conjunto."
+        elif lift > 2:
+            utilidad = "🟡 **Moderadamente útil**, con confianza baja pero conexión clara."
+            accion = "*Checkout suggestion* → Ofrecer como sugerencia al final de la compra."
+        else:
+            utilidad = "🔍 **Asociación débil**"
+            accion = "*No prioritaria*, puede usarse como dato de interés general."
+
+        descripcion = f"""
+### {idx+1}. Regla: `{antecedents} → {consequents}`
+
+- **Soporte**: {support_pct}%
+- **Confianza**: {confidence_pct}%
+- **Lift**: {lift}
+
+{utilidad}
+
+**📌 Acción recomendada:**  
+{accion}
+"""
+        return descripcion
+
     if not filtered_rules.empty:
-        st.success(f"Recomendaciones para clientes que compran '{selected_item}':")
-        st.dataframe(filtered_rules[["antecedents", "consequents", "support", "confidence", "lift"]])
+        st.success(f"Se encontraron {len(filtered_rules)} recomendaciones para el producto '{selected_item}':")
+        for i, row in filtered_rules.reset_index().iterrows():
+            st.markdown(interpretar_regla(row, i))
     else:
-        st.warning("No se encontraron reglas con ese producto como antecedente.")
+        st.warning("No se encontraron recomendaciones para el producto seleccionado.")
