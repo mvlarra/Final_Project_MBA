@@ -20,6 +20,13 @@ st.sidebar.markdown("### Retail Market Basket Analysis", unsafe_allow_html=True)
 page = st.sidebar.radio("Navegación", [
     "Introducción", 
     "¿Qué es el Market Basket Analysis?",
+    "🎯 Objetivo del MBA",
+    "🔗 Reglas de Asociación",
+    "⚙️ Algoritmo Apriori",
+    "✅ Ventajas del MBA",
+    "🛍️ Perspectiva del Cliente",
+    "📦 El Dataset",
+    "📊 Reglas en acción",
     "Dataset", 
     "Conjuntos Frecuentes", 
     "Reglas de Asociación", 
@@ -53,27 +60,114 @@ if page == "Introducción":
     """)
 
 # Pagina: Que es el Market Basket Analysis?
-
-elif page == "📘 Que es el Market Basket Analysis?":
-    st.title("📘 Qué es el Market Basket Analysis?")
-    # Mostrar imagen arriba de la sección (opcional: cambiar width)
-    st.image("app/images/Img1.png",  use_container_width=True)
+elif page == "📘 ¿Qué es Market Basket Analysis?":
+    st.title("📘 ¿Qué es Market Basket Analysis?")
+    st.image("app/images/market_basket_intro.png", use_container_width=True)
     st.markdown("""
-    Cuando vamos a un supermercado o compramos en línea, solemos adquirir todos los artículos que necesitamos **en una sola compra**, en lugar de comprarlos por separado.  
-    Por eso, podemos definir una **canasta de compras** como un conjunto de artículos que una persona agrupa y compra en una sola transacción.  
-    Cada visita al mercado representa una **transacción**, y en el caso del comercio electrónico, todos los productos comprados durante una misma sesión de inicio de sesión constituyen una transacción.
+    Cuando vamos al supermercado o compramos en línea, solemos adquirir todos los artículos que necesitamos en una sola compra.  
+    Podemos definir una canasta de compras como un conjunto de artículos que una persona agrupa y compra en una sola transacción.
 
-    ---
+    Este proceso permite identificar los hábitos de compra del cliente al encontrar asociaciones entre productos colocados juntos en su “canasta”.  
+    Esto ayuda a los minoristas a diseñar mejores estrategias de marketing.
 
-    Este proceso permite **identificar los hábitos de compra de los clientes** al encontrar asociaciones entre los distintos artículos que colocan en su "canasta de compras".  
-    Descubrir este tipo de asociaciones puede ser muy útil para los minoristas o especialistas en marketing, ya que brinda información valiosa sobre **qué productos suelen comprarse juntos con frecuencia**.
+    Ejemplo: si un cliente compra leche, ¿qué tan probable es que también compre pan? Esta información ayuda a hacer promociones más efectivas y organizar mejor los productos.
+        """)
 
-    ---
 
-    Por ejemplo:  
-    Si un cliente compra **leche**, ¿qué probabilidad hay de que también compre **pan** (y qué tipo de pan) en ese mismo viaje al supermercado?  
-    Esta información puede ayudar a **aumentar las ventas** al permitir a los minoristas implementar marketing selectivo y planificar mejor la disposición de los productos en las góndolas.
+elif page == "🎯 Objetivo del MBA":
+    st.title("🎯 Objetivo del Market Basket Analysis")
+    st.markdown("""
+    **Venta cruzada (Cross Selling):** Recomendar productos relacionados para que el cliente gaste más.
+
+    **Ubicación de productos (Product Placement):** Agrupar productos complementarios juntos en la góndola, como leche seguida de manteca y harina.  
+    Esto sigue un planograma, que es un modelo para maximizar ventas con la ubicación física de productos.
     """)
+
+
+elif page == "🔗 Reglas de Asociación":
+    st.title("🔗 ¿Qué son las Reglas de Asociación?")
+    st.markdown("""
+    Las reglas de asociación identifican patrones frecuentes en transacciones, usando métricas como soporte, confianza y lift.
+
+#### Ejemplo:
+- 100 clientes
+- 10 compraron leche, 8 manteca, 6 ambos
+
+- Soporte = 6/100 = 0.06  
+- Confianza = 0.06 / 0.08 = 0.75  
+- Lift = 0.75 / 0.10 = 7.5
+    """)
+
+
+elif page == "⚙️ Algoritmo Apriori":
+    st.title("⚙️ Algoritmo Apriori")
+    st.markdown("""
+    El algoritmo Apriori identifica combinaciones frecuentes de productos usando soporte y confianza.
+
+    - Lift = 1 → sin relación  
+    - Lift > 1 → correlación positiva  
+    - Lift < 1 → correlación negativa
+
+    ❗ Limitación: requiere muchas pasadas por la base de datos, lo que puede ser costoso en tiempo.
+    """)
+
+
+elif page == "✅ Ventajas del MBA":
+    st.title("✅ Ventajas del Market Basket Analysis")
+    st.markdown("""
+    1. Aumenta la interacción del cliente  
+    2. Mejora ventas y ROI  
+    3. Optimiza campañas de marketing  
+    4. Mejora la experiencia del cliente  
+    5. Ayuda a entender al cliente  
+    6. Identifica patrones de compra
+    """)
+
+
+elif page == "🛍️ Perspectiva del Cliente":
+    st.title("🛍️ ¿Cómo se ve desde la perspectiva del cliente?")
+    st.markdown("""
+    Ejemplo: Amazon muestra productos frecuentemente comprados juntos.  
+    Esto simula la experiencia de un supermercado virtual, recomendando artículos relevantes y aumentando la satisfacción.
+    """)
+
+
+elif page == "📦 El Dataset":
+    st.title("📦 El Dataset")
+    st.markdown("""
+    Se usó un dataset con 7501 transacciones y 120 productos.  
+    - Producto más comprado: agua mineral  
+    - Menos comprado: espárrago
+
+    [Ver dataset](https://github.com/Debasishsaha123/MARKET-BASKET-ANALYSIS/blob/main/Market_Basket_Optimisation%20(1).csv)
+
+    ```python
+    all_items = data.melt()["value"].dropna().sort_values()
+    print(f"There were {all_items.nunique()} different products:\n", all_items.unique())
+    ```
+    """)
+
+
+elif page == "📊 Reglas en acción":
+    st.title("📊 Aplicación de Reglas")
+    st.markdown("""
+    Se usó Apriori con `min_support = 0.1`.  
+    Se filtraron reglas con `lift >= 1.2`.
+
+    Ejemplo fuerte:  
+    - Antecedente: herb & pepper  
+    - Consecuente: ground beef  
+    - Lift ≈ 2.5  
+    - Conviction > 1
+
+    También se encontró alta relación entre ground beef y spaghetti, vino tinto y aceite de oliva.
+    """)
+
+
+
+
+
+
 
 
 # Página: Dataset
@@ -282,7 +376,7 @@ elif page == "Referencias":
 
 Este proyecto se apoyó en literatura académica y artículos especializados para fundamentar el uso de Market Basket Analysis y el algoritmo Apriori.
 
-### Artículos y publicaciones:
+Artículos y publicaciones:
 
 1. **Halim, Octavia, & Alianto** (2019)  
    *Designing Facility Layout of an Amusement Arcade using Market Basket Analysis*  
