@@ -63,8 +63,9 @@
 # ◯ 0. CONFIGURACIÓN INICIAL
 # -------------------------------------------------------------------------------------------------
 
-# ✓ Ruta del dataset
-ruta_archivo = '/workspaces/Final_Project_MBA/data/raw/data.csv' 
+# ✓ Ruta
+ruta_archivo = '/workspaces/Final_Project_MBA/data/raw/data.csv'
+output_dir = '/workspaces/Final_Project_MBA/app/models' # Ruta de salida para guardar resultados
 
 # ✓ Parámetros de EDA
 top_n_productos = 10  # Número de productos más vendidos a graficar
@@ -105,6 +106,22 @@ from mlxtend.frequent_patterns import apriori, association_rules
 # ✓ Parámetros de visualización
 pd.set_option('display.max_colwidth', None)
 pd.set_option('display.float_format', '{:.2f}'.format)
+
+
+# Verificar si el archivo de datos existe
+if os.path.exists(ruta_archivo):
+    print(f"El archivo {ruta_archivo} existe.")
+else:
+    print(f"El archivo {ruta_archivo} no existe.")
+   
+# Verificar si el directorio de salida existe
+if os.path.exists(output_dir):
+    print(f"El directorio {output_dir} existe.")
+else:
+    print(f"El directorio {output_dir} no existe, creando directorio...")
+    os.makedirs(output_dir, exist_ok=True)
+
+
 
 
 # ## ✔️ 2. CARGA DE DATOS
