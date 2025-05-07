@@ -28,7 +28,8 @@ venv/
 *.xlsx
 #*.zip
 #*.bak
+*.pkl
 
 
 # Puedes ajustar esto según tu proyecto. Si quieres subir tus datasets .csv, 
-# simplemente quita esa línea del .gitignore.
+# simplemente quita esa línea del .gitignore.app/models/basket.pkl
