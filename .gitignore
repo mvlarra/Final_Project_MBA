@@ -34,3 +34,4 @@ venv/
 # Puedes ajustar esto según tu proyecto. Si quieres subir tus datasets .csv, 
 # simplemente quita esa línea del .gitignore.app/models/basket.pkl
 app/models/basket.pkl
+*.dbgit log --name-only --pretty=oneline | grep sanoyfresco.db
