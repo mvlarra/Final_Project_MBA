@@ -16,22 +16,24 @@ venv/
 
 # Notebooks temporales
 *.nbconvert.ipynb
-
-# Archivos ocultos de Jupyter
 .ipynb_checkpoints/
 
-# Archivos creados por VS Code
+# VS Code
 .vscode/
 
+# Archivos de configuración sensibles
+.env
+*.env
+
 # Archivos grandes o sensibles
-#*.csv
+*.csv
 *.xlsx
-#*.zip
-#*.bak
+*.zip
+*.bak
 *.pkl
+*.db
+*.log
+*.tmp
 
-
-# Puedes ajustar esto según tu proyecto. Si quieres subir tus datasets .csv, 
-# simplemente quita esa línea del .gitignore.app/models/basket.pkl
+# Específicos de tu proyecto
 app/models/basket.pkl
-*.dbgit log --name-only --pretty=oneline | grep sanoyfresco.db
