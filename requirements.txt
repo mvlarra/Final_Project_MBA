@@ -42,6 +42,7 @@ jedi==0.19.2
 Jinja2==3.1.6
 joblib==1.5.0
 json5==0.12.0
+jsonpickle==4.0.5
 jsonpointer==3.0.0
 jsonschema==4.23.0
 jsonschema-specifications==2025.4.1
@@ -57,6 +58,7 @@ jupyterlab==4.4.1
 jupyterlab_pygments==0.3.0
 jupyterlab_server==2.27.3
 jupyterlab_widgets==3.0.14
+kagglehub==0.3.12
 kiwisolver==1.4.8
 MarkupSafe==3.0.2
 matplotlib==3.10.1
@@ -68,6 +70,8 @@ nbclient==0.10.2
 nbconvert==7.16.6
 nbformat==5.10.4
 nest-asyncio==1.6.0
+networks==0.3.7
+networkx==3.4.2
 notebook==7.4.1
 notebook_shim==0.2.4
 numpy==2.2.5
@@ -80,6 +84,7 @@ parso==0.8.4
 pexpect==4.9.0
 pillow==11.2.1
 platformdirs==4.3.7
+plotly==6.0.1
 prometheus_client==0.21.1
 prompt_toolkit==3.0.51
 protobuf==6.30.2
@@ -118,6 +123,7 @@ threadpoolctl==3.6.0
 tinycss2==1.4.0
 toml==0.10.2
 tornado==6.4.2
+tqdm==4.67.1
 traitlets==5.14.3
 types-python-dateutil==2.9.0.20241206
 typing_extensions==4.13.2
