@@ -72,7 +72,8 @@ section = st.sidebar.radio("Navegación", [
     "Top 5 por Soporte",
     "Bundles de Productos",
     "Bundle Destacado",
-    "Heatmap del Bundle"
+    "Heatmap del Bundle",
+    "📌 Heatmap de Producto"
 ])
 
 
@@ -302,3 +303,50 @@ elif section == "Heatmap del Bundle":
     )
 
     st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+
+
+
+elif section == "📌 Heatmap de Producto":
+    st.markdown("## 📌 Heatmap de Co-ocurrencia por Producto")
+    st.markdown(
+        "Este gráfico muestra cómo se relaciona un producto específico con otros, "
+        "según la métrica seleccionada."
+    )
+
+    from charts.HeatmapXTab import HeatmapCrosstab
+
+    # ◯ Crear instancia del generador de heatmaps
+    heat = HeatmapCrosstab(rules)
+
+    # ◯ Obtener productos únicos desde reglas
+    productos_disponibles = sorted(set(rules['antecedents'].explode()) | set(rules['consequents'].explode()))
+    producto_base = st.selectbox("🧲 Seleccioná un producto base:", productos_disponibles)
+
+    # ◯ Selección de métrica
+    metrica = st.selectbox("📏 Seleccioná la métrica:", ["support", "lift", "confidence"])
+
+    # ◯ Cantidad máxima de columnas a mostrar
+    max_col = st.slider("🔢 Número máximo de productos relacionados:", min_value=3, max_value=20, value=10)
+
+    # ◯ Crear tabla cruzada manualmente desde reglas
+    df = rules.copy()
+    df = df.explode("antecedents")
+    df = df.explode("consequents")
+    df = df[df["antecedents"] == producto_base]
+
+    crosstab = df.pivot_table(
+        index="antecedents",
+        columns="consequents",
+        values=metrica,
+        aggfunc="mean",
+        fill_value=0
+    ).iloc[:, :max_col]
+
+    # ◯ Graficar heatmap
+    fig = heat.plot_heatmap(crosstab)
+
+    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+
+
+
+

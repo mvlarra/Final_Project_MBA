@@ -73,14 +73,21 @@ class HeatmapCrosstab:
         fig._data[0]['hoverongaps'] = False
         fig._data[0]['z'] = fig._data[0]['z'].round(3)
         
-        short_x = list(map(lambda x: x[:10] + '...', fig._data[0]['x']))
-        short_y = list(map(lambda y: y[:10] + '...', fig._data[0]['y']))
+        # short_x = list(map(lambda x: x[:10] + '...', fig._data[0]['x']))
+        # short_y = list(map(lambda y: y[:10] + '...', fig._data[0]['y']))
         
+        # fig.update_layout(
+        #     yaxis=dict(tickvals=list(range(len(short_y))), ticktext=short_y),
+        #     xaxis=dict(tickvals=list(range(len(short_x))), ticktext=short_x),
+        #     xaxis_title='consequents'
+        # )
+
         fig.update_layout(
-            yaxis=dict(tickvals=list(range(len(short_y))), ticktext=short_y),
-            xaxis=dict(tickvals=list(range(len(short_x))), ticktext=short_x),
+            yaxis=dict(tickvals=list(range(len(fig._data[0]['y']))), ticktext=fig._data[0]['y']),
+            xaxis=dict(tickvals=list(range(len(fig._data[0]['x']))), ticktext=fig._data[0]['x']),
             xaxis_title='consequents'
         )
+
         fig.update_traces(
             hovertemplate=
             f'antecedents: %{{y}}<br>consequents: %{{x}}<br>{metric}: %{{z}}<extra></extra>'
