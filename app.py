@@ -94,9 +94,10 @@ def load_data():
     rules = pd.read_csv("data/processed/summary_rules.csv")
     df_bundle_products = pd.read_csv("data/processed/bundle_products.csv")
     tabular = pd.read_csv("data/processed/tabular_bundle.csv", index_col=0)
-    return rules, df_bundle_products, tabular
+    Top_5_Rules_by_Score = pd.read_csv("data/processed/Top_5_Rules_by_Score.csv")
+    return rules, df_bundle_products, tabular, Top_5_Rules_by_Score
 
-rules, df_bundle_products, tabular = load_data()
+rules, df_bundle_products, tabular, Top_5_Rules_by_Score = load_data()
 
 
 # ◯ Sección: Introduccion
@@ -230,7 +231,7 @@ elif section == "📏 Key Metrics":
     - `Conviction(B → A) = (1 − Support(A)) / (1 − Confidence(B → A))`
     """)
 
-# ◯ Sección: TOP 5 ASSOCIATION RULES
+# ◯ Sección: TOP 5 ASSOCIATION RULES by score
 # -----------------------------------------------------------------------------------------------------------------
 elif section == "🏆 Top 5 Rules":
     st.subheader("🏆 Top 5 Association Rules")
@@ -244,9 +245,8 @@ elif section == "🏆 Top 5 Rules":
     The table below shows the **top 5 association rules** based on the composite score.
     """)
     # Mostrar la tabla
-    top5_rules = rules_summary.head(5)  # Asegurate de que 'rules_summary' ya esté ordenado por composite score
-    st.dataframe(top5_rules, use_container_width=True)
-    
+
+    st.dataframe(Top_5_Rules_by_Score, use_container_width=True)
 
 # ◯ Sección: Top 5 Reglas por Soporte
 # -----------------------------------------------------------------------------------------------------------------
