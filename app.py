@@ -248,6 +248,28 @@ elif section == "🏆 Top 5 Rules":
 
     st.dataframe(Top_5_Rules_by_Score, use_container_width=True)
 
+    st.markdown("### ✅ Recomendaciones basadas en las reglas")
+
+    st.markdown("""
+    1. **Si alguien compra “TAZA DE TÉ Y PLATILLO VERDE REGENCY”, recomendale también “TAZA DE TÉ Y PLATILLO ROSES REGENCY”.**  
+    Alta confianza (76%) y fuerte lift (22× más probable que al azar).
+
+    2. **Si alguien compra “TAZA DE TÉ Y PLATILLO ROSES REGENCY”, recomendale también “TAZA DE TÉ Y PLATILLO VERDE REGENCY”.**  
+    Alta probabilidad y relación recíproca con la anterior.
+
+    3. **Quien compra la versión rosa, tiene alta chance (83%) de interesarse también en la verde.**  
+    Ideal para bundles visualmente combinados.
+
+    4. **Si compran la verde, podrías ofrecer también la rosa, aunque con menor confianza (63%).**  
+    Útil como recomendación cruzada secundaria.
+
+    5. **Compradores de la versión rosa también suelen elegir la versión ROSES.**  
+    Oportunidad para agruparlas como “línea de colección” o sugerirlas juntas en promociones.
+    """)
+
+
+
+
 # ◯ Sección: Top 5 Reglas por Soporte
 # -----------------------------------------------------------------------------------------------------------------
 elif section == "Top 5 por Soporte":
