@@ -212,4 +212,5 @@ otros/.z_Otros_pry/
 !data/processed/summary_bundles.csv
 !data/processed/summary_rules.csv
 !data/processed/tabular_bundle.csv
+!data/processed/descriptions_translated.csv
 

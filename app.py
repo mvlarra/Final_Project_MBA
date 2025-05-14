@@ -36,14 +36,22 @@ from charts.HeatmapXTab import HeatmapCrosstab
 
 
 
-# ◯ Configuración general
-st.set_page_config(page_title="Resumen MBA", layout="wide")
+# ◯ Configuración de página
+st.set_page_config(page_title="Market Basket Analysis", layout="wide")
+
+# Ajustar el tamaño de letra base en toda la app
+st.markdown("""
+    <style>
+    html, body, [class*="css"]  {
+        font-size: 14px !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
 
 # ◯ Mostrar imagen en el sidebar
 logo = Image.open("app/images/Img_0.png")
 st.sidebar.image(logo, use_container_width=True)
-
 
 # ◯ Texto centrado debajo de la imagen
 st.sidebar.markdown(
@@ -63,20 +71,22 @@ st.sidebar.markdown(
     unsafe_allow_html=True
 )
 
-
-
 # ◯ Sidebar de navegación
 section = st.sidebar.radio("Navegación", [
-    "🏠 Inicio",
+    "📌 Introduccion",
+    "🎯 Goals",
+    "🧪 Methodology",
+    "📏 Key Metrics",
+    "🏆 Top 5 Rules",
+    "🔁 Cross Selling Products",
+    "✅ Recommendations",
+    "aca",
     "Top 5 por Soporte",
     "Bundles de Productos",
     "Bundle Destacado",
     "Heatmap del Bundle",
     "📌 Heatmap de Producto"
 ])
-
-
-
 
 # ◯ Cargar datasets procesados (ajustar path si es necesario)
 @st.cache_data
@@ -88,25 +98,158 @@ def load_data():
 
 rules, df_bundle_products, tabular = load_data()
 
-# ◯ Sección: Inicio
-if section == "🏠 Inicio":
-    st.title("📊 Reporte de Reglas de Asociación")
-    st.markdown(
-        """
-        Esta app interactiva permite analizar reglas de asociación entre productos a partir de transacciones reales. 
-        Utiliza técnicas de Market Basket Analysis para encontrar combinaciones frecuentes y bundles relevantes. 
-        
-        Con esta herramienta podés:
-        - Descubrir productos que suelen comprarse juntos.
-        - Explorar agrupamientos naturales (bundles).
-        - Identificar oportunidades para ventas cruzadas o promociones.
 
-        Usá el menú lateral para navegar por los distintos análisis disponibles.
-        """
-    )
+# ◯ Sección: Introduccion
+# -----------------------------------------------------------------------------------------------------------------
+if section == "📌 Introduccion":
 
+    st.title("🛒 Market Basket Analysis")
+    st.markdown("## Bienvenido/a al Análisis de Canasta de Compras para Retail")
+
+    # Imagen de portada debajo
+    st.image("app/images/Img3.png", width=500)  # Ajustás el tamaño según necesidad
+
+     
+    # ✏️ Introducción general
+    st.markdown("""
+    Market Basket Analysis (MBA) es una técnica de minería de datos que permite descubrir patrones de compra entre productos. 
+    Analiza qué artículos suelen adquirirse juntos por los clientes durante una misma transacción.
+
+    Este enfoque ayuda a:
+    - ✅ Optimizar la disposición de productos en tienda
+    - ✅ Diseñar promociones más efectivas
+    - ✅ Aumentar las ventas mediante estrategias de **cross-selling**
+    - ✅ Mejorar la experiencia del cliente
+                
+    En esta aplicación interactiva podrás:
+    - Explorar reglas de asociación entre productos
+    - Visualizar productos frecuentemente comprados juntos
+    - Evaluar oportunidades de mejora en ventas y layout
+    """)
+
+    # Info del proyecto
+    st.markdown("""
+    **🗂️ Fuente de datos:**  
+    Dataset *Online Retail II* de la UCI Machine Learning Repository.  
+    Incluye transacciones realizadas por un minorista online entre 2009 y 2011.
+
+    **📅 Período Analizado:**  
+    Del 01/12/2009 al 09/12/2011
+
+    **📍 Enfoque:**  
+    Filtramos exclusivamente las compras realizadas por clientes en **Reino Unido**, para facilitar la visualización y generar recomendaciones más específicas.
+
+    """)
+
+
+# ◯ Sección: Goals
+# -----------------------------------------------------------------------------------------------------------------
+
+elif section == "🎯 Goals":
+    st.subheader("🎯 Goals")
+
+    st.markdown("""
+    **`1. Association Rule Discovery`**  
+    Identify associations and correlations among products or items in a dataset. Discover rules that indicate the likelihood of certain items being bought together.
+
+    **`2. Cross-Selling Opportunities`**  
+    Uncover opportunities for cross-selling by understanding which products are frequently purchased together.
+
+    **`3. Promotion Planning`**  
+    Optimize promotional campaigns by identifying items that are frequently bought together. Design effective promotions and discounts to incentivize the purchase of complementary products.
+
+    **`4. Optimizing Product Layout`**  
+    Arrange products in-store or online in a way that encourages the purchase of related items, creating a more convenient and satisfying shopping experience.
+    """)
+
+# ◯ Sección: Methodology
+# -----------------------------------------------------------------------------------------------------------------
+
+elif section == "🧪 Methodology":
+    st.header("🧪 Methodology")
+    st.markdown("""
+    The data is sourced from 'Online Retail II'.
+
+    - This dataset encompasses all transactions conducted by a UK-based and registered non-store online retailer from December 1, 2009, to December 9, 2011.
+    - The company specializes in the sale of distinctive all-occasion giftware.
+
+    For conducting market basket analysis we utilize:
+
+    - The `Apriori Algorithm` proving highly effective in discerning `frequent itemsets` and deriving association rules, relying on predefined metrics like support and confidence.
+    - To execute the Apriori algorithm, we utilize the `mlxtend library`, a reliable Python library for machine learning extensions.
+
+    The following parameters are configured for the algorithm:
+
+    - **`Maximum Combination Length:`**  
+    We set the maximum combination length to 2 items. This choice is made to focus on pairs of items, allowing for a more targeted analysis of co-occurrences.
+    - **`Minimum Co-Occurrence Support Threshold:`**  
+    A minimum co-occurrence support threshold of 0.5% is established to filter out infrequent itemsets. This ensures that only associations with a significant presence in the dataset are considered.
+    """)
+
+
+
+# ◯ Sección: Key Metrics
+# -----------------------------------------------------------------------------------------------------------------
+elif section == "📏 Key Metrics":
+    st.subheader("📏 Key Metrics")
+
+    st.markdown("""
+    **:orange[Support]**  
+    The proportion of transactions that contain a specific itemset. High support values indicate that the itemset is frequently purchased together.
+
+    - *Item Support:*  
+    `Support(A) = Transactions containing A / Total number of transactions`
+
+    - *Co-occurrence Support:*  
+    `Support(A ∪ B) = Transactions containing both A and B / Total number of transactions`
+
+
+    **:orange[Confidence]**    
+    The conditional probability that a transaction containing item A will also contain item B.
+
+    - `Confidence(A → B) = Support(A ∪ B) / Support(A) × 100%`  
+    - `Confidence(B → A) = Support(A ∪ B) / Support(B) × 100%`
+
+
+    **:orange[Lift]**  
+    Indicates how much more likely item B is purchased when item A is purchased, compared to when item B is purchased independently.
+
+    - `Lift(A → B) = Support(A ∪ B) / (Support(A) × Support(B))`
+
+
+    **:orange[Leverage]**  
+    Measures how much more often A and B occur together than expected if they were independent.
+
+    - `Leverage(A → B) = Support(A ∪ B) − (Support(A) × Support(B))`
+
+
+    **:orange[Conviction]**  
+    Indicates the strength of implication in the rule. High values (>1) suggest stronger dependency.
+
+    - `Conviction(A → B) = (1 − Support(B)) / (1 − Confidence(A → B))`  
+    - `Conviction(B → A) = (1 − Support(A)) / (1 − Confidence(B → A))`
+    """)
+
+# ◯ Sección: TOP 5 ASSOCIATION RULES
+# -----------------------------------------------------------------------------------------------------------------
+elif section == "🏆 Top 5 Rules":
+    st.subheader("🏆 Top 5 Association Rules")
+
+    st.markdown("""
+    While evaluating association rules, we utilize key metrics such as **:orange[support]**, **:orange[confidence]**, and **:orange[lift]** to discern their significance.
+
+    Each rule is independently ranked based on these metrics, and a **mean rank** is computed across all three rankings.
+
+    This mean rank serves as a **composite score**, capturing the overall performance of each rule across the different metrics.  
+    The table below shows the **top 5 association rules** based on the composite score.
+    """)
+    # Mostrar la tabla
+    top5_rules = rules_summary.head(5)  # Asegurate de que 'rules_summary' ya esté ordenado por composite score
+    st.dataframe(top5_rules, use_container_width=True)
+    
 
 # ◯ Sección: Top 5 Reglas por Soporte
+# -----------------------------------------------------------------------------------------------------------------
 elif section == "Top 5 por Soporte":
     st.markdown("## 📈 Top 5 Reglas por Soporte")
     st.markdown("Estas son las 5 reglas más comunes, ordenadas por soporte. El soporte representa la proporción de transacciones donde aparece ese conjunto de productos.")
@@ -348,7 +491,7 @@ elif section == "📌 Heatmap de Producto":
             margin-bottom: 20px;
             background-color: #f1f1f105;
             padding: 10px 15px;
-            border-left: 4px solid #ffaa00;
+            border-left: 4px solid #ff6d00;
             border-radius: 5px;
             color: #ddd;
             line-height: 1.5;
@@ -396,7 +539,7 @@ elif section == "📌 Heatmap de Producto":
         margin-top: 25px;
         padding: 15px;
         background-color: #1e1e1e;
-        border-left: 4px solid #d26a00;
+        border-left: 4px solid #ff6d00;
         border-radius: 5px;
         font-size: 15px;
         line-height: 1.6;
@@ -443,7 +586,7 @@ elif section == "📌 Heatmap de Producto":
                 margin-top: 20px;
                 padding: 15px;
                 background-color: #1e1e1e;
-                border-left: 4px solid #4a90e2;
+                border-left: 4px solid #ff6d00;
                 border-radius: 5px;
                 font-size: 15px;
                 line-height: 1.6;
