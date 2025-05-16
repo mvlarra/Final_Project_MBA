@@ -103,7 +103,7 @@ rules, df_bundle_products, tabular, Top_5_Rules_by_Score = load_data()
 
 # ◯ Sección: RESUMEN DEL PROYECTO
 # -----------------------------------------------------------------------------------------------------------------
-elif section == "📋 Resumen del Proyecto":
+if section == "📋 Resumen del Proyecto":
     st.subheader("📋 Análisis de Canasta de Compras — Resumen Final del Proyecto")
 
     st.markdown("""
@@ -162,7 +162,7 @@ elif section == "📋 Resumen del Proyecto":
 
 # ◯ Sección: Introduccion
 # -----------------------------------------------------------------------------------------------------------------
-if section == "📌 Introduccion":
+elif section == "📌 Introduccion":
 
     st.title("🛒 Market Basket Analysis")
     st.markdown("## Bienvenido/a al Análisis de Canasta de Compras para Retail")
@@ -328,6 +328,21 @@ elif section == "🏆 Top 5 Rules":
     """)
 
 
+# ◯ Sección: Cross Selling Products
+# -----------------------------------------------------------------------------------------------------------------
+
+elif section == "🔁 Cross Selling Products":
+    st.markdown("## 🔁 Cross Selling Products")
+    st.markdown("""
+    **Top 5 Cross-Selling Products**
+
+    Cross-selling involves identifying products frequently purchased together, gauged by high **:orange[support]** reflecting their `co-occurrence` in transactions.   
+    The concept considers not only the `frequency of joint purchases` but also the `strength of these associations` measured by **:orange[confidence]**.
+
+    Focusing on product combinations with both `high support and confidence` helps pinpoint reliably associated items, enabling businesses to strategically promote or bundle products for an `enhanced customer shopping` experience.
+
+    The table below shows the **:orange[top 5 cross-selling-product pairs]**, sorted by their `average confidence and support`.
+    """)
 
 
 # ◯ Sección: Top 5 Reglas por Soporte
