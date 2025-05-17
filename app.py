@@ -53,27 +53,52 @@ st.markdown("""
 logo = Image.open("app/images/Img_0.png")
 st.sidebar.image(logo, use_container_width=True)
 
-# ◯ Texto centrado debajo de la imagen
-st.sidebar.markdown(
-    """
-    <div style="
-        text-align: center;
-        font-size: 30px;
-        font-family:  'Poppins', 'Quicksand', sans-serif;
-        font-weight: 600;
-        margin-top: 10px;
-    ">
-        🛍️ Reporte MBA
-    </div>
+# # ◯ Texto centrado debajo de la imagen
+# st.sidebar.markdown(
+#     """
+#     <div style="
+#         text-align: center;
+#         font-size: 30px;
+#         font-family:  'Poppins', 'Quicksand', sans-serif;
+#         font-weight: 600;
+#         margin-top: 10px;
+#     ">
+#         🛍️ MBA
+#     </div>
 
-    <hr style="margin-top: 10px; margin-bottom: 20px; border: none; border-top: 1px solid #88888833;" />
-    """,
-    unsafe_allow_html=True
-)
+#     <hr style="margin-top: 10px; margin-bottom: 20px; border: none; border-top: 1px solid #88888833;" />
+#     """,
+#     unsafe_allow_html=True
+# )
 
-# ◯ Sidebar de navegación
-section = st.sidebar.radio("Navegación", [
-    "📋 Resumen del Proyecto",
+# ◯ Cargar datasets procesados (ajustar path si es necesario)
+@st.cache_data
+def load_data():
+    dataset_sample = pd.read_csv("data/processed/00_dataset_sample.csv")  # 👈 sin coma
+    rules = pd.read_csv("data/processed/summary_rules.csv")
+    df_bundle_products = pd.read_csv("data/processed/bundle_products.csv")
+    tabular = pd.read_csv("data/processed/tabular_bundle.csv", index_col=0)
+    Top_5_Rules_by_Score = pd.read_csv("data/processed/Top_5_Rules_by_Score.csv")
+    return dataset_sample, rules, df_bundle_products, tabular, Top_5_Rules_by_Score
+
+dataset_sample, rules, df_bundle_products, tabular, Top_5_Rules_by_Score = load_data()
+
+
+# ◯ Sidebar para navegación
+# ............................................................................................
+
+st.sidebar.title("🧭 Navegación")
+section = st.sidebar.radio("Ir a la sección:", (
+    "1. 🏠 Inicio",
+    "2. 📋 Resumen del Proyecto",
+    "3. 📊 Exploración de Datos",
+    "4. ⚙️ Reglas de Asociación",
+    "5. 📦 Bundles de Productos",
+    "6. 🧠 Recomendaciones Personalizadas",
+    "7. 🗺️ Visualización de Relaciones",
+    "8. 💡 Recomendaciones Finales",
+    "9. 🛠️ Créditos y Tecnologías",
+    "Old Sidebar",
     "📌 Introduccion",
     "🎯 Goals",
     "🧪 Methodology",
@@ -87,24 +112,37 @@ section = st.sidebar.radio("Navegación", [
     "Bundle Destacado",
     "Heatmap del Bundle",
     "📌 Heatmap de Producto"
-])
-
-# ◯ Cargar datasets procesados (ajustar path si es necesario)
-@st.cache_data
-def load_data():
-    rules = pd.read_csv("data/processed/summary_rules.csv")
-    df_bundle_products = pd.read_csv("data/processed/bundle_products.csv")
-    tabular = pd.read_csv("data/processed/tabular_bundle.csv", index_col=0)
-    Top_5_Rules_by_Score = pd.read_csv("data/processed/Top_5_Rules_by_Score.csv")
-    return rules, df_bundle_products, tabular, Top_5_Rules_by_Score
-
-rules, df_bundle_products, tabular, Top_5_Rules_by_Score = load_data()
+))
 
 
-# ◯ Sección: RESUMEN DEL PROYECTO
-# -----------------------------------------------------------------------------------------------------------------
-if section == "📋 Resumen del Proyecto":
-    st.subheader("📋 Análisis de Canasta de Compras — Resumen Final del Proyecto")
+# 1. ◯ Sección: INICIO
+# ............................................................................................
+if section.startswith("1."):
+    st.title("Bienvenido a Market Basket Analysis")
+    # Ruta a la imagen 
+    st.image("app/images/Img3.png", use_container_width=True)
+    st.markdown("""
+    Esta app te ayudará a descubrir `relaciones entre productos` en base a transacciones reales.  
+    
+    Pensada especialmente para **gerentes de negocio**, permite:
+    * → visualizar `reglas de asociación`,
+    * → generar `bundles sugeridos` y
+    * → `aplicar estrategias` basadas en datos.
+    
+    ¿Ejemplo?  
+    Si muchos clientes compran *tazas de té* junto con *bandejas decorativas*, 
+    podrías  
+        → ofrecer estos productos como un combo o   
+        → ubicarlos juntas en tu tienda.
+    
+    Usá el menú lateral para navegar por cada sección.
+    """)
+
+# 2. ◯ Sección: RESUMEN DEL PROYECTO
+# ............................................................................................
+elif section.startswith("2."):
+    st.title("🛒 Market Basket Analysis")
+    st.subheader("Resumen Final del Proyecto")
 
     st.markdown("""
     **📌 Objetivo**  
@@ -122,33 +160,33 @@ if section == "📋 Resumen del Proyecto":
 
     **⚙️ Metodología**  
     - Transformación de los datos a formato canasta (ítems × transacciones)  
-    - Aplicación del algoritmo **Apriori** con la librería `mlxtend`  
+    - Aplicación del algoritmo **`Apriori`** con la librería `mlxtend`  
     - Evaluación de reglas utilizando las siguientes métricas:  
-    - **Support:** Frecuencia del conjunto  
-    - **Confidence:** Probabilidad de ocurrencia conjunta  
-    - **Lift:** Fuerza de la asociación
+        - **`Support:`** Frecuencia del conjunto  
+        - **`Confidence:`** Probabilidad de ocurrencia conjunta  
+        - **`Lift:`** Fuerza de la asociación
 
     ---
 
     **🏆 Principales Hallazgos**  
     - Se detectaron asociaciones sólidas entre variantes de productos (ej. distintos colores de juegos de té)  
     - Las reglas más destacadas obtuvieron altos valores en todas las métricas:  
-    - Confianza por encima del 70%  
-    - Lift superior a 20  
+        - Confianza por encima del 70%  
+        - Lift superior a 20  
     - Estas reglas son altamente accionables para estrategias de marketing y experiencia de usuario
 
     ---
 
     **✅ Recomendaciones de Negocio**  
-    - Implementar **sugerencias automáticas de productos** en el carrito de compras  
-    - Ofrecer **bundles** basados en productos frecuentemente comprados juntos  
-    - Optimizar la disposición de productos en tienda física u online  
-    - Lanzar **campañas segmentadas** basadas en afinidades entre productos
+    - Implementar **`sugerencias automáticas de productos`** en el carrito de compras  
+    - Ofrecer **`bundles`** basados en productos frecuentemente comprados juntos  
+    - Optimizar la **`disposición de productos`** en tienda física u online  
+    - Lanzar **`campañas segmentadas`** basadas en afinidades entre productos
 
     ---
 
     **🔧 Herramientas y Tecnologías**  
-    Python · pandas · mlxtend · Streamlit  
+    + Python · pandas · mlxtend · Streamlit  
     + Visualización con plotly y matplotlib  
     + Diseño modular con navegación lateral e insights interpretables
 
@@ -156,6 +194,106 @@ if section == "📋 Resumen del Proyecto":
 
     Esta app fue desarrollada como el **proyecto final del Bootcamp de Data Science**, demostrando habilidades de punta a punta: desde la preparación de datos y detección de patrones, hasta la generación de insights de negocio y desarrollo de una aplicación funcional.
     """)
+
+# 3. ◯ Sección: EXPLORACIÓN DE DATOS
+# ............................................................................................
+
+elif section.startswith("3."):
+    st.title("📊 Exploración de Datos")
+
+    st.markdown("""
+    `Fuente de datos:`  
+    Dataset Online Retail II de la UCI Machine Learning Repository.
+    """)
+    # ◯ Mostrar dataset general
+    st.subheader("🧾 Vista general del dataset")
+    st.markdown("""
+    Incluye transacciones realizadas en una Tienda Online entre 2009 y 2011.
+    """)
+    st.dataframe(dataset_sample)
+    st.markdown("""
+    
+    Solo carga las columnas `Invoice` y `Description` para reducir memoria y enfocarnos en 
+    el Market Basket Analysis.
+    """)
+
+    # ◯ Productos más vendidos
+    st.subheader("🏆 Top 10 productos más vendidos")
+    st.markdown("""
+    Esta visualización muestra los 10 productos con mayor cantidad de unidades vendidas en el periodo analizado. 
+    Puede ayudarte a identificar tus **productos estrella** o con mayor rotación.
+    """)
+    
+    # Contar los productos más vendidos
+    top_products = df['description'].value_counts().head(10)
+
+    # Mostrar gráfico de barras
+    st.bar_chart(top_products)
+
+    # Mostrar tabla con cantidades
+    with st.expander("Ver detalle en tabla"):
+         st.dataframe(top_products.reset_index().rename(columns={
+            'index': 'Producto',
+            'description': 'Unidades Vendidas'
+        }), use_container_width=True)
+    
+
+    # ◯ Cantidad de compras por mes
+    st.subheader("📅 Distribución de transacciones por mes")
+    df['invoice_date'] = pd.to_datetime(df['invoice_date'])
+    monthly = df.groupby(df['invoice_date'].dt.to_period('M')).size()
+    st.line_chart(monthly)
+
+    # ◯ Ejemplo real de una canasta
+    st.subheader("🛍️ Ejemplo real de una compra")
+    example_basket = df[df['invoice'] == df['invoice'].iloc[0]]
+    st.write("Transacción N°:", example_basket['invoice'].iloc[0])
+    st.dataframe(example_basket[['description', 'quantity']])
+    
+    
+
+# 4. ◯ Sección: REGLAS DE ASOCIACIÓN
+elif section.startswith("4."):
+    st.title("⚙️ Reglas de Asociación")
+    st.markdown("En esta sección verás las principales reglas encontradas con el algoritmo Apriori... (pendiente)")
+
+# 5. ◯ Sección: BUNDLES DE PRODUCTOS
+# ............................................................................................
+elif section.startswith("5."):
+    st.title("📦 Bundles de Productos")
+    st.markdown("Agrupaciones sugeridas de productos que podrían ofrecerse juntos... (pendiente)")
+
+# 6. ◯ Sección: RECOMENDACIONES PERSONALIZADAS
+# ............................................................................................
+elif section.startswith("6."):
+    st.title("🧠 Recomendaciones para tu carrito")
+    st.markdown("Seleccioná un producto y obtené sugerencias en tiempo real... (pendiente)")
+
+# 7. ◯ Sección: VISUALIZACIÓN DE RELACIONES
+# ............................................................................................
+elif section.startswith("7."):
+    st.title("🗺️ Red de Relaciones entre Productos")
+    st.markdown("Visualización tipo red o heatmap para ver las conexiones entre productos... (pendiente)")
+
+# 8. ◯ Sección: RECOMENDACIONES FINALES
+# ............................................................................................
+elif section.startswith("8."):
+    st.title("💡 ¿Qué puede hacer tu negocio con estos datos?")
+    st.markdown("Checklist de acciones sugeridas para aplicar estos hallazgos... (pendiente)")
+
+# 9. ◯ Sección: CRÉDITOS Y TECNOLOGÍAS
+# ............................................................................................
+elif section.startswith("9."):
+    st.title("🛠️ Proyecto Final – Bootcamp de Data Science")
+    st.markdown("""
+    Desarrollado por Valentina Larrañaga.  
+    Bootcamp: [Nombre del Bootcamp]  
+    Tecnologías utilizadas: Python · pandas · mlxtend · Streamlit · plotly · matplotlib  
+    """)
+
+
+
+
 
 
 
