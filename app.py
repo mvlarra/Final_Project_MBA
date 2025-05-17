@@ -74,14 +74,15 @@ st.sidebar.image(logo, use_container_width=True)
 # ◯ Cargar datasets procesados (ajustar path si es necesario)
 @st.cache_data
 def load_data():
-    dataset_sample = pd.read_csv("data/processed/00_dataset_sample.csv")  # 👈 sin coma
+    dataset_sample = pd.read_csv("data/processed/00_dataset_sample.csv")
+    Top_10_Mas_Vendidos = pd.read_csv("data/processed/Top_10_Mas_Vendidos.csv")
     rules = pd.read_csv("data/processed/summary_rules.csv")
     df_bundle_products = pd.read_csv("data/processed/bundle_products.csv")
     tabular = pd.read_csv("data/processed/tabular_bundle.csv", index_col=0)
     Top_5_Rules_by_Score = pd.read_csv("data/processed/Top_5_Rules_by_Score.csv")
-    return dataset_sample, rules, df_bundle_products, tabular, Top_5_Rules_by_Score
+    return dataset_sample, Top_10_Mas_Vendidos, rules, df_bundle_products, tabular, Top_5_Rules_by_Score
 
-dataset_sample, rules, df_bundle_products, tabular, Top_5_Rules_by_Score = load_data()
+dataset_sample, Top_5_Rules_by_Score, rules, df_bundle_products, tabular, Top_5_Rules_by_Score = load_data()
 
 
 # ◯ Sidebar para navegación
@@ -223,19 +224,16 @@ elif section.startswith("3."):
     Esta visualización muestra los 10 productos con mayor cantidad de unidades vendidas en el periodo analizado. 
     Puede ayudarte a identificar tus **productos estrella** o con mayor rotación.
     """)
-    
-    # Contar los productos más vendidos
-    top_products = df['description'].value_counts().head(10)
 
     # Mostrar gráfico de barras
-    st.bar_chart(top_products)
+    st.bar_chart(
+        Top_10_Mas_Vendidos.set_index('Producto')['Unidades Vendidas'],
+        use_container_width=True
+    )
 
     # Mostrar tabla con cantidades
     with st.expander("Ver detalle en tabla"):
-         st.dataframe(top_products.reset_index().rename(columns={
-            'index': 'Producto',
-            'description': 'Unidades Vendidas'
-        }), use_container_width=True)
+        st.dataframe(Top_10_Mas_Vendidos, use_container_width=True)
     
 
     # ◯ Cantidad de compras por mes
