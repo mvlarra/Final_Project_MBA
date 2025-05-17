@@ -25,6 +25,7 @@
 
 
 import os
+import plotly.express as px
 port = os.environ.get("PORT", 8501)
 import streamlit as st
 import pandas as pd
@@ -82,8 +83,7 @@ def load_data():
     Top_5_Rules_by_Score = pd.read_csv("data/processed/Top_5_Rules_by_Score.csv")
     return dataset_sample, Top_10_Mas_Vendidos, rules, df_bundle_products, tabular, Top_5_Rules_by_Score
 
-dataset_sample, Top_5_Rules_by_Score, rules, df_bundle_products, tabular, Top_5_Rules_by_Score = load_data()
-
+dataset_sample, Top_10_Mas_Vendidos, rules, df_bundle_products, tabular, Top_5_Rules_by_Score = load_data()
 
 # ◯ Sidebar para navegación
 # ............................................................................................
@@ -225,11 +225,34 @@ elif section.startswith("3."):
     Puede ayudarte a identificar tus **productos estrella** o con mayor rotación.
     """)
 
-    # Mostrar gráfico de barras
-    st.bar_chart(
-        Top_10_Mas_Vendidos.set_index('Producto')['Unidades Vendidas'],
-        use_container_width=True
+   # Ordenar explícitamente de mayor a menor por cantidad
+    Top_10_Mas_Vendidos_sorted = Top_10_Mas_Vendidos.sort_values('Unidades Vendidas', ascending=True)
+
+    # Crear gráfico de barras horizontal
+    fig = px.bar(
+        Top_10_Mas_Vendidos_sorted,
+        x='Unidades Vendidas',
+        y='Producto',
+        orientation='h',
+        text='Unidades Vendidas',
+        title=''
     )
+
+    # Ajustar estilo del gráfico
+    fig.update_traces(
+        textposition='outside',
+        marker_color='darkorange'  # Opcional: cambiar color
+    )
+    fig.update_layout(
+        xaxis_title='Unidades Vendidas',
+        yaxis_title='Producto',
+        yaxis=dict(tickfont=dict(size=11)),
+        margin=dict(l=10, r=10, t=10, b=10),
+        height=400
+    )
+
+    # Mostrar en Streamlit
+    st.plotly_chart(fig, use_container_width=True)
 
     # Mostrar tabla con cantidades
     with st.expander("Ver detalle en tabla"):
