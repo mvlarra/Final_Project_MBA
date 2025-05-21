@@ -5,6 +5,9 @@
     // Imagen base oficial de Microsoft con Python 3.11
     "image": "mcr.microsoft.com/devcontainers/python:0-3.11",
   
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",  // Monta tu carpeta local dentro del contenedor
+    "workspaceFolder": "/workspace",  // Hace que VS Code trabaje desde esa carpeta montada
+
     // Comando que se ejecuta al crear el contenedor.
     // Instala los paquetes listados en requirements.txt
     "onCreateCommand": "pip3 install -r requirements.txt",
