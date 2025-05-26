@@ -6,12 +6,12 @@
     "image": "mcr.microsoft.com/devcontainers/python:0-3.11",
   
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",  // Monta tu carpeta local dentro del contenedor
-    "workspaceFolder": "/workspace",  // Hace que VS Code trabaje desde esa carpeta montada
+    "workspaceFolder": "/workspace", // Hace que VS Code trabaje desde esa carpeta montada
 
     // Comando que se ejecuta al crear el contenedor.
     // Instala los paquetes listados en requirements.txt
-    "onCreateCommand": "pip3 install -r requirements.txt",
-  
+    "onCreateCommand": "cd /workspace && pip3 install -r requirements.txt",
+                    
     // Comando que se ejecuta después de que el contenedor está listo:
     // - sudo apt-get update                        | Actualiza paquetes del sistema
     // - sudo apt-get install -y tree               | Instala el comando `tree` para ver estructuras de carpetas

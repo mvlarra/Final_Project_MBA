@@ -25,15 +25,17 @@
 
 
 import os
-import plotly.express as px
 port = os.environ.get("PORT", 8501)
-import streamlit as st
+import ast  # Para convertir el string a lista real si es necesario
 import pandas as pd
 import numpy as np
-from PIL import Image
-import ast  # Para convertir el string a lista real si es necesario
+import plotly.express as px
 import plotly.graph_objects as go
+import networkx as nx
+import streamlit as st
+from PIL import Image
 from charts.HeatmapXTab import HeatmapCrosstab
+
 
 
 
@@ -77,13 +79,15 @@ st.sidebar.image(logo, use_container_width=True)
 def load_data():
     dataset_sample = pd.read_csv("data/processed/00_dataset_sample.csv")
     Top_10_Mas_Vendidos = pd.read_csv("data/processed/Top_10_Mas_Vendidos.csv")
+    example_basket = pd.read_csv("data/processed/01_example_basket.csv")
+    monthly_transactions = pd.read_csv("data/processed/02_monthly_transactions.csv")
     rules = pd.read_csv("data/processed/summary_rules.csv")
     df_bundle_products = pd.read_csv("data/processed/bundle_products.csv")
     tabular = pd.read_csv("data/processed/tabular_bundle.csv", index_col=0)
     Top_5_Rules_by_Score = pd.read_csv("data/processed/Top_5_Rules_by_Score.csv")
-    return dataset_sample, Top_10_Mas_Vendidos, rules, df_bundle_products, tabular, Top_5_Rules_by_Score
+    return dataset_sample, Top_10_Mas_Vendidos, example_basket, monthly_transactions, rules, df_bundle_products, tabular, Top_5_Rules_by_Score
 
-dataset_sample, Top_10_Mas_Vendidos, rules, df_bundle_products, tabular, Top_5_Rules_by_Score = load_data()
+dataset_sample, Top_10_Mas_Vendidos, example_basket, monthly_transactions, rules, df_bundle_products, tabular, Top_5_Rules_by_Score = load_data()
 
 # ◯ Sidebar para navegación
 # ............................................................................................
@@ -98,19 +102,13 @@ section = st.sidebar.radio("Ir a la sección:", (
     "6. 🧠 Recomendaciones Personalizadas",
     "7. 🗺️ Visualización de Relaciones",
     "8. 💡 Recomendaciones Finales",
-    "9. 🛠️ Créditos y Tecnologías",
+    "9. 📎 Créditos y recursos del proyecto",
     "Old Sidebar",
-    "📌 Introduccion",
     "🎯 Goals",
     "🧪 Methodology",
     "📏 Key Metrics",
-    "🏆 Top 5 Rules",
     "🔁 Cross Selling Products",
-    "✅ Recommendations",
     "aca",
-    "Top 5 por Soporte",
-    "Bundles de Productos",
-    "Bundle Destacado",
     "Heatmap del Bundle",
     "📌 Heatmap de Producto"
 ))
@@ -119,7 +117,7 @@ section = st.sidebar.radio("Ir a la sección:", (
 # 1. ◯ Sección: INICIO
 # ............................................................................................
 if section.startswith("1."):
-    st.title("Bienvenido a Market Basket Analysis")
+    st.title("Bienvenido a Market Basket Analysis de compras para Retail")
     # Ruta a la imagen 
     st.image("app/images/Img3.png", use_container_width=True)
     st.markdown("""
@@ -138,6 +136,42 @@ if section.startswith("1."):
     
     Usá el menú lateral para navegar por cada sección.
     """)
+     
+    # Imagen de portada debajo
+    st.image("app/images/Img3.png", width=500)  # Ajustás el tamaño según necesidad
+
+     
+    # ✏️ Introducción general
+    st.markdown("""
+    Market Basket Analysis (MBA) es una técnica de minería de datos que permite descubrir patrones de compra entre productos. 
+    Analiza qué artículos suelen adquirirse juntos por los clientes durante una misma transacción.
+
+    Este enfoque ayuda a:
+    - ✅ Optimizar la disposición de productos en tienda
+    - ✅ Diseñar promociones más efectivas
+    - ✅ Aumentar las ventas mediante estrategias de **cross-selling**
+    - ✅ Mejorar la experiencia del cliente
+                
+    En esta aplicación interactiva podrás:
+    - Explorar reglas de asociación entre productos
+    - Visualizar productos frecuentemente comprados juntos
+    - Evaluar oportunidades de mejora en ventas y layout
+    """)
+
+    # Info del proyecto
+    st.markdown("""
+    **🗂️ Fuente de datos:**  
+    Dataset *Online Retail II* de la UCI Machine Learning Repository.  
+    Incluye transacciones realizadas por un minorista online entre 2009 y 2011.
+
+    **📅 Período Analizado:**  
+    Del 01/12/2009 al 09/12/2011
+
+    **📍 Enfoque:**  
+    Filtramos exclusivamente las compras realizadas por clientes en **Reino Unido**, para facilitar la visualización y generar recomendaciones más específicas.
+
+    """)
+
 
 # 2. ◯ Sección: RESUMEN DEL PROYECTO
 # ............................................................................................
@@ -207,28 +241,26 @@ elif section.startswith("3."):
     Dataset Online Retail II de la UCI Machine Learning Repository.
     """)
     # ◯ Mostrar dataset general
-    st.subheader("🧾 Vista general del dataset")
+    st.markdown("---")
+    st.subheader("`🧾 Vista general del dataset`")
     st.markdown("""
     Incluye transacciones realizadas en una Tienda Online entre 2009 y 2011.
     """)
     st.dataframe(dataset_sample)
-    st.markdown("""
-    
-    Solo carga las columnas `Invoice` y `Description` para reducir memoria y enfocarnos en 
-    el Market Basket Analysis.
-    """)
+ 
 
     # ◯ Productos más vendidos
-    st.subheader("🏆 Top 10 productos más vendidos")
+    st.markdown("---")
+    st.subheader("`🏆 Top 10 productos más vendidos`")
     st.markdown("""
     Esta visualización muestra los 10 productos con mayor cantidad de unidades vendidas en el periodo analizado. 
     Puede ayudarte a identificar tus **productos estrella** o con mayor rotación.
     """)
 
-   # Ordenar explícitamente de mayor a menor por cantidad
+        # Ordenar explícitamente de mayor a menor por cantidad
     Top_10_Mas_Vendidos_sorted = Top_10_Mas_Vendidos.sort_values('Unidades Vendidas', ascending=True)
 
-    # Crear gráfico de barras horizontal
+        # Crear gráfico de barras horizontal
     fig = px.bar(
         Top_10_Mas_Vendidos_sorted,
         x='Unidades Vendidas',
@@ -237,79 +269,571 @@ elif section.startswith("3."):
         text='Unidades Vendidas',
         title=''
     )
-
-    # Ajustar estilo del gráfico
+        # Ajustar estilo del gráfico
     fig.update_traces(
         textposition='outside',
         marker_color='darkorange'  # Opcional: cambiar color
     )
     fig.update_layout(
+        plot_bgcolor='#1a1a1a',  # Color de fondo del gráfico
+        paper_bgcolor='#1a1a1a',  # Color del "papel", da apariencia de borde
+        margin=dict(l=10, r=10, t=20, b=10),
         xaxis_title='Unidades Vendidas',
         yaxis_title='Producto',
         yaxis=dict(tickfont=dict(size=11)),
-        margin=dict(l=10, r=10, t=10, b=10),
         height=400
     )
+   
+    st.plotly_chart(fig, use_container_width=True)               # Mostrar en Streamlit
 
-    # Mostrar en Streamlit
-    st.plotly_chart(fig, use_container_width=True)
-
-    # Mostrar tabla con cantidades
-    with st.expander("Ver detalle en tabla"):
+    
+    with st.expander("Ver detalle en tabla"):                   # Mostrar tabla con cantidades
         st.dataframe(Top_10_Mas_Vendidos, use_container_width=True)
     
-
-    # ◯ Cantidad de compras por mes
-    st.subheader("📅 Distribución de transacciones por mes")
-    df['invoice_date'] = pd.to_datetime(df['invoice_date'])
-    monthly = df.groupby(df['invoice_date'].dt.to_period('M')).size()
-    st.line_chart(monthly)
-
+    
     # ◯ Ejemplo real de una canasta
-    st.subheader("🛍️ Ejemplo real de una compra")
-    example_basket = df[df['invoice'] == df['invoice'].iloc[0]]
-    st.write("Transacción N°:", example_basket['invoice'].iloc[0])
-    st.dataframe(example_basket[['description', 'quantity']])
+    st.markdown("---")
+    st.subheader("`🛍️ Ejemplo real de una compra`")
+    st.write("Transacción N°:",  example_basket['Invoice'][0])
+    st.dataframe(example_basket[['Description', 'Quantity','InvoiceDate']])
     
     
+    # ◯ Cantidad de compras por mes
+    st.markdown("---")
+    st.subheader("`📅 Distribución de transacciones por mes`")
+    
+    
+        # Crear gráfico de barras horizontal
+    fig1 = px.bar(
+    monthly_transactions,
+    x='Invoice_Date',
+    y='Transaction_Count',
+    orientation='v',
+    text='Transaction_Count',
+    title=''  # Opcional: podés poner 'Transacciones por Mes'   
+    )
+        # Ajustar estilo del gráfico
+    fig1.update_traces(
+    textposition='outside',
+    marker_color='darkorange',  # Color opcional
+    textfont_color='white'  # Color del texto
+    )
+    
+    fig1.update_layout(
+    plot_bgcolor='#1a1a1a', # Color de fondo del gráfico
+    paper_bgcolor='#1a1a1a',  # Color del "papel", da apariencia de borde
+    margin=dict(l=10, r=10, t=20, b=10),
+    xaxis_title='Cantidad de Transacciones',
+    yaxis_title='Mes',
+    yaxis=dict(showgrid=False, tickfont=dict(size=11)),
+    height=400
+    )
+        
+        # Mostrar en Streamlit
+    st.markdown("""
+    Este gráfico muestra cuántas transacciones se realizaron cada mes.
+    Puede ayudarte a visualizar **picos de actividad** o estacionalidad.
+    """)
+    st.plotly_chart(fig1, use_container_width=True)
+
+        # Mostrar tabla con detalle
+    with st.expander("Ver detalle en tabla"):
+        st.dataframe(monthly_transactions, use_container_width=True)
+
+
 
 # 4. ◯ Sección: REGLAS DE ASOCIACIÓN
+# -----------------------------------------------------------------------------------------------------------------
 elif section.startswith("4."):
+    
+    st.markdown("---")
     st.title("⚙️ Reglas de Asociación")
-    st.markdown("En esta sección verás las principales reglas encontradas con el algoritmo Apriori... (pendiente)")
+    st.markdown("En esta sección verás las principales reglas encontradas con el algoritmo Apriori")
+
+    st.subheader("📈 Top 5 Regles by Soporte")
+    st.markdown("Estas son las 5 reglas más comunes, ordenadas por soporte. El soporte representa la proporción de transacciones donde aparece ese conjunto de productos.")
+
+    # ◯ Nota explicativa con ejemplo concreto, estilo más sutil
+    st.markdown(
+        """
+        <small><i>Ejemplo:</i> Si los productos <b>Taza</b> y <b>Plato</b> aparecen juntos en 50 de 1000 tickets, su soporte es 0.05 (es decir, el 5% de las transacciones).</small>
+        """,
+        unsafe_allow_html=True
+    )
+
+    top_support = rules.sort_values("support", ascending=False).iloc[::2].head(5).reset_index(drop=True)
+    st.dataframe(top_support, use_container_width=True)
+
+
+    st.markdown("---")
+    st.subheader("🏆 Top 5 Association Rules by Score")
+
+    st.markdown("""
+    While evaluating association rules, we utilize key metrics such as **:orange[support]**, **:orange[confidence]**, and **:orange[lift]** to discern their significance.
+
+    Each rule is independently ranked based on these metrics, and a **mean rank** is computed across all three rankings.
+
+    This mean rank serves as a **composite score**, capturing the overall performance of each rule across the different metrics.  
+    The table below shows the **top 5 association rules** based on the composite score.
+    """)
+    # Mostrar la tabla
+
+    st.dataframe(Top_5_Rules_by_Score, use_container_width=True)
+
+    st.markdown("### ✅ Recomendaciones basadas en las reglas")
+
+    st.markdown("""
+    1. **Si alguien compra “TAZA DE TÉ Y PLATILLO VERDE REGENCY”, recomendale también “TAZA DE TÉ Y PLATILLO ROSES REGENCY”.**  
+    Alta confianza (76%) y fuerte lift (22× más probable que al azar).
+
+    2. **Si alguien compra “TAZA DE TÉ Y PLATILLO ROSES REGENCY”, recomendale también “TAZA DE TÉ Y PLATILLO VERDE REGENCY”.**  
+    Alta probabilidad y relación recíproca con la anterior.
+
+    3. **Quien compra la versión rosa, tiene alta chance (83%) de interesarse también en la verde.**  
+    Ideal para bundles visualmente combinados.
+
+    4. **Si compran la verde, podrías ofrecer también la rosa, aunque con menor confianza (63%).**  
+    Útil como recomendación cruzada secundaria.
+
+    5. **Compradores de la versión rosa también suelen elegir la versión ROSES.**  
+    Oportunidad para agruparlas como “línea de colección” o sugerirlas juntas en promociones.
+    """)    
+
 
 # 5. ◯ Sección: BUNDLES DE PRODUCTOS
 # ............................................................................................
 elif section.startswith("5."):
     st.title("📦 Bundles de Productos")
-    st.markdown("Agrupaciones sugeridas de productos que podrían ofrecerse juntos... (pendiente)")
+    st.markdown("""
+        Cada *bundle* agrupa productos que suelen comprarse juntos de forma consistente.  
+        A continuación se listan los grupos descubiertos, ordenados por su soporte promedio.
+    """)
+
+    # ◯ Mostrar cantidad total de bundles encontrados
+    total_bundles = df_bundle_products['category'].nunique()
+    st.markdown(f"🔍 Se identificaron **{total_bundles} bundles** de productos.")
+
+    # ◯ Agrupar datos y renombrar columna
+    summary_bundles = df_bundle_products.groupby("category").agg(
+        products=('nodes', 'unique'),
+        support_mean=('support', 'mean'),
+        n=('nodes', 'size')
+    ).sort_values("support_mean", ascending=False).reset_index().rename(columns={"category": "bundle_name"})
+
+    # ◯ Formatear lista de productos como texto separado por punto medio " • "
+    summary_bundles["products"] = summary_bundles["products"].apply(lambda x: "  •  ".join(x))
+
+    # ◯ Estilizar tabla
+    styled_df = summary_bundles.style.set_table_styles([
+        {'selector': 'td', 'props': [('font-size', '13px'), ('line-height', '1.6')]},
+        {'selector': 'th', 'props': [('font-size', '13px'), ('font-weight', 'normal'), ('text-align', 'left')]}
+    ]).set_properties(**{'white-space': 'pre-wrap'})
+
+    st.markdown(styled_df.to_html(), unsafe_allow_html=True)
+
+    # ◯ Referencias de columnas con ejemplo y separador actualizado
+    st.markdown(
+        """
+        <small><b>ℹ️ Referencia de columnas:</b></small>
+        <small>
+        <ul>
+            <li><b>bundle_name</b>: Nombre representativo del grupo de productos relacionados, probablemente el producto central o más distintivo del bundle.
+                <br><i>Ejemplo:</i> <code>POMO DE CAJÓN CERÁMICO DE RAYAS ROJAS</code> es un bundle que agrupa varios pomos similares.</li>
+            <li><b>products</b>: Lista de productos que componen el bundle.</li>
+            <li><b>support_mean</b>: Promedio de soporte de los productos del grupo.</li>
+            <li><b>n</b>: Cantidad total de productos dentro del bundle.</li>
+        </ul>
+        </small>
+        """,
+        unsafe_allow_html=True
+    )
+
+    st.markdown("---")
+    st.subheader("🎯 Bundle Destacado")
+    st.markdown(
+        "Explorá en detalle los productos que forman parte de un bundle específico. "
+        "Seleccioná uno del menú desplegable para ver su composición."
+    )
+
+    # Selección de bundle
+    bundles_disponibles = df_bundle_products["category"].sort_values().unique()
+    selected_bundle = st.selectbox("📦 Seleccioná un bundle:", bundles_disponibles)
+
+    # Filtrar y obtener productos del bundle
+    rows = df_bundle_products[df_bundle_products["category"] == selected_bundle]
+
+    if len(rows) > 0:
+        productos = []
+
+        for fila in rows["nodes"]:
+            if isinstance(fila, list):
+                productos.extend(fila)
+            elif isinstance(fila, str):
+                productos.append(fila)
+
+        productos_unicos = list(set(productos))
+
+        if productos_unicos:
+            st.markdown("**Productos agrupados en este bundle:**")
+
+        # Crear y ordenar df_bundle
+        df_bundle = rows.explode("nodes")
+        df_bundle = df_bundle[["nodes", "support"]].dropna()
+        df_bundle = df_bundle.groupby("nodes").mean().sort_values("support", ascending=False)
+
+        if not df_bundle.empty:
+            df_bundle["support_pct"] = df_bundle["support"] * 100
+
+            fig = go.Figure(go.Bar(
+                x=df_bundle["support_pct"],
+                y=df_bundle.index,
+                orientation='h',
+                marker=dict(color='#d26a00'),
+                hovertemplate='%{y}<br>Soporte: %{x:.2f} %<extra></extra>',
+                text=[f"<b>{s:.2f}%</b>" for s in df_bundle["support_pct"]],
+                textposition='auto',
+                textfont=dict(color="#ffffff", size=16),  # más grande
+                insidetextanchor='end',
+                showlegend=False
+            ))
+
+            fig.update_layout(
+                title="Frecuencia (soporte) de los productos en este bundle",
+                title_x=0.5,
+                xaxis_title=None,
+                xaxis=dict(showticklabels=False, showgrid=False),
+                yaxis=dict(title="", autorange="reversed"),
+                plot_bgcolor='#0e1117',
+                paper_bgcolor='#0e1117',
+                font=dict(color="#f0f0f0", size=14),
+                margin=dict(l=200, r=40, t=50, b=40),
+                height=60 * len(df_bundle) + 80
+            )
+
+            st.plotly_chart(fig, use_container_width=True, config=dict(displayModeBar=False))
+        else:
+            st.info("Este bundle no contiene productos.")
+    else:
+        st.warning("No se encontraron datos para el bundle seleccionado.")
+
+
 
 # 6. ◯ Sección: RECOMENDACIONES PERSONALIZADAS
 # ............................................................................................
 elif section.startswith("6."):
     st.title("🧠 Recomendaciones para tu carrito")
-    st.markdown("Seleccioná un producto y obtené sugerencias en tiempo real... (pendiente)")
+    st.markdown("""
+    Seleccioná un producto y descubrí qué otros artículos suelen comprarse junto a él. 
+    Esta funcionalidad se basa en reglas de asociación generadas a partir de miles de transacciones reales.
+    """)
+
+    # Asegurar que las columnas 'antecedents' y 'consequents' sean listas
+    rules['antecedents'] = rules['antecedents'].apply(lambda x: [x] if isinstance(x, str) else x)
+    rules['consequents'] = rules['consequents'].apply(lambda x: [x] if isinstance(x, str) else x)
+
+    # Crear lista única de productos disponibles como 'antecedents'
+    productos_disponibles = sorted(set([item for sublist in rules['antecedents'] for item in sublist]))
+
+    # Selector de producto base
+    producto_seleccionado = st.selectbox("🛍️ Elegí un producto:", productos_disponibles)
+
+    # Filtrar reglas con ese producto como antecedente
+    reglas_filtradas = rules[rules['antecedents'].apply(lambda x: producto_seleccionado in x)]
+
+    if not reglas_filtradas.empty:
+        st.success(f"Se encontraron {len(reglas_filtradas)} recomendaciones para el producto '{producto_seleccionado}'.")
+
+        # Ordenar por confianza
+        reglas_ordenadas = reglas_filtradas.sort_values(by='confidence', ascending=False)
+
+        # Preparar recomendaciones para mostrar
+        recomendaciones = reglas_ordenadas[['consequents', 'support', 'confidence', 'lift']].copy()
+        recomendaciones['consequents'] = recomendaciones['consequents'].apply(lambda x: ', '.join(x))
+
+        st.dataframe(recomendaciones.rename(columns={
+            'consequents': '🛒 Producto Recomendado',
+            'support': 'Soporte',
+            'confidence': 'Confianza',
+            'lift': 'Relevancia (Lift)'
+        }), use_container_width=True)
+
+        # Interpretación automática de la mejor sugerencia
+        mejor = recomendaciones.iloc[0]
+        st.markdown(f"""
+        📌 **Sugerencia destacada**  
+        Si alguien compra **{producto_seleccionado}**, también suele comprar **{mejor['consequents']}**.  
+        - 🔹 Confianza: `{mejor['confidence']:.2f}`  
+        - 🔹 Relevancia (Lift): `{mejor['lift']:.2f}`
+        """)
+
+    else:
+        st.warning("No se encontraron recomendaciones para este producto. Probá con otro.")
+
+    
+    
+    
+    
+    
 
 # 7. ◯ Sección: VISUALIZACIÓN DE RELACIONES
 # ............................................................................................
 elif section.startswith("7."):
     st.title("🗺️ Red de Relaciones entre Productos")
-    st.markdown("Visualización tipo red o heatmap para ver las conexiones entre productos... (pendiente)")
+    st.markdown("""
+    Esta visualización muestra cómo se conectan los productos entre sí a partir de reglas de asociación. 
+    Cada nodo representa un producto, y los enlaces indican que se suelen comprar juntos. 
+    El grosor del enlace refleja la **fuerza de la relación** según la métrica seleccionada.
+    """)
+
+    # ◯ Elegir métrica para evaluar relaciones
+    metrica = st.selectbox("🔍 Elegí la métrica de relación:", ["lift", "confidence", "support"])
+
+    # ◯ Filtro por valor mínimo
+    valor_minimo = st.slider(f"🔧 Filtrar relaciones con {metrica} mayor a:", min_value=0.0, max_value=5.0, value=1.2, step=0.1)
+
+    # ◯ Filtrar reglas por métrica seleccionada
+    reglas_filtradas = rules[rules[metrica] >= valor_minimo]
+
+    # ◯ Mostrar solo las N relaciones más fuertes
+    top_n = st.slider("🔢 ¿Cuántas relaciones querés visualizar?", min_value=10, max_value=100, value=50, step=5)
+    reglas_top = reglas_filtradas.nlargest(top_n, metrica)
+
+    if reglas_top.empty:
+        st.warning("⚠️ No hay relaciones que cumplan con estos filtros.")
+    else:
+        # ◯ Crear grafo dirigido
+        G = nx.DiGraph()
+
+        for _, row in reglas_top.iterrows():
+            origen = row['antecedents'][0] if isinstance(row['antecedents'], list) else row['antecedents']
+            destino = row['consequents'][0] if isinstance(row['consequents'], list) else row['consequents']
+            peso = row[metrica]
+
+            G.add_node(origen)
+            G.add_node(destino)
+            G.add_edge(origen, destino, weight=peso)
+
+        pos = nx.spring_layout(G, k=0.5, iterations=50)
+
+        edge_x, edge_y = [], []
+        for edge in G.edges():
+            x0, y0 = pos[edge[0]]
+            x1, y1 = pos[edge[1]]
+            edge_x.extend([x0, x1, None])
+            edge_y.extend([y0, y1, None])
+
+        edge_trace = go.Scatter(
+            x=edge_x, y=edge_y,
+            line=dict(width=1.5, color='gray'),
+            hoverinfo='none',
+            mode='lines'
+        )
+
+        node_x, node_y, texts = [], [], []
+        for node in G.nodes():
+            x, y = pos[node]
+            node_x.append(x)
+            node_y.append(y)
+            texts.append(node)
+
+        node_trace = go.Scatter(
+            x=node_x, y=node_y,
+            mode='markers+text',
+            text=texts,
+            textposition='top center',
+            hoverinfo='text',
+            marker=dict(
+                showscale=False,
+                color='darkorange',
+                size=10,
+                line_width=2
+            )
+        )
+
+        fig = go.Figure(data=[edge_trace, node_trace],
+                        layout=go.Layout(
+                            title=f'Red de relaciones entre productos (basado en {metrica})',
+                            titlefont_size=16,
+                            showlegend=False,
+                            hovermode='closest',
+                            margin=dict(b=20, l=5, r=5, t=40),
+                            xaxis=dict(showgrid=False, zeroline=False),
+                            yaxis=dict(showgrid=False, zeroline=False)
+                        ))
+
+        st.plotly_chart(fig, use_container_width=True)
+        
+    
+        # Interpretación automática
+        productos_unicos = set()
+        for _, row in reglas_top.iterrows():
+            productos_unicos.update(row['antecedents'])
+            productos_unicos.update(row['consequents'])
+
+        st.markdown("### 🧾 Resumen de la visualización")
+        st.markdown(f"""
+        - 🔗 Se muestran **{len(reglas_top)} relaciones** entre productos.
+        - 🛍️ Hay **{len(productos_unicos)} productos únicos** conectados.
+        - 📏 La métrica seleccionada es **{metrica}**, con un valor mínimo de `{valor_minimo}`.
+        - 📊 Promedio de {metrica}: `{reglas_top[metrica].mean():.2f}`
+        """)
+    
+    
+    
+ 
+    
 
 # 8. ◯ Sección: RECOMENDACIONES FINALES
 # ............................................................................................
 elif section.startswith("8."):
     st.title("💡 ¿Qué puede hacer tu negocio con estos datos?")
-    st.markdown("Checklist de acciones sugeridas para aplicar estos hallazgos... (pendiente)")
+    
+    st.markdown("""
+    A continuación te presentamos una serie de **recomendaciones prácticas** basadas en el análisis realizado.  
+    Cada acción incluye ejemplos reales de productos de tu negocio que aplican, y la lógica usada para sugerirlos.
+    """)
+
+    # ◯ Asegurar que antecedents y consequents estén en formato lista
+    rules['antecedents'] = rules['antecedents'].apply(lambda x: [x] if isinstance(x, str) else x)
+    rules['consequents'] = rules['consequents'].apply(lambda x: [x] if isinstance(x, str) else x)
+
+    # ◯ Construir DataFrame con acciones, productos y lógica
+    acciones = [
+        {
+            "Acción": "📦 Crear bundles con productos frecuentemente comprados juntos",
+            "Productos sugeridos": "<br>• " + "<br>• ".join(
+                [f"{', '.join(r['antecedents'])} + {', '.join(r['consequents'])}" 
+                 for _, r in rules.sort_values(by='lift', ascending=False).head(3).iterrows()]
+            ),
+            "Lógica utilizada": "Top 3 reglas con mayor lift"
+        },
+        {
+            "Acción": "🛒 Ofrecer descuentos por comprar productos complementarios",
+            "Productos sugeridos": "<br>• " + "<br>• ".join(
+                [f"{', '.join(r['antecedents'])} → {', '.join(r['consequents'])}"
+                 for _, r in rules[rules['confidence'] > 0.7].head(3).iterrows()]
+            ),
+            "Lógica utilizada": "Reglas con confidence > 0.7"
+        },
+        {
+            "Acción": "🏷️ Rediseñar la disposición de los productos en tienda o web",
+            "Productos sugeridos": "<br>• " + "<br>• ".join(
+                rules['antecedents'].explode().value_counts().head(3).index.tolist()
+            ),
+            "Lógica utilizada": "Productos que aparecen con más frecuencia como antecedente"
+        },
+        {
+            "Acción": "📈 Monitorear la rotación de los productos más vendidos",
+            "Productos sugeridos": "<br>• " + "<br>• ".join(
+                Top_10_Mas_Vendidos['Producto'].head(3).tolist()
+            ),
+            "Lógica utilizada": "Top 10 productos más vendidos"
+        },
+        {
+            "Acción": "🎯 Usar recomendaciones en tiempo real en el checkout",
+            "Productos sugeridos": "<br>• " + "<br>• ".join(
+                [f"{', '.join(r['antecedents'])} → {', '.join(r['consequents'])}"
+                 for _, r in rules[(rules['confidence'] > 0.6) & (rules['support'] > 0.05)].head(3).iterrows()]
+            ),
+            "Lógica utilizada": "Reglas con confidence > 0.6 y support > 0.05"
+        },
+        {
+            "Acción": "🔍 Identificar productos con baja venta pero alta conexión (lift)",
+            "Productos sugeridos": "<br>• " + "<br>• ".join(
+                [f"{', '.join(r['antecedents'])} → {', '.join(r['consequents'])}"
+                 for _, r in rules[(rules['support'] < 0.05) & (rules['lift'] > 3)].head(3).iterrows()]
+            ),
+            "Lógica utilizada": "Reglas con support bajo y lift alto"
+        },
+        {
+            "Acción": "📊 Generar reportes periódicos para seguir tendencias de compra",
+            "Productos sugeridos": "-",
+            "Lógica utilizada": "No aplica: acción operativa"
+        },
+        {
+            "Acción": "💬 Capacitar al equipo de ventas en productos más conectados",
+            "Productos sugeridos": "<br>• " + "<br>• ".join(
+                rules['antecedents'].explode().value_counts().head(3).index.tolist()
+            ),
+            "Lógica utilizada": "Productos que más veces aparecen en reglas"
+        }
+    ]
+
+    df_acciones = pd.DataFrame(acciones)
+
+    # ◯ Capturar interacción del usuario
+    resultados_finales = []
+    for i, fila in df_acciones.iterrows():
+        st.markdown("---")  # Separador visual simple
+
+        col1, col2 = st.columns([0.75, 0.25])
+        with col1:
+            check = st.checkbox(fila["Acción"], key=f"check_{i}")
+        with col2:
+            prioridad = st.selectbox("Prioridad", ["Alta", "Media", "Baja"], key=f"prio_{i}")
+
+        st.markdown(f"""
+        <div style='font-size: 0.85em; color: gray; line-height: 1.3;'>
+            <b>Productos sugeridos:</b><br>{fila['Productos sugeridos']}<br>
+            <b>Lógica:</b> {fila['Lógica utilizada']}
+        </div>
+        """, unsafe_allow_html=True)
+
+        resultados_finales.append({
+            "Acción": fila["Acción"],
+            "Prioridad": prioridad,
+            "Marcado": check,
+            "Productos sugeridos": fila["Productos sugeridos"].replace("<br>• ", " - ").replace("<br>", " "),
+            "Lógica utilizada": fila["Lógica utilizada"]
+        })
+
+    # ◯ Mostrar resumen de acciones marcadas
+    st.markdown("### 🧾 Acciones seleccionadas")
+    resumen_df = pd.DataFrame(resultados_finales)
+    seleccionadas = resumen_df[resumen_df["Marcado"] == True]
+
+    if not seleccionadas.empty:
+        st.dataframe(seleccionadas.drop(columns=["Marcado"]), use_container_width=True)
+
+        # ◯ Botón para exportar CSV
+        csv = seleccionadas.drop(columns=["Marcado"]).to_csv(index=False).encode('utf-8')
+        st.download_button("⬇️ Descargar recomendaciones seleccionadas", data=csv,
+                           file_name="acciones_recomendadas.csv", mime="text/csv")
+    else:
+        st.info("Seleccioná al menos una acción para ver el resumen o exportarlo.")
+
 
 # 9. ◯ Sección: CRÉDITOS Y TECNOLOGÍAS
 # ............................................................................................
 elif section.startswith("9."):
-    st.title("🛠️ Proyecto Final – Bootcamp de Data Science")
+    st.title("📎 Créditos y recursos del proyecto")
+
     st.markdown("""
-    Desarrollado por Valentina Larrañaga.  
-    Bootcamp: [Nombre del Bootcamp]  
-    Tecnologías utilizadas: Python · pandas · mlxtend · Streamlit · plotly · matplotlib  
+    Este proyecto fue desarrollado como parte del proyecto final del **Bootcamp de Data Science & Machine Learning en 4Geeks Academy**,  
+    por **Valentina Larrañaga**.
+
+    ---
+    #### 🚀 Tecnologías utilizadas
+    - Python 🐍
+    - pandas, numpy
+    - mlxtend (reglas de asociación)
+    - plotly, matplotlib
+    - Streamlit (app)
+    
+    ---
+    #### 📁 Recursos
+    - Código fuente: [GitHub del proyecto](https://github.com/mvlarra/Final_Project_MBA)
+    - Dataset: Online Retail Dataset (UCI / Kaggle)
+    - Herramientas: GitHub Codespaces, VS Code, Docker
+
+    ---
+    #### 💬 Agradecimientos
+    Gracias a los instructores, tutores y compañeros del bootcamp, y a quienes colaboraron brindando feedback y motivación para completar este proyecto.
+
+    ---
+    #### 📫 Contacto profesional
+    - [LinkedIn](https://www.linkedin.com/in/valentinalarra)  
+    - [GitHub](https://github.com/mvlarra)
     """)
 
 
@@ -319,47 +843,6 @@ elif section.startswith("9."):
 
 
 
-# ◯ Sección: Introduccion
-# -----------------------------------------------------------------------------------------------------------------
-elif section == "📌 Introduccion":
-
-    st.title("🛒 Market Basket Analysis")
-    st.markdown("## Bienvenido/a al Análisis de Canasta de Compras para Retail")
-
-    # Imagen de portada debajo
-    st.image("app/images/Img3.png", width=500)  # Ajustás el tamaño según necesidad
-
-     
-    # ✏️ Introducción general
-    st.markdown("""
-    Market Basket Analysis (MBA) es una técnica de minería de datos que permite descubrir patrones de compra entre productos. 
-    Analiza qué artículos suelen adquirirse juntos por los clientes durante una misma transacción.
-
-    Este enfoque ayuda a:
-    - ✅ Optimizar la disposición de productos en tienda
-    - ✅ Diseñar promociones más efectivas
-    - ✅ Aumentar las ventas mediante estrategias de **cross-selling**
-    - ✅ Mejorar la experiencia del cliente
-                
-    En esta aplicación interactiva podrás:
-    - Explorar reglas de asociación entre productos
-    - Visualizar productos frecuentemente comprados juntos
-    - Evaluar oportunidades de mejora en ventas y layout
-    """)
-
-    # Info del proyecto
-    st.markdown("""
-    **🗂️ Fuente de datos:**  
-    Dataset *Online Retail II* de la UCI Machine Learning Repository.  
-    Incluye transacciones realizadas por un minorista online entre 2009 y 2011.
-
-    **📅 Período Analizado:**  
-    Del 01/12/2009 al 09/12/2011
-
-    **📍 Enfoque:**  
-    Filtramos exclusivamente las compras realizadas por clientes en **Reino Unido**, para facilitar la visualización y generar recomendaciones más específicas.
-
-    """)
 
 
 # ◯ Sección: Goals
@@ -450,41 +933,7 @@ elif section == "📏 Key Metrics":
     - `Conviction(B → A) = (1 − Support(A)) / (1 − Confidence(B → A))`
     """)
 
-# ◯ Sección: TOP 5 ASSOCIATION RULES by score
-# -----------------------------------------------------------------------------------------------------------------
-elif section == "🏆 Top 5 Rules":
-    st.subheader("🏆 Top 5 Association Rules")
 
-    st.markdown("""
-    While evaluating association rules, we utilize key metrics such as **:orange[support]**, **:orange[confidence]**, and **:orange[lift]** to discern their significance.
-
-    Each rule is independently ranked based on these metrics, and a **mean rank** is computed across all three rankings.
-
-    This mean rank serves as a **composite score**, capturing the overall performance of each rule across the different metrics.  
-    The table below shows the **top 5 association rules** based on the composite score.
-    """)
-    # Mostrar la tabla
-
-    st.dataframe(Top_5_Rules_by_Score, use_container_width=True)
-
-    st.markdown("### ✅ Recomendaciones basadas en las reglas")
-
-    st.markdown("""
-    1. **Si alguien compra “TAZA DE TÉ Y PLATILLO VERDE REGENCY”, recomendale también “TAZA DE TÉ Y PLATILLO ROSES REGENCY”.**  
-    Alta confianza (76%) y fuerte lift (22× más probable que al azar).
-
-    2. **Si alguien compra “TAZA DE TÉ Y PLATILLO ROSES REGENCY”, recomendale también “TAZA DE TÉ Y PLATILLO VERDE REGENCY”.**  
-    Alta probabilidad y relación recíproca con la anterior.
-
-    3. **Quien compra la versión rosa, tiene alta chance (83%) de interesarse también en la verde.**  
-    Ideal para bundles visualmente combinados.
-
-    4. **Si compran la verde, podrías ofrecer también la rosa, aunque con menor confianza (63%).**  
-    Útil como recomendación cruzada secundaria.
-
-    5. **Compradores de la versión rosa también suelen elegir la versión ROSES.**  
-    Oportunidad para agruparlas como “línea de colección” o sugerirlas juntas en promociones.
-    """)
 
 
 # ◯ Sección: Cross Selling Products
@@ -504,73 +953,13 @@ elif section == "🔁 Cross Selling Products":
     """)
 
 
-# ◯ Sección: Top 5 Reglas por Soporte
-# -----------------------------------------------------------------------------------------------------------------
-elif section == "Top 5 por Soporte":
-    st.markdown("## 📈 Top 5 Reglas por Soporte")
-    st.markdown("Estas son las 5 reglas más comunes, ordenadas por soporte. El soporte representa la proporción de transacciones donde aparece ese conjunto de productos.")
-
-    # ◯ Nota explicativa con ejemplo concreto, estilo más sutil
-    st.markdown(
-        """
-        <small><i>Ejemplo:</i> Si los productos <b>Taza</b> y <b>Plato</b> aparecen juntos en 50 de 1000 tickets, su soporte es 0.05 (es decir, el 5% de las transacciones).</small>
-        """,
-        unsafe_allow_html=True
-    )
-
-    top_support = rules.sort_values("support", ascending=False).iloc[::2].head(5).reset_index(drop=True)
-    st.dataframe(top_support, use_container_width=True)
 
 
 
 
 
-# ◯ Sección: Bundles de Productos
-elif section == "Bundles de Productos":
-    st.markdown("## 📦 Bundles de Productos")
-    st.markdown(
-        "Cada *bundle* agrupa productos que suelen comprarse juntos de forma consistente. "
-        "A continuación se listan los grupos descubiertos, ordenados por su soporte promedio."
-    )
 
-    # ◯ Mostrar cantidad total de bundles encontrados
-    total_bundles = df_bundle_products['category'].nunique()
-    st.markdown(f"🔍 Se identificaron **{total_bundles} bundles** de productos.")
 
-    # ◯ Agrupar datos y renombrar columna
-    summary_bundles = df_bundle_products.groupby("category").agg(
-        products=('nodes', 'unique'),
-        support_mean=('support', 'mean'),
-        n=('nodes', 'size')
-    ).sort_values("support_mean", ascending=False).reset_index().rename(columns={"category": "bundle_name"})
-
-    # ◯ Formatear lista de productos como texto separado por punto medio " • "
-    summary_bundles["products"] = summary_bundles["products"].apply(lambda x: "  •  ".join(x))
-
-    # ◯ Estilizar tabla
-    styled_df = summary_bundles.style.set_table_styles([
-        {'selector': 'td', 'props': [('font-size', '13px'), ('line-height', '1.6')]},
-        {'selector': 'th', 'props': [('font-size', '13px'), ('font-weight', 'normal'), ('text-align', 'left')]}
-    ]).set_properties(**{'white-space': 'pre-wrap'})
-
-    st.markdown(styled_df.to_html(), unsafe_allow_html=True)
-
-    # ◯ Referencias de columnas con ejemplo y separador actualizado
-    st.markdown(
-        """
-        <small><b>ℹ️ Referencia de columnas:</b></small>
-        <small>
-        <ul>
-            <li><b>bundle_name</b>: Nombre representativo del grupo de productos relacionados, probablemente el producto central o más distintivo del bundle.
-                <br><i>Ejemplo:</i> <code>POMO DE CAJÓN CERÁMICO DE RAYAS ROJAS</code> es un bundle que agrupa varios pomos similares.</li>
-            <li><b>products</b>: Lista de productos que componen el bundle.</li>
-            <li><b>support_mean</b>: Promedio de soporte de los productos del grupo.</li>
-            <li><b>n</b>: Cantidad total de productos dentro del bundle.</li>
-        </ul>
-        </small>
-        """,
-        unsafe_allow_html=True
-    )
 
 
 
@@ -590,74 +979,6 @@ elif section == "Bundles de Productos":
 
 
 
-
-elif section == "Bundle Destacado":
-    st.markdown("## 🎯 Bundle Destacado")
-    st.markdown(
-        "Explorá en detalle los productos que forman parte de un bundle específico. "
-        "Seleccioná uno del menú desplegable para ver su composición."
-    )
-
-    # Selección de bundle
-    bundles_disponibles = df_bundle_products["category"].sort_values().unique()
-    selected_bundle = st.selectbox("📦 Seleccioná un bundle:", bundles_disponibles)
-
-    # Filtrar y obtener productos del bundle
-    rows = df_bundle_products[df_bundle_products["category"] == selected_bundle]
-
-    if len(rows) > 0:
-        productos = []
-
-        for fila in rows["nodes"]:
-            if isinstance(fila, list):
-                productos.extend(fila)
-            elif isinstance(fila, str):
-                productos.append(fila)
-
-        productos_unicos = list(set(productos))
-
-        if productos_unicos:
-            st.markdown("**Productos agrupados en este bundle:**")
-
-        # Crear y ordenar df_bundle
-        df_bundle = rows.explode("nodes")
-        df_bundle = df_bundle[["nodes", "support"]].dropna()
-        df_bundle = df_bundle.groupby("nodes").mean().sort_values("support", ascending=False)
-
-        if not df_bundle.empty:
-            df_bundle["support_pct"] = df_bundle["support"] * 100
-
-            fig = go.Figure(go.Bar(
-                x=df_bundle["support_pct"],
-                y=df_bundle.index,
-                orientation='h',
-                marker=dict(color='#d26a00'),
-                hovertemplate='%{y}<br>Soporte: %{x:.2f} %<extra></extra>',
-                text=[f"<b>{s:.2f}%</b>" for s in df_bundle["support_pct"]],
-                textposition='auto',
-                textfont=dict(color="#ffffff", size=16),  # más grande
-                insidetextanchor='end',
-                showlegend=False
-            ))
-
-            fig.update_layout(
-                title="Frecuencia (soporte) de los productos en este bundle",
-                title_x=0.5,
-                xaxis_title=None,
-                xaxis=dict(showticklabels=False, showgrid=False),
-                yaxis=dict(title="", autorange="reversed"),
-                plot_bgcolor='#0e1117',
-                paper_bgcolor='#0e1117',
-                font=dict(color="#f0f0f0", size=14),
-                margin=dict(l=200, r=40, t=50, b=40),
-                height=60 * len(df_bundle) + 80
-            )
-
-            st.plotly_chart(fig, use_container_width=True, config=dict(displayModeBar=False))
-        else:
-            st.info("Este bundle no contiene productos.")
-    else:
-        st.warning("No se encontraron datos para el bundle seleccionado.")
 
 
 # ◯ Sección: Heatmap del Bundle

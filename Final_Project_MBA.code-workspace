@@ -1,0 +1,21 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "remote.containers.workspaceFolder": "/workspace"
+  }
+}
+
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "remote.containers.workspaceFolder": "/workspace"
+    }
+}
