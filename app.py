@@ -94,16 +94,17 @@ dataset_sample, Top_10_Mas_Vendidos, example_basket, monthly_transactions, rules
 
 st.sidebar.title("🧭 Navegación")
 section = st.sidebar.radio("Ir a la sección:", (
-    "1. 🏠 Inicio",
+    "1. 📘 Acerca del Proyecto",
     "2. 📋 Resumen del Proyecto",
     "3. 📊 Exploración de Datos",
     "4. ⚙️ Reglas de Asociación",
     "5. 📦 Bundles de Productos",
-    "6. 🧠 Recomendaciones Personalizadas",
+    "6. 🛍️ Recomendaciones para tu carrito",
     "7. 🗺️ Visualización de Relaciones",
-    "8. 💡 Recomendaciones Finales",
-    "9. 📎 Créditos y recursos del proyecto",
+    "8. 💼 Acciones estratégicas para tu negocio",    
     "Old Sidebar",
+    "OLD 1. 🏠 Inicio",
+    "OLD 9. 📎 Créditos y recursos del proyecto",
     "🎯 Goals",
     "🧪 Methodology",
     "📏 Key Metrics",
@@ -114,63 +115,44 @@ section = st.sidebar.radio("Ir a la sección:", (
 ))
 
 
-# 1. ◯ Sección: INICIO
+
+
+
+
+# 1. ◯ New Sección: ACERCAS DEL PROYECTO (Unificar Sección 1 (Resumen) y Sección 9 (Créditos))
 # ............................................................................................
 if section.startswith("1."):
-    st.title("Bienvenido a Market Basket Analysis de compras para Retail")
-    # Ruta a la imagen 
-    st.image("app/images/Img3.png", use_container_width=True)
-    st.markdown("""
-    Esta app te ayudará a descubrir `relaciones entre productos` en base a transacciones reales.  
-    
-    Pensada especialmente para **gerentes de negocio**, permite:
-    * → visualizar `reglas de asociación`,
-    * → generar `bundles sugeridos` y
-    * → `aplicar estrategias` basadas en datos.
-    
-    ¿Ejemplo?  
-    Si muchos clientes compran *tazas de té* junto con *bandejas decorativas*, 
-    podrías  
-        → ofrecer estos productos como un combo o   
-        → ubicarlos juntas en tu tienda.
-    
-    Usá el menú lateral para navegar por cada sección.
-    """)
-     
-    # Imagen de portada debajo
-    st.image("app/images/Img3.png", width=500)  # Ajustás el tamaño según necesidad
+    st.title("📘 Acerca del Proyecto")
 
-     
-    # ✏️ Introducción general
     st.markdown("""
-    Market Basket Analysis (MBA) es una técnica de minería de datos que permite descubrir patrones de compra entre productos. 
-    Analiza qué artículos suelen adquirirse juntos por los clientes durante una misma transacción.
+    Este proyecto fue desarrollado como parte del **Bootcamp de Data Science & Machine Learning en 4Geeks Academy**,  
+    por **Valentina Larrañaga**.
 
-    Este enfoque ayuda a:
-    - ✅ Optimizar la disposición de productos en tienda
-    - ✅ Diseñar promociones más efectivas
-    - ✅ Aumentar las ventas mediante estrategias de **cross-selling**
-    - ✅ Mejorar la experiencia del cliente
-                
-    En esta aplicación interactiva podrás:
-    - Explorar reglas de asociación entre productos
-    - Visualizar productos frecuentemente comprados juntos
-    - Evaluar oportunidades de mejora en ventas y layout
+    ---
+    ### 🎯 Objetivo
+    Identificar patrones de compra frecuentes y generar recomendaciones accionables para mejorar la estrategia comercial.
+
+    ---
+    ### 🚀 Tecnologías utilizadas
+    - Python · pandas · numpy  
+    - mlxtend (reglas de asociación)  
+    - plotly · matplotlib  
+    - Streamlit  
+    - GitHub Codespaces
+    - **Render (despliegue en la nube)**
+
+    ---
+    ### 🌐 Recursos
+    - Código fuente: [GitHub del proyecto](https://github.com/mvlarra/Final_Project_MBA)  
+    - Dataset: Online Retail Dataset (UCI / Kaggle)  
+    - App en vivo: (📎 Agregar URL cuando esté desplegada)
+
+    ---
+    ### 📫 Contacto
+    - [LinkedIn](https://www.linkedin.com/in/valentinalarra)  
+    - [GitHub](https://github.com/mvlarra)
     """)
 
-    # Info del proyecto
-    st.markdown("""
-    **🗂️ Fuente de datos:**  
-    Dataset *Online Retail II* de la UCI Machine Learning Repository.  
-    Incluye transacciones realizadas por un minorista online entre 2009 y 2011.
-
-    **📅 Período Analizado:**  
-    Del 01/12/2009 al 09/12/2011
-
-    **📍 Enfoque:**  
-    Filtramos exclusivamente las compras realizadas por clientes en **Reino Unido**, para facilitar la visualización y generar recomendaciones más específicas.
-
-    """)
 
 
 # 2. ◯ Sección: RESUMEN DEL PROYECTO
@@ -521,10 +503,13 @@ elif section.startswith("5."):
 # 6. ◯ Sección: RECOMENDACIONES PERSONALIZADAS
 # ............................................................................................
 elif section.startswith("6."):
-    st.title("🧠 Recomendaciones para tu carrito")
+    st.title("🛍️ Recomendaciones para tu carrito")
     st.markdown("""
-    Seleccioná un producto y descubrí qué otros artículos suelen comprarse junto a él. 
-    Esta funcionalidad se basa en reglas de asociación generadas a partir de miles de transacciones reales.
+    Seleccioná un producto para obtener recomendaciones basadas en patrones de compra frecuentes.  
+    Estas sugerencias ayudan a aumentar el ticket promedio mediante **ventas cruzadas inteligentes**.
+
+    Las recomendaciones se basan en reglas del tipo:  
+    *"Los clientes que compraron X, también compraron Y"*
     """)
 
     # Asegurar que las columnas 'antecedents' y 'consequents' sean listas
@@ -558,16 +543,26 @@ elif section.startswith("6."):
         }), use_container_width=True)
 
         # Interpretación automática de la mejor sugerencia
-        mejor = recomendaciones.iloc[0]
+        mejor = reglas_ordenadas.iloc[0]
+        producto_recomendado = ', '.join(mejor['consequents'])
+
+        st.markdown("---")
         st.markdown(f"""
-        📌 **Sugerencia destacada**  
-        Si alguien compra **{producto_seleccionado}**, también suele comprar **{mejor['consequents']}**.  
-        - 🔹 Confianza: `{mejor['confidence']:.2f}`  
-        - 🔹 Relevancia (Lift): `{mejor['lift']:.2f}`
+        **Producto seleccionado:** `{producto_seleccionado}`  
+        **Producto recomendado:** `{producto_recomendado}`
+
+        **Confianza:** `{mejor['confidence']:.2f}`  
+        🛈 *Esto significa que en el **{mejor['confidence']*100:.0f}%** de las veces que alguien compró **{producto_seleccionado}**, también compró **{producto_recomendado}**.*
+
+        **Relevancia (lift):** `{mejor['lift']:.2f}`  
+        🛈 *Un valor mayor a 1 indica que la compra conjunta entre estos productos es más frecuente de lo esperado.  
+        Cuanto más alto, más fuerte es la relación entre ambos productos.*
         """)
+        st.markdown("---")
 
     else:
         st.warning("No se encontraron recomendaciones para este producto. Probá con otro.")
+
 
     
     
@@ -683,14 +678,16 @@ elif section.startswith("7."):
  
     
 
-# 8. ◯ Sección: RECOMENDACIONES FINALES
+# 8. ◯ Sección: ACCIONES ESTRATÉGICAS PARA TU NEGOCIO
 # ............................................................................................
 elif section.startswith("8."):
-    st.title("💡 ¿Qué puede hacer tu negocio con estos datos?")
-    
+    st.title("💼 Acciones estratégicas para tu negocio")
+
     st.markdown("""
-    A continuación te presentamos una serie de **recomendaciones prácticas** basadas en el análisis realizado.  
-    Cada acción incluye ejemplos reales de productos de tu negocio que aplican, y la lógica usada para sugerirlos.
+    Basado en los patrones encontrados en los datos, estas son **acciones sugeridas** orientadas a generar impacto real en las ventas.  
+    Cada acción está relacionada con productos clave del análisis y podés marcar su prioridad de implementación.
+
+    ✅ El objetivo es **convertir los hallazgos en oportunidades de mejora**, aplicando estrategias como bundles, descuentos o reubicación de productos para **incrementar los ingresos, optimizar la rotación, potenciar la estrategia comercial y mejorar la experiencia de compra**.
     """)
 
     # ◯ Asegurar que antecedents y consequents estén en formato lista
@@ -803,9 +800,81 @@ elif section.startswith("8."):
         st.info("Seleccioná al menos una acción para ver el resumen o exportarlo.")
 
 
+
+
+
+
+
+###################################################################################################################################################
+# OLD
+###################################################################################################################################################
+
+
+
+
+
+# 1. ◯ Sección: INICIO
+# ............................................................................................
+if section.startswith("OLD 1."):
+    st.title("Bienvenido a Market Basket Analysis de compras para Retail")
+    # Ruta a la imagen 
+    st.image("app/images/Img3.png", use_container_width=True)
+    st.markdown("""
+    Esta app te ayudará a descubrir `relaciones entre productos` en base a transacciones reales.  
+    
+    Pensada especialmente para **gerentes de negocio**, permite:
+    * → visualizar `reglas de asociación`,
+    * → generar `bundles sugeridos` y
+    * → `aplicar estrategias` basadas en datos.
+    
+    ¿Ejemplo?  
+    Si muchos clientes compran *tazas de té* junto con *bandejas decorativas*, 
+    podrías  
+        → ofrecer estos productos como un combo o   
+        → ubicarlos juntas en tu tienda.
+    
+    Usá el menú lateral para navegar por cada sección.
+    """)
+     
+    # Imagen de portada debajo
+    st.image("app/images/Img3.png", width=500)  # Ajustás el tamaño según necesidad
+
+     
+    # ✏️ Introducción general
+    st.markdown("""
+    Market Basket Analysis (MBA) es una técnica de minería de datos que permite descubrir patrones de compra entre productos. 
+    Analiza qué artículos suelen adquirirse juntos por los clientes durante una misma transacción.
+
+    Este enfoque ayuda a:
+    - ✅ Optimizar la disposición de productos en tienda
+    - ✅ Diseñar promociones más efectivas
+    - ✅ Aumentar las ventas mediante estrategias de **cross-selling**
+    - ✅ Mejorar la experiencia del cliente
+                
+    En esta aplicación interactiva podrás:
+    - Explorar reglas de asociación entre productos
+    - Visualizar productos frecuentemente comprados juntos
+    - Evaluar oportunidades de mejora en ventas y layout
+    """)
+
+    # Info del proyecto
+    st.markdown("""
+    **🗂️ Fuente de datos:**  
+    Dataset *Online Retail II* de la UCI Machine Learning Repository.  
+    Incluye transacciones realizadas por un minorista online entre 2009 y 2011.
+
+    **📅 Período Analizado:**  
+    Del 01/12/2009 al 09/12/2011
+
+    **📍 Enfoque:**  
+    Filtramos exclusivamente las compras realizadas por clientes en **Reino Unido**, para facilitar la visualización y generar recomendaciones más específicas.
+
+    """)
+
+
 # 9. ◯ Sección: CRÉDITOS Y TECNOLOGÍAS
 # ............................................................................................
-elif section.startswith("9."):
+elif section.startswith("OLD 9."):
     st.title("📎 Créditos y recursos del proyecto")
 
     st.markdown("""
@@ -835,12 +904,6 @@ elif section.startswith("9."):
     - [LinkedIn](https://www.linkedin.com/in/valentinalarra)  
     - [GitHub](https://github.com/mvlarra)
     """)
-
-
-
-
-
-
 
 
 
