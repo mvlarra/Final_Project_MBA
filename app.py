@@ -27,6 +27,13 @@
 import os
 port = os.environ.get("PORT", 8501)
 import ast  # Para convertir el string a lista real si es necesario
+from utils.loader import load_data  #  carga centralizada de datos
+from visual_helpers import ( 
+    mostrar_top_10_productos,
+    mostrar_transacciones_por_mes,
+    mostrar_ejemplo_canasta
+)
+
 import pandas as pd
 import numpy as np
 import plotly.express as px
@@ -74,18 +81,7 @@ st.sidebar.image(logo, use_container_width=True)
 #     unsafe_allow_html=True
 # )
 
-# ◯ Cargar datasets procesados (ajustar path si es necesario)
-@st.cache_data
-def load_data():
-    dataset_sample = pd.read_csv("data/processed/00_dataset_sample.csv")
-    Top_10_Mas_Vendidos = pd.read_csv("data/processed/Top_10_Mas_Vendidos.csv")
-    example_basket = pd.read_csv("data/processed/01_example_basket.csv")
-    monthly_transactions = pd.read_csv("data/processed/02_monthly_transactions.csv")
-    rules = pd.read_csv("data/processed/summary_rules.csv")
-    df_bundle_products = pd.read_csv("data/processed/bundle_products.csv")
-    tabular = pd.read_csv("data/processed/tabular_bundle.csv", index_col=0)
-    Top_5_Rules_by_Score = pd.read_csv("data/processed/Top_5_Rules_by_Score.csv")
-    return dataset_sample, Top_10_Mas_Vendidos, example_basket, monthly_transactions, rules, df_bundle_products, tabular, Top_5_Rules_by_Score
+# ◯ Cargar datasets procesados (desde utils/loader.py)
 
 dataset_sample, Top_10_Mas_Vendidos, example_basket, monthly_transactions, rules, df_bundle_products, tabular, Top_5_Rules_by_Score = load_data()
 
@@ -238,39 +234,9 @@ elif section.startswith("3."):
     Esta visualización muestra los 10 productos con mayor cantidad de unidades vendidas en el periodo analizado. 
     Puede ayudarte a identificar tus **productos estrella** o con mayor rotación.
     """)
-
-        # Ordenar explícitamente de mayor a menor por cantidad
-    Top_10_Mas_Vendidos_sorted = Top_10_Mas_Vendidos.sort_values('Unidades Vendidas', ascending=True)
-
-        # Crear gráfico de barras horizontal
-    fig = px.bar(
-        Top_10_Mas_Vendidos_sorted,
-        x='Unidades Vendidas',
-        y='Producto',
-        orientation='h',
-        text='Unidades Vendidas',
-        title=''
-    )
-        # Ajustar estilo del gráfico
-    fig.update_traces(
-        textposition='outside',
-        marker_color='darkorange'  # Opcional: cambiar color
-    )
-    fig.update_layout(
-        plot_bgcolor='#1a1a1a',  # Color de fondo del gráfico
-        paper_bgcolor='#1a1a1a',  # Color del "papel", da apariencia de borde
-        margin=dict(l=10, r=10, t=20, b=10),
-        xaxis_title='Unidades Vendidas',
-        yaxis_title='Producto',
-        yaxis=dict(tickfont=dict(size=11)),
-        height=400
-    )
-   
-    st.plotly_chart(fig, use_container_width=True)               # Mostrar en Streamlit
-
     
-    with st.expander("Ver detalle en tabla"):                   # Mostrar tabla con cantidades
-        st.dataframe(Top_10_Mas_Vendidos, use_container_width=True)
+    mostrar_top_10_productos(Top_10_Mas_Vendidos)
+    
     
     
     # ◯ Ejemplo real de una canasta
