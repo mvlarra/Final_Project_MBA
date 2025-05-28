@@ -27,8 +27,8 @@
 import os
 port = os.environ.get("PORT", 8501)
 import ast  # Para convertir el string a lista real si es necesario
-from utils.loader import load_data  #  carga centralizada de datos
-from visual_helpers import ( 
+from utils.loader import load_data  
+from utils.visual_helpers import ( 
     mostrar_top_10_productos,
     mostrar_transacciones_por_mes,
     mostrar_ejemplo_canasta
@@ -227,66 +227,10 @@ elif section.startswith("3."):
     st.dataframe(dataset_sample)
  
 
-    # ◯ Productos más vendidos
-    st.markdown("---")
-    st.subheader("`🏆 Top 10 productos más vendidos`")
-    st.markdown("""
-    Esta visualización muestra los 10 productos con mayor cantidad de unidades vendidas en el periodo analizado. 
-    Puede ayudarte a identificar tus **productos estrella** o con mayor rotación.
-    """)
-    
     mostrar_top_10_productos(Top_10_Mas_Vendidos)
-    
-    
-    
-    # ◯ Ejemplo real de una canasta
-    st.markdown("---")
-    st.subheader("`🛍️ Ejemplo real de una compra`")
-    st.write("Transacción N°:",  example_basket['Invoice'][0])
-    st.dataframe(example_basket[['Description', 'Quantity','InvoiceDate']])
-    
-    
-    # ◯ Cantidad de compras por mes
-    st.markdown("---")
-    st.subheader("`📅 Distribución de transacciones por mes`")
-    
-    
-        # Crear gráfico de barras horizontal
-    fig1 = px.bar(
-    monthly_transactions,
-    x='Invoice_Date',
-    y='Transaction_Count',
-    orientation='v',
-    text='Transaction_Count',
-    title=''  # Opcional: podés poner 'Transacciones por Mes'   
-    )
-        # Ajustar estilo del gráfico
-    fig1.update_traces(
-    textposition='outside',
-    marker_color='darkorange',  # Color opcional
-    textfont_color='white'  # Color del texto
-    )
-    
-    fig1.update_layout(
-    plot_bgcolor='#1a1a1a', # Color de fondo del gráfico
-    paper_bgcolor='#1a1a1a',  # Color del "papel", da apariencia de borde
-    margin=dict(l=10, r=10, t=20, b=10),
-    xaxis_title='Cantidad de Transacciones',
-    yaxis_title='Mes',
-    yaxis=dict(showgrid=False, tickfont=dict(size=11)),
-    height=400
-    )
-        
-        # Mostrar en Streamlit
-    st.markdown("""
-    Este gráfico muestra cuántas transacciones se realizaron cada mes.
-    Puede ayudarte a visualizar **picos de actividad** o estacionalidad.
-    """)
-    st.plotly_chart(fig1, use_container_width=True)
+    mostrar_ejemplo_canasta(example_basket)
+    mostrar_transacciones_por_mes(monthly_transactions)
 
-        # Mostrar tabla con detalle
-    with st.expander("Ver detalle en tabla"):
-        st.dataframe(monthly_transactions, use_container_width=True)
 
 
 

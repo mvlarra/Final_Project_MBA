@@ -60,29 +60,49 @@ def mostrar_top_10_productos(Top_10_Mas_Vendidos):
         st.dataframe(Top_10_Mas_Vendidos, use_container_width=True)
 
 def mostrar_transacciones_por_mes(df):
+    """
+    Visualiza la cantidad de transacciones por mes con un gráfico de barras.
+    El DataFrame debe contener las columnas 'Invoice_Date' y 'Transaction_Count'.
+    """
+    st.markdown("---")
+    st.subheader("📅 Transacciones por Mes")
+    st.markdown("""
+    Este gráfico muestra la cantidad de transacciones realizadas cada mes, 
+    lo que permite identificar patrones estacionales y tendencias de compra.
+    """)
+
     fig = px.bar(
         df,
         x='Invoice_Date',
         y='Transaction_Count',
-        orientation='v',
-        text='Transaction_Count'
+        text='Transaction_Count',
+        color_discrete_sequence=['darkorange']
     )
-    fig.update_traces(
-        textposition='outside',
-        marker_color='darkorange',
-        textfont_color='white'
-    )
+
+    fig.update_traces(textposition='outside')
     fig.update_layout(
+        xaxis_title='Mes',
+        yaxis_title='Cantidad de Transacciones',
         plot_bgcolor='#1a1a1a',
         paper_bgcolor='#1a1a1a',
-        margin=dict(l=10, r=10, t=20, b=10),
-        xaxis_title='Cantidad de Transacciones',
-        yaxis_title='Mes',
-        yaxis=dict(showgrid=False, tickfont=dict(size=11)),
         height=400
     )
+
     st.plotly_chart(fig, use_container_width=True)
 
+    with st.expander("Ver detalle en tabla"):
+        st.dataframe(df, use_container_width=True)
+
+
 def mostrar_ejemplo_canasta(df):
-    st.write("Transacción N°:", df['Invoice'].iloc[0])
-    st.dataframe(df[['Description', 'Quantity', 'InvoiceDate']], use_container_width=True)
+    """
+    Muestra un ejemplo detallado de una canasta de compra.
+    """
+    st.markdown("---")
+    st.subheader("🛒 Ejemplo de Canasta de Compra")
+    st.markdown("""
+    A continuación se presenta un ejemplo real de una canasta de compra, 
+    detallando los productos adquiridos en una transacción específica.
+    """)
+
+    st.dataframe(df, use_container_width=True)
