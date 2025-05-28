@@ -199,19 +199,13 @@ venv/
 *.log
 *.tmp
 
-# Específicos de tu proyecto
-app/models/basket.pkl
 
-# Ignorar z_otros
-otros/.z_Otros_pry/
+# Esto le dice a Git:
+#   Ignorá todos los .csv en general
+#   ¡Pero no ignores los que están en data/processed/!
 
-#  excepción:
+
+
+!data/processed/*.csv       # Ignora todos los .csv, excepto los de data/processed
 
 !requirements.txt
-!data/processed/bundle_products.csv
-!data/processed/summary_bundles.csv
-!data/processed/summary_rules.csv
-!data/processed/tabular_bundle.csv
-!data/processed/descriptions_translated.csv
-!data/processed/summary_top_support.csv
-!data/processed/Top_5_Rules_by_Score.csv
