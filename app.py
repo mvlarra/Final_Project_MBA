@@ -33,6 +33,7 @@ from utils.visual_helpers import (
     mostrar_transacciones_por_mes,
     mostrar_ejemplo_canasta
 )
+from utils.show_explanation import show_explanation
 
 import pandas as pd
 import numpy as np
@@ -41,8 +42,8 @@ import plotly.graph_objects as go
 import networkx as nx
 import streamlit as st
 from PIL import Image
-from charts.HeatmapXTab import HeatmapCrosstab
-
+from charts.HeatmapXTab import HeatmapCrosstab, draw_heatmap
+from charts.GraphNetwork import draw_graph
 
 
 
@@ -93,7 +94,8 @@ section = st.sidebar.radio("Ir a la sección:", (
     "1. 📘 Acerca del Proyecto",
     "2. 📋 Resumen del Proyecto",
     "3. 📊 Exploración de Datos",
-    "4. ⚙️ Reglas de Asociación",
+    "4. 🔎 Explorar Reglas de Asociación",
+    
     "5. 📦 Bundles de Productos",
     "6. 🛍️ Recomendaciones para tu carrito",
     "7. 🗺️ Visualización de Relaciones",
@@ -101,6 +103,7 @@ section = st.sidebar.radio("Ir a la sección:", (
     "Old Sidebar",
     "OLD 1. 🏠 Inicio",
     "OLD 9. 📎 Créditos y recursos del proyecto",
+    "OLD 4. ⚙️ Reglas de Asociación",
     "🎯 Goals",
     "🧪 Methodology",
     "📏 Key Metrics",
@@ -233,63 +236,143 @@ elif section.startswith("3."):
 
 
 
+# 4. ◯ Seccion: EXPLORAR REGLAS DE ASOCIACIÓN (unificada)
+# ............................................................................................
+elif section.startswith("4. 🔎"):
+    st.title("🔎 Explorar Reglas de Asociación")
 
-# 4. ◯ Sección: REGLAS DE ASOCIACIÓN
-# -----------------------------------------------------------------------------------------------------------------
-elif section.startswith("4."):
-    
-    st.markdown("---")
-    st.title("⚙️ Reglas de Asociación")
-    st.markdown("En esta sección verás las principales reglas encontradas con el algoritmo Apriori")
+    st.markdown("""
+    Elegí una forma de visualizar las reglas de asociación generadas a partir de las canastas de productos.  
+    Podés alternar entre diferentes perspectivas para entender mejor los patrones de compra.
+    """)
 
-    st.subheader("📈 Top 5 Regles by Soporte")
-    st.markdown("Estas son las 5 reglas más comunes, ordenadas por soporte. El soporte representa la proporción de transacciones donde aparece ese conjunto de productos.")
-
-    # ◯ Nota explicativa con ejemplo concreto, estilo más sutil
-    st.markdown(
-        """
-        <small><i>Ejemplo:</i> Si los productos <b>Taza</b> y <b>Plato</b> aparecen juntos en 50 de 1000 tickets, su soporte es 0.05 (es decir, el 5% de las transacciones).</small>
-        """,
-        unsafe_allow_html=True
+    opcion_vista = st.radio(
+        "Elegí cómo querés explorar las reglas:",
+        ["📌 Reglas destacadas", "🕸️ Red de productos", "📊 Heatmap cruzado", "📋 Tabla completa"],
+        horizontal=True
     )
 
-    top_support = rules.sort_values("support", ascending=False).iloc[::2].head(5).reset_index(drop=True)
-    st.dataframe(top_support, use_container_width=True)
+    if opcion_vista == "📌 Reglas destacadas":
+        st.subheader("📌 Reglas con mayor score (lift + soporte + confianza)")
+        st.dataframe(Top_5_Rules_by_Score, use_container_width=True)
+
+    elif opcion_vista == "🕸️ Red de productos":
+        st.subheader("🕸️ Red de Relaciones entre Productos")
+        st.markdown("""
+        Esta visualización muestra cómo se conectan los productos entre sí a partir de reglas de asociación. 
+        Cada nodo representa un producto, y los enlaces indican que se suelen comprar juntos. 
+        El grosor del enlace refleja la **fuerza de la relación** según la métrica seleccionada.
+        """)
+
+        # ◯ Elegir métrica para evaluar relaciones
+        metrica = st.selectbox("🔍 Elegí la métrica de relación:", ["lift", "confidence", "support"])
+
+        # ◯ Filtro por valor mínimo
+        valor_minimo = st.slider(f"🔧 Filtrar relaciones con {metrica} mayor a:", min_value=0.0, max_value=5.0, value=1.2, step=0.1)
+
+        # ◯ Filtrar reglas por métrica seleccionada
+        reglas_filtradas = rules[rules[metrica] >= valor_minimo]
+
+        # ◯ Mostrar solo las N relaciones más fuertes
+        top_n = st.slider("🔢 ¿Cuántas relaciones querés visualizar?", min_value=10, max_value=100, value=50, step=5)
+        reglas_top = reglas_filtradas.nlargest(top_n, metrica)
+
+        if reglas_top.empty:
+            st.warning("⚠️ No hay relaciones que cumplan con estos filtros.")
+        else:
+            # ◯ Crear grafo dirigido
+            G = nx.DiGraph()
+
+            for _, row in reglas_top.iterrows():
+                origen = row['antecedents'][0] if isinstance(row['antecedents'], list) else row['antecedents']
+                destino = row['consequents'][0] if isinstance(row['consequents'], list) else row['consequents']
+                peso = row[metrica]
+                G.add_node(origen)
+                G.add_node(destino)
+                G.add_edge(origen, destino, weight=peso)
+
+            pos = nx.spring_layout(G, k=0.5, iterations=50)
+
+            edge_x, edge_y = [], []
+            for edge in G.edges():
+                x0, y0 = pos[edge[0]]
+                x1, y1 = pos[edge[1]]
+                edge_x.extend([x0, x1, None])
+                edge_y.extend([y0, y1, None])
+
+            edge_trace = go.Scatter(
+                x=edge_x, y=edge_y,
+                line=dict(width=1.5, color='gray'),
+                hoverinfo='none',
+                mode='lines'
+            )
+
+            node_x, node_y, texts = [], [], []
+            for node in G.nodes():
+                x, y = pos[node]
+                node_x.append(x)
+                node_y.append(y)
+                texts.append(node)
+
+            node_trace = go.Scatter(
+                x=node_x, y=node_y,
+                mode='markers+text',
+                text=texts,
+                textposition='top center',
+                hoverinfo='text',
+                marker=dict(
+                    showscale=False,
+                    color='darkorange',
+                    size=10,
+                    line_width=2
+                )
+            )
+
+            fig = go.Figure(data=[edge_trace, node_trace],
+                            layout=go.Layout(
+                                title=f'Red de relaciones entre productos (basado en {metrica})',
+                                titlefont_size=16,
+                                showlegend=False,
+                                hovermode='closest',
+                                margin=dict(b=20, l=5, r=5, t=40),
+                                xaxis=dict(showgrid=False, zeroline=False),
+                                yaxis=dict(showgrid=False, zeroline=False)
+                            ))
+
+            st.plotly_chart(fig, use_container_width=True)
+
+            # Interpretación automática
+            productos_unicos = set()
+            for _, row in reglas_top.iterrows():
+                productos_unicos.update(row['antecedents'])
+                productos_unicos.update(row['consequents'])
+
+            st.markdown("### 🧾 Resumen de la visualización")
+            st.markdown(f"""
+            - 🔗 Se muestran **{len(reglas_top)} relaciones** entre productos.
+            - 🛍️ Hay **{len(productos_unicos)} productos únicos** conectados.
+            - 📏 La métrica seleccionada es **{metrica}**, con un valor mínimo de `{valor_minimo}`.
+            - 📊 Promedio de {metrica}: `{reglas_top[metrica].mean():.2f}`
+            """)
+
+    elif opcion_vista == "📊 Heatmap cruzado":
+        st.subheader("📊 Heatmap cruzado entre productos")
+        from charts.HeatmapXTab import draw_heatmap
+        # ◯ Transformación previa al heatmap
+        tabular_heatmap = tabular.set_index("antecedents")
+
+        # ◯ Generar visualización
+        fig_heatmap = draw_heatmap(tabular_heatmap)
+        st.plotly_chart(fig_heatmap, use_container_width=True)
+
+    elif opcion_vista == "📋 Tabla completa":
+        st.subheader("📋 Todas las reglas generadas")
+        st.dataframe(rules, use_container_width=True)
+
+    # Mostrar explicación específica
+    show_explanation(opcion_vista)
 
 
-    st.markdown("---")
-    st.subheader("🏆 Top 5 Association Rules by Score")
-
-    st.markdown("""
-    While evaluating association rules, we utilize key metrics such as **:orange[support]**, **:orange[confidence]**, and **:orange[lift]** to discern their significance.
-
-    Each rule is independently ranked based on these metrics, and a **mean rank** is computed across all three rankings.
-
-    This mean rank serves as a **composite score**, capturing the overall performance of each rule across the different metrics.  
-    The table below shows the **top 5 association rules** based on the composite score.
-    """)
-    # Mostrar la tabla
-
-    st.dataframe(Top_5_Rules_by_Score, use_container_width=True)
-
-    st.markdown("### ✅ Recomendaciones basadas en las reglas")
-
-    st.markdown("""
-    1. **Si alguien compra “TAZA DE TÉ Y PLATILLO VERDE REGENCY”, recomendale también “TAZA DE TÉ Y PLATILLO ROSES REGENCY”.**  
-    Alta confianza (76%) y fuerte lift (22× más probable que al azar).
-
-    2. **Si alguien compra “TAZA DE TÉ Y PLATILLO ROSES REGENCY”, recomendale también “TAZA DE TÉ Y PLATILLO VERDE REGENCY”.**  
-    Alta probabilidad y relación recíproca con la anterior.
-
-    3. **Quien compra la versión rosa, tiene alta chance (83%) de interesarse también en la verde.**  
-    Ideal para bundles visualmente combinados.
-
-    4. **Si compran la verde, podrías ofrecer también la rosa, aunque con menor confianza (63%).**  
-    Útil como recomendación cruzada secundaria.
-
-    5. **Compradores de la versión rosa también suelen elegir la versión ROSES.**  
-    Oportunidad para agruparlas como “línea de colección” o sugerirlas juntas en promociones.
-    """)    
 
 
 # 5. ◯ Sección: BUNDLES DE PRODUCTOS
@@ -480,110 +563,6 @@ elif section.startswith("6."):
     
     
 
-# 7. ◯ Sección: VISUALIZACIÓN DE RELACIONES
-# ............................................................................................
-elif section.startswith("7."):
-    st.title("🗺️ Red de Relaciones entre Productos")
-    st.markdown("""
-    Esta visualización muestra cómo se conectan los productos entre sí a partir de reglas de asociación. 
-    Cada nodo representa un producto, y los enlaces indican que se suelen comprar juntos. 
-    El grosor del enlace refleja la **fuerza de la relación** según la métrica seleccionada.
-    """)
-
-    # ◯ Elegir métrica para evaluar relaciones
-    metrica = st.selectbox("🔍 Elegí la métrica de relación:", ["lift", "confidence", "support"])
-
-    # ◯ Filtro por valor mínimo
-    valor_minimo = st.slider(f"🔧 Filtrar relaciones con {metrica} mayor a:", min_value=0.0, max_value=5.0, value=1.2, step=0.1)
-
-    # ◯ Filtrar reglas por métrica seleccionada
-    reglas_filtradas = rules[rules[metrica] >= valor_minimo]
-
-    # ◯ Mostrar solo las N relaciones más fuertes
-    top_n = st.slider("🔢 ¿Cuántas relaciones querés visualizar?", min_value=10, max_value=100, value=50, step=5)
-    reglas_top = reglas_filtradas.nlargest(top_n, metrica)
-
-    if reglas_top.empty:
-        st.warning("⚠️ No hay relaciones que cumplan con estos filtros.")
-    else:
-        # ◯ Crear grafo dirigido
-        G = nx.DiGraph()
-
-        for _, row in reglas_top.iterrows():
-            origen = row['antecedents'][0] if isinstance(row['antecedents'], list) else row['antecedents']
-            destino = row['consequents'][0] if isinstance(row['consequents'], list) else row['consequents']
-            peso = row[metrica]
-
-            G.add_node(origen)
-            G.add_node(destino)
-            G.add_edge(origen, destino, weight=peso)
-
-        pos = nx.spring_layout(G, k=0.5, iterations=50)
-
-        edge_x, edge_y = [], []
-        for edge in G.edges():
-            x0, y0 = pos[edge[0]]
-            x1, y1 = pos[edge[1]]
-            edge_x.extend([x0, x1, None])
-            edge_y.extend([y0, y1, None])
-
-        edge_trace = go.Scatter(
-            x=edge_x, y=edge_y,
-            line=dict(width=1.5, color='gray'),
-            hoverinfo='none',
-            mode='lines'
-        )
-
-        node_x, node_y, texts = [], [], []
-        for node in G.nodes():
-            x, y = pos[node]
-            node_x.append(x)
-            node_y.append(y)
-            texts.append(node)
-
-        node_trace = go.Scatter(
-            x=node_x, y=node_y,
-            mode='markers+text',
-            text=texts,
-            textposition='top center',
-            hoverinfo='text',
-            marker=dict(
-                showscale=False,
-                color='darkorange',
-                size=10,
-                line_width=2
-            )
-        )
-
-        fig = go.Figure(data=[edge_trace, node_trace],
-                        layout=go.Layout(
-                            title=f'Red de relaciones entre productos (basado en {metrica})',
-                            titlefont_size=16,
-                            showlegend=False,
-                            hovermode='closest',
-                            margin=dict(b=20, l=5, r=5, t=40),
-                            xaxis=dict(showgrid=False, zeroline=False),
-                            yaxis=dict(showgrid=False, zeroline=False)
-                        ))
-
-        st.plotly_chart(fig, use_container_width=True)
-        
-    
-        # Interpretación automática
-        productos_unicos = set()
-        for _, row in reglas_top.iterrows():
-            productos_unicos.update(row['antecedents'])
-            productos_unicos.update(row['consequents'])
-
-        st.markdown("### 🧾 Resumen de la visualización")
-        st.markdown(f"""
-        - 🔗 Se muestran **{len(reglas_top)} relaciones** entre productos.
-        - 🛍️ Hay **{len(productos_unicos)} productos únicos** conectados.
-        - 📏 La métrica seleccionada es **{metrica}**, con un valor mínimo de `{valor_minimo}`.
-        - 📊 Promedio de {metrica}: `{reglas_top[metrica].mean():.2f}`
-        """)
-    
-    
     
  
     
@@ -721,6 +700,110 @@ elif section.startswith("8."):
 
 
 
+# 7. ◯ Sección: VISUALIZACIÓN DE RELACIONES
+# ............................................................................................
+elif section.startswith("OLD 7."):
+    st.title("🗺️ Red de Relaciones entre Productos")
+    st.markdown("""
+    Esta visualización muestra cómo se conectan los productos entre sí a partir de reglas de asociación. 
+    Cada nodo representa un producto, y los enlaces indican que se suelen comprar juntos. 
+    El grosor del enlace refleja la **fuerza de la relación** según la métrica seleccionada.
+    """)
+
+    # ◯ Elegir métrica para evaluar relaciones
+    metrica = st.selectbox("🔍 Elegí la métrica de relación:", ["lift", "confidence", "support"])
+
+    # ◯ Filtro por valor mínimo
+    valor_minimo = st.slider(f"🔧 Filtrar relaciones con {metrica} mayor a:", min_value=0.0, max_value=5.0, value=1.2, step=0.1)
+
+    # ◯ Filtrar reglas por métrica seleccionada
+    reglas_filtradas = rules[rules[metrica] >= valor_minimo]
+
+    # ◯ Mostrar solo las N relaciones más fuertes
+    top_n = st.slider("🔢 ¿Cuántas relaciones querés visualizar?", min_value=10, max_value=100, value=50, step=5)
+    reglas_top = reglas_filtradas.nlargest(top_n, metrica)
+
+    if reglas_top.empty:
+        st.warning("⚠️ No hay relaciones que cumplan con estos filtros.")
+    else:
+        # ◯ Crear grafo dirigido
+        G = nx.DiGraph()
+
+        for _, row in reglas_top.iterrows():
+            origen = row['antecedents'][0] if isinstance(row['antecedents'], list) else row['antecedents']
+            destino = row['consequents'][0] if isinstance(row['consequents'], list) else row['consequents']
+            peso = row[metrica]
+
+            G.add_node(origen)
+            G.add_node(destino)
+            G.add_edge(origen, destino, weight=peso)
+
+        pos = nx.spring_layout(G, k=0.5, iterations=50)
+
+        edge_x, edge_y = [], []
+        for edge in G.edges():
+            x0, y0 = pos[edge[0]]
+            x1, y1 = pos[edge[1]]
+            edge_x.extend([x0, x1, None])
+            edge_y.extend([y0, y1, None])
+
+        edge_trace = go.Scatter(
+            x=edge_x, y=edge_y,
+            line=dict(width=1.5, color='gray'),
+            hoverinfo='none',
+            mode='lines'
+        )
+
+        node_x, node_y, texts = [], [], []
+        for node in G.nodes():
+            x, y = pos[node]
+            node_x.append(x)
+            node_y.append(y)
+            texts.append(node)
+
+        node_trace = go.Scatter(
+            x=node_x, y=node_y,
+            mode='markers+text',
+            text=texts,
+            textposition='top center',
+            hoverinfo='text',
+            marker=dict(
+                showscale=False,
+                color='darkorange',
+                size=10,
+                line_width=2
+            )
+        )
+
+        fig = go.Figure(data=[edge_trace, node_trace],
+                        layout=go.Layout(
+                            title=f'Red de relaciones entre productos (basado en {metrica})',
+                            titlefont_size=16,
+                            showlegend=False,
+                            hovermode='closest',
+                            margin=dict(b=20, l=5, r=5, t=40),
+                            xaxis=dict(showgrid=False, zeroline=False),
+                            yaxis=dict(showgrid=False, zeroline=False)
+                        ))
+
+        st.plotly_chart(fig, use_container_width=True)
+        
+    
+        # Interpretación automática
+        productos_unicos = set()
+        for _, row in reglas_top.iterrows():
+            productos_unicos.update(row['antecedents'])
+            productos_unicos.update(row['consequents'])
+
+        st.markdown("### 🧾 Resumen de la visualización")
+        st.markdown(f"""
+        - 🔗 Se muestran **{len(reglas_top)} relaciones** entre productos.
+        - 🛍️ Hay **{len(productos_unicos)} productos únicos** conectados.
+        - 📏 La métrica seleccionada es **{metrica}**, con un valor mínimo de `{valor_minimo}`.
+        - 📊 Promedio de {metrica}: `{reglas_top[metrica].mean():.2f}`
+        """)
+    
+    
 
 
 # 1. ◯ Sección: INICIO
@@ -1155,5 +1238,60 @@ elif section == "📌 Heatmap de Producto":
             unsafe_allow_html=True
         )
 
+# 4. ◯ Sección: REGLAS DE ASOCIACIÓN
+# -----------------------------------------------------------------------------------------------------------------
+elif section.startswith("OLD 4."):
+    
+    st.markdown("---")
+    st.title("⚙️ Reglas de Asociación")
+    st.markdown("En esta sección verás las principales reglas encontradas con el algoritmo Apriori")
 
+    st.subheader("📈 Top 5 Regles by Soporte")
+    st.markdown("Estas son las 5 reglas más comunes, ordenadas por soporte. El soporte representa la proporción de transacciones donde aparece ese conjunto de productos.")
+
+    # ◯ Nota explicativa con ejemplo concreto, estilo más sutil
+    st.markdown(
+        """
+        <small><i>Ejemplo:</i> Si los productos <b>Taza</b> y <b>Plato</b> aparecen juntos en 50 de 1000 tickets, su soporte es 0.05 (es decir, el 5% de las transacciones).</small>
+        """,
+        unsafe_allow_html=True
+    )
+
+    top_support = rules.sort_values("support", ascending=False).iloc[::2].head(5).reset_index(drop=True)
+    st.dataframe(top_support, use_container_width=True)
+
+
+    st.markdown("---")
+    st.subheader("🏆 Top 5 Association Rules by Score")
+
+    st.markdown("""
+    While evaluating association rules, we utilize key metrics such as **:orange[support]**, **:orange[confidence]**, and **:orange[lift]** to discern their significance.
+
+    Each rule is independently ranked based on these metrics, and a **mean rank** is computed across all three rankings.
+
+    This mean rank serves as a **composite score**, capturing the overall performance of each rule across the different metrics.  
+    The table below shows the **top 5 association rules** based on the composite score.
+    """)
+    # Mostrar la tabla
+
+    st.dataframe(Top_5_Rules_by_Score, use_container_width=True)
+
+    st.markdown("### ✅ Recomendaciones basadas en las reglas")
+
+    st.markdown("""
+    1. **Si alguien compra “TAZA DE TÉ Y PLATILLO VERDE REGENCY”, recomendale también “TAZA DE TÉ Y PLATILLO ROSES REGENCY”.**  
+    Alta confianza (76%) y fuerte lift (22× más probable que al azar).
+
+    2. **Si alguien compra “TAZA DE TÉ Y PLATILLO ROSES REGENCY”, recomendale también “TAZA DE TÉ Y PLATILLO VERDE REGENCY”.**  
+    Alta probabilidad y relación recíproca con la anterior.
+
+    3. **Quien compra la versión rosa, tiene alta chance (83%) de interesarse también en la verde.**  
+    Ideal para bundles visualmente combinados.
+
+    4. **Si compran la verde, podrías ofrecer también la rosa, aunque con menor confianza (63%).**  
+    Útil como recomendación cruzada secundaria.
+
+    5. **Compradores de la versión rosa también suelen elegir la versión ROSES.**  
+    Oportunidad para agruparlas como “línea de colección” o sugerirlas juntas en promociones.
+    """)    
 

@@ -98,3 +98,53 @@ class HeatmapCrosstab:
         fig.update_layout(**layouts)
         
         return fig
+
+
+# 📌 Esta función espera un DataFrame como tabular o crosstab y genera el heatmap que necesitás para tu sección unificada
+# --------------------------------------------------------------------------------------------------------------------------------
+
+def draw_heatmap(df):
+    import plotly.graph_objects as go
+    import numpy as np
+    import streamlit as st
+
+    try:
+        # Forzar a DataFrame flotante
+        df_clean = df.copy()
+        df_clean = df_clean.applymap(lambda x: float(x) if isinstance(x, (int, float)) else 0.0)
+        z = df_clean.values
+
+        x_labels = df_clean.columns.tolist()
+        y_labels = df_clean.index.tolist()
+        text_labels = np.round(z, 3)
+
+        fig = go.Figure(data=go.Heatmap(
+            z=z,
+            x=x_labels,
+            y=y_labels,
+            colorscale='Reds',
+            hoverongaps=False,
+            text=text_labels,
+            texttemplate="%{text}",
+            hovertemplate="Producto A: %{y}<br>Producto B: %{x}<br>Soporte: %{z}<extra></extra>"
+        ))
+
+        fig.update_layout(
+            title="Heatmap de soporte entre productos",
+            title_x=0.5,
+            height=900,
+            xaxis_tickangle=-45,
+            xaxis=dict(tickfont=dict(size=10), automargin=True),
+            yaxis=dict(tickfont=dict(size=10), automargin=True),
+            margin=dict(l=200, r=50, t=50, b=200),
+            plot_bgcolor='#0e1117',
+            paper_bgcolor='#0e1117',
+            font=dict(color="#f0f0f0")
+        )
+
+        return fig
+
+    except Exception as e:
+        st.error(f"❌ Error al construir el heatmap: {e}")
+        st.dataframe(df)
+        return None
