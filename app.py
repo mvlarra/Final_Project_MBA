@@ -33,8 +33,6 @@ from utils.visual_helpers import (
     mostrar_transacciones_por_mes,
     mostrar_ejemplo_canasta
 )
-from utils.show_explanation import show_explanation
-
 import pandas as pd
 import numpy as np
 import plotly.express as px
@@ -44,7 +42,7 @@ import streamlit as st
 from PIL import Image
 from charts.HeatmapXTab import HeatmapCrosstab, draw_heatmap
 from charts.GraphNetwork import draw_graph
-
+from utils.show_explanation import show_explanation
 
 
 # ◯ Configuración de página
@@ -251,7 +249,10 @@ elif section.startswith("4. 🔎"):
         ["📌 Reglas destacadas", "🕸️ Red de productos", "📊 Heatmap cruzado", "📋 Tabla completa"],
         horizontal=True
     )
-
+    
+    # Mostrar explicación específica
+    show_explanation(opcion_vista)
+    
     if opcion_vista == "📌 Reglas destacadas":
         st.subheader("📌 Reglas con mayor score (lift + soporte + confianza)")
         st.dataframe(Top_5_Rules_by_Score, use_container_width=True)
@@ -369,8 +370,7 @@ elif section.startswith("4. 🔎"):
         st.subheader("📋 Todas las reglas generadas")
         st.dataframe(rules, use_container_width=True)
 
-    # Mostrar explicación específica
-    show_explanation(opcion_vista)
+
 
 
 
