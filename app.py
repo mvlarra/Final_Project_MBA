@@ -115,108 +115,13 @@ section = st.sidebar.radio("Ir a la sección:", (
 # 1. ◯ New Sección: ACERCAS DEL PROYECTO (Unificar Sección 1 (Resumen) y Sección 9 (Créditos))
 # ............................................................................................
 if section.startswith("1."):
-    st.title("📘 Acerca del Proyecto")
-
-    st.markdown("""
-    Este proyecto fue desarrollado como parte del **Bootcamp de Data Science & Machine Learning en 4Geeks Academy**,  
-    por **Valentina Larrañaga**.
-
-    ---
-    ### 🎯 Objetivo
-    Identificar patrones de compra frecuentes y generar recomendaciones accionables para mejorar la estrategia comercial.
-
-    **`1. Descubrimiento de Reglas de Asociación`**  
-    Identificar asociaciones y correlaciones entre productos o artículos en un conjunto de datos. Descubrir reglas que indiquen la probabilidad de que ciertos artículos se compren juntos.
-
-    **`2. Oportunidades de Venta Cruzada`**  
-    Detectar oportunidades de venta cruzada comprendiendo qué productos se compran frecuentemente en conjunto.
-
-    **`3. Planificación de Promociones`**  
-    Optimizar campañas promocionales identificando artículos que suelen comprarse juntos. Diseñar promociones y descuentos efectivos para incentivar la compra de productos complementarios.
-
-    **`4. Ubicación Estratégica de Productos`**  
-    Organizar los productos en la tienda física o en línea de forma que se fomente la compra de artículos relacionados, creando una experiencia de compra más conveniente y satisfactoria.
-
-
-    ---
-    ### 🚀 Tecnologías utilizadas
-    - Python · pandas · numpy  
-    - mlxtend (reglas de asociación)  
-    - plotly · matplotlib  
-    - Streamlit  
-    - GitHub Codespaces
-    - **Render (despliegue en la nube)**
-
-    ---
-    ### 🌐 Recursos
-    - Código fuente: [GitHub del proyecto](https://github.com/mvlarra/Final_Project_MBA)  
-    - Dataset: Online Retail Dataset (UCI / Kaggle)  
-    - App en vivo: (📎 Agregar URL cuando esté desplegada)
-
-    ---
-    ### 📫 Contacto
-    - [LinkedIn](https://www.linkedin.com/in/valentinalarra)  
-    - [GitHub](https://github.com/mvlarra)
-    """)
-
+    import sections.section_1_about
 
 
 # 2. ◯ Sección: RESUMEN DEL PROYECTO
 # ............................................................................................
 elif section.startswith("2."):
-    st.title("🛒 Market Basket Analysis")
-    st.subheader("Resumen Final del Proyecto")
-
-    st.markdown("""
-    **📌 Objetivo**  
-    Identificar productos que suelen comprarse juntos en transacciones de retail, para descubrir patrones útiles en estrategias de venta cruzada, bundles, optimización de layout y recomendaciones personalizadas.
-
-    ---
-
-    **📂 Dataset**  
-    - **Fuente:** Online Retail II — UCI Machine Learning Repository  
-    - **Período:** Diciembre 2009 a Diciembre 2011  
-    - **Alcance:** Transacciones de clientes del Reino Unido  
-    - **Preprocesamiento:** Filtrado de ventas válidas, eliminación de cancelaciones y valores nulos
-
-    ---
-
-    **⚙️ Metodología**  
-    - Transformación de los datos a formato canasta (ítems × transacciones)  
-    - Aplicación del algoritmo **`Apriori`** con la librería `mlxtend`  
-    - Evaluación de reglas utilizando las siguientes métricas:  
-        - **`Support:`** Frecuencia del conjunto  
-        - **`Confidence:`** Probabilidad de ocurrencia conjunta  
-        - **`Lift:`** Fuerza de la asociación
-
-    ---
-
-    **🏆 Principales Hallazgos**  
-    - Se detectaron asociaciones sólidas entre variantes de productos (ej. distintos colores de juegos de té)  
-    - Las reglas más destacadas obtuvieron altos valores en todas las métricas:  
-        - Confianza por encima del 70%  
-        - Lift superior a 20  
-    - Estas reglas son altamente accionables para estrategias de marketing y experiencia de usuario
-
-    ---
-
-    **✅ Recomendaciones de Negocio**  
-    - Implementar **`sugerencias automáticas de productos`** en el carrito de compras  
-    - Ofrecer **`bundles`** basados en productos frecuentemente comprados juntos  
-    - Optimizar la **`disposición de productos`** en tienda física u online  
-    - Lanzar **`campañas segmentadas`** basadas en afinidades entre productos
-
-    ---
-
-    **🔧 Herramientas y Tecnologías**  
-    + Python · pandas · mlxtend · Streamlit  
-    + Visualización con plotly y matplotlib  
-    + Diseño modular con navegación lateral e insights interpretables
-
-    ---
-
-    Esta app fue desarrollada como el **proyecto final del Bootcamp de Data Science**, demostrando habilidades de punta a punta: desde la preparación de datos y detección de patrones, hasta la generación de insights de negocio y desarrollo de una aplicación funcional.
-    """)
+    import sections.section_2_summary
 
 # ◯ Sección 3: METODOLOGIA DE ANALISIS
 # -----------------------------------------------------------------------------------------------------------------

@@ -3,11 +3,7 @@
 #   Centralizar funciones relacionadas con la visualización y explicación contextual de secciones.
 # Contenido:
 #   - Funciones de explicación de vistas (show_explanation)
-#   - Funciones auxiliares reutilizables (ej. mostrar producto destacado)
 #   - Funciones para renderizar secciones completas (show_section_X)
-
-
-
 
 
 
