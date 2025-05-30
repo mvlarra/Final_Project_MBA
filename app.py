@@ -241,7 +241,8 @@ elif section.startswith("4. 🛒"):
     tabs = st.tabs([
         "🔗 Reglas relevantes", 
         "🎁 Bundles sugeridos", 
-        "✨ Recomendaciones personalizadas"
+        "✨ Recomendaciones personalizadas",
+        "📌 Heatmap de Producto"
     ])
 
     # ◯ Reglas relevantes (desde OLD 4 - solo las destacadas)
@@ -428,7 +429,163 @@ elif section.startswith("4. 🛒"):
             """)
             st.markdown("---")
         else:
-            st.warning("No se encontraron recomendaciones para este producto. Probá con otro.")
+            st.warning("No se encontraron recomendaciones para este producto. Probá con otro.")            
+            
+     # ◯ Heatmap por producto (movido desde sección separada)
+    with tabs[3]:
+        st.subheader == "📌 Heatmap de Producto"
+        
+        st.markdown("## 📌 Heatmap de Co-ocurrencia por Producto")
+        st.markdown(
+            "Este gráfico muestra cómo se relaciona un producto específico con otros, "
+            "según la métrica seleccionada."
+        )
+
+        from charts.HeatmapXTab import HeatmapCrosstab
+
+        # ◯ Crear instancia del generador de heatmaps
+        heat = HeatmapCrosstab(rules)
+
+        # ◯ Obtener productos únicos desde reglas
+        productos_disponibles = sorted(set(rules['antecedents'].explode()) | set(rules['consequents'].explode()))
+        producto_base = st.selectbox("🧲 Seleccioná un producto base:", productos_disponibles)
+
+        # ◯ Selección de métrica
+        metrica = st.selectbox("📏 Seleccioná la métrica:", ["support", "lift", "confidence"])
+
+        # ◯ Explicación contextual de la métrica seleccionada
+        explicaciones = {
+            "support": "🔥 <b>Support (Soporte)</b>: muestra qué tan seguido se venden juntos los productos.<br>"
+                    "👉 Útil para detectar <b>productos que siempre aparecen en conjunto</b>.",
+
+            "confidence": "🔥 <b>Confidence (Confianza)</b>: indica qué tan probable es que se compre el segundo producto "
+                        "cuando ya se compró el primero.<br>"
+                        "👉 Útil para sugerencias de <b>“quienes compraron esto, también compraron…”</b>",
+
+            "lift": "🔥 <b>Lift</b>: mide si dos productos se potencian cuando se venden juntos, más allá de lo esperable.<br>"
+                    "👉 Útil para identificar <b>combinaciones fuertes o ideales para promociones cruzadas</b>."
+        }
+
+        st.markdown(
+            f"""
+            <div style='
+                font-size: 14px;
+                margin-bottom: 20px;
+                background-color: #f1f1f105;
+                padding: 10px 15px;
+                border-left: 4px solid #ff6d00;
+                border-radius: 5px;
+                color: #ddd;
+                line-height: 1.5;
+            '>
+            {explicaciones[metrica]}
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+        # ◯ Filtrar reglas donde el producto seleccionado es el antecedente
+        recomendaciones = rules[rules['antecedents'].apply(lambda x: producto_base in x)]
+
+        # ◯ Ordenar por la métrica elegida
+        recomendaciones = recomendaciones.sort_values(metrica, ascending=False)
+
+        # ◯ Mostrar los 5 recomendados más fuertes
+        top_recomendados = recomendaciones['consequents'].explode().value_counts().head(5).index.tolist()
+
+        st.markdown("### 🔗 Recomendaciones basadas en asociación")
+        st.write("Los siguientes productos aparecen frecuentemente junto a", f"**{producto_base}**:")
+
+        # ◯ Crear tabla cruzada manualmente desde reglas
+        df = rules.copy()
+        df = df.explode("antecedents")
+        df = df.explode("consequents")
+        df = df[df["antecedents"] == producto_base]
+
+        crosstab = df.pivot_table(
+            index="antecedents",
+            columns="consequents",
+            values=metrica,
+            aggfunc="mean",
+            fill_value=0
+        ).iloc[:, :10]  # Mostrará hasta 10 productos relacionados como máximo
+
+        # ◯ Graficar heatmap
+        fig = heat.plot_heatmap(crosstab)
+
+        st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+
+        st.markdown(
+        f"""
+        <div style='
+            margin-top: 25px;
+            padding: 15px;
+            background-color: #1e1e1e;
+            border-left: 4px solid #ff6d00;
+            border-radius: 5px;
+            font-size: 15px;
+            line-height: 1.6;
+            color: #ddd;
+        '>
+            <b>¿Cómo interpretar este heatmap?</b><br>
+            El gráfico muestra la intensidad de relación entre <b>{producto_base}</b> y otros productos.<br>
+            Cuanto más oscuro el recuadro, mayor es la <b>{metrica}</b> observada entre ambos ítems.<br>
+            Esto puede ayudarte a identificar productos que suelen comprarse juntos o que podrían recomendarse juntos en la tienda o sitio web.
+        </div>
+        """,
+        unsafe_allow_html=True
+        )
+
+        # ◯ Mostrar ubicación sugerida si el producto base está en un bundle conocido
+        ubicacion = df_bundle_products[df_bundle_products['nodes'] == producto_base]
+
+        if not ubicacion.empty:
+            categoria = ubicacion['category'].iloc[0]
+
+            # ◯ Buscar todos los productos en ese mismo bundle
+            otros = df_bundle_products[df_bundle_products['category'] == categoria]
+
+            # ◯ Excluir el producto actual
+            productos_relacionados = otros[otros['nodes'] != producto_base]['nodes'].tolist()
+
+            # ◯ Mostrar bloque de sugerencia
+
+            # ◯ Calcular productos sugeridos ordenados por métrica
+            df_metric = df.groupby("consequents")[metrica].mean().sort_values(ascending=False)
+            df_metric = df_metric[df_metric.index != producto_base]
+
+            # ◯ Armar la lista en HTML
+            items_html = "".join([
+                f"<div style='margin-bottom:6px; color: #ddd; font-size:15px;'>"
+                f"<span style='color: #ffaa00; font-weight: bold;'>✔️</span> {prod}</div>"
+                for prod in df_metric.index.tolist()
+            ])
+
+            # ◯ Cuadro de sugerencia completo con lista integrada
+            st.markdown(
+                f"""
+                <div style='
+                    margin-top: 20px;
+                    padding: 15px;
+                    background-color: #1e1e1e;
+                    border-left: 4px solid #ff6d00;
+                    border-radius: 5px;
+                    font-size: 15px;
+                    line-height: 1.6;
+                    color: #ddd;
+                '>
+                    <div style='font-size:21px; font-weight:bold; color:#fff; margin-bottom:10px;'>
+                    🟡 Sugerencia de Ubicación / Agrupación
+                    </div>
+                    Este producto forma parte del bundle: <b>📦 {categoria}</b>.<br>
+                    Podría colocarse cerca de productos similares para mejorar la visibilidad o fomentar compras combinadas.
+                    <br><br>
+                    <b>Productos sugeridos para agrupar (ordenados por <code>{metrica}</code>):</b>
+                    {items_html}
+                    </div>
+                """,
+                unsafe_allow_html=True
+            )
 
 
 
@@ -1016,7 +1173,7 @@ elif section == "Heatmap del Bundle":
 
 
 
-# ◯ Sección: HEATMAP
+# ◯ Sección: HEATMAP old "📌 Heatmap de Producto"
 # -------------------------------------------------------------------------------------------------------------
 
 elif section == "📌 Heatmap de Producto":
