@@ -11,6 +11,7 @@ import streamlit as st
 import plotly.graph_objects as go
 import networkx as nx
 from charts.HeatmapXTab import draw_heatmap
+from utils.footer import footer_reglas_asociacion, footer_red_productos, footer_heatmap, footer_recomendaciones_carrito, footer_canasta_real
 
 
 # ◯ Seccion 5: EXPLORAR REGLAS DE ASOCIACIÓN (unificada)
@@ -189,6 +190,8 @@ def show_section_5_rules(rules, tabular, Top_5_Rules_by_Score):
             - 📏 La métrica seleccionada es **{metrica}**, con un valor mínimo de `{valor_minimo}`.
             - 📊 Promedio de {metrica}: `{reglas_top[metrica].mean():.2f}`
             """)
+        footer_red_productos()
+   
     with tab3:
             st.subheader("📊 Heatmap cruzado entre productos")
             st.markdown("""
@@ -205,6 +208,8 @@ def show_section_5_rules(rules, tabular, Top_5_Rules_by_Score):
             # ◯ Generar visualización
             fig_heatmap = draw_heatmap(tabular_heatmap)
             st.plotly_chart(fig_heatmap, use_container_width=True)
+            footer_heatmap()
+        
 
     with tab4:
         st.subheader("📋 Todas las reglas generadas")
@@ -214,3 +219,4 @@ def show_section_5_rules(rules, tabular, Top_5_Rules_by_Score):
         """, unsafe_allow_html=True)
                 
         st.dataframe(rules, use_container_width=True)
+        footer_reglas_asociacion()

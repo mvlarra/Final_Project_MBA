@@ -8,7 +8,7 @@
 #   - Distribución mensual de transacciones
 
 import streamlit as st
-
+from utils.footer import footer_reglas_asociacion, footer_red_productos, footer_heatmap, footer_recomendaciones_carrito, footer_canasta_real
 
 # ◯ Sección 4: EXPLORACIÓN DE DATOS
 # ............................................................................................
@@ -87,6 +87,7 @@ def show_section_4(dataset_sample, Top_10_Mas_Vendidos, example_basket, monthly_
         
     with tab3:          # ◯ Mostrar ejemplo de canasta de compra    
         mostrar_ejemplo_canasta(example_basket)
+        footer_canasta_real()        
     
     with tab4:          # ◯ Mostrar transacciones por mes   
         mostrar_transacciones_por_mes(monthly_transactions)

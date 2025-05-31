@@ -12,7 +12,7 @@ import streamlit as st
 import streamlit as st
 from charts.HeatmapXTab import HeatmapCrosstab
 import plotly.graph_objects as go
-
+from utils.footer import footer_reglas_asociacion, footer_red_productos, footer_heatmap, footer_recomendaciones_carrito, footer_canasta_real
 
 
 # ◯ Seccion 6: RECOMENDACIONES Y ESTRATEGIAS POR PRODUCTO
@@ -288,7 +288,9 @@ def show_section_6_recommendations(rules, df_bundle_products, Top_5_Rules_by_Sco
             """)
             st.markdown("---")
         else:
-            st.warning("No se encontraron recomendaciones para este producto. Probá con otro.")            
+            st.warning("No se encontraron recomendaciones para este producto. Probá con otro.")
+    
+        footer_recomendaciones_carrito()       
             
     # ◯ Heatmap por producto (movido desde sección separada)
     with tabs[3]:
