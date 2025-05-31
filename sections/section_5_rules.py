@@ -11,7 +11,6 @@ import streamlit as st
 import plotly.graph_objects as go
 import networkx as nx
 from charts.HeatmapXTab import draw_heatmap
-from utils.show_explanation import show_explanation
 
 
 # ◯ Seccion 5: EXPLORAR REGLAS DE ASOCIACIÓN (unificada)
@@ -33,27 +32,73 @@ def show_section_5_rules(rules, tabular, Top_5_Rules_by_Score):
     Podés alternar entre diferentes perspectivas para entender mejor los patrones de compra.
     """)
 
-    opcion_vista = st.radio(
-        "Elegí cómo querés explorar las reglas:",
-        ["📌 Reglas destacadas", "🗺️ Red de productos", "📊 Heatmap cruzado", "📋 Tabla completa"],
-        horizontal=True
-    )
+    st.markdown("""
+    <style>
+    
+    
+    .stTabs [data-baseweb="tab-list"] {
+    overflow-x: auto !important;      /* permite scroll horizontal */
+    white-space: nowrap;              /* evita que se bajen de línea */
+    display: flex;                    /* asegura que se alineen horizontalmente */
+    flex-wrap: nowrap;                /* evita que se acomoden en más de una línea */
+    scrollbar-width: thin;            /* (opcional) scroll más fino en Firefox */
+    }
 
-    # Mostrar explicación específica
-    show_explanation(opcion_vista)
+    
+    /* Scrollbar para navegadores WebKit (Chrome, Edge, Safari) */
+    .stTabs [data-baseweb="tab-list"]::-webkit-scrollbar {
+        height: 6px;                      /* altura de la barra de scroll */
+    }
+    .stTabs [data-baseweb="tab-list"]::-webkit-scrollbar-thumb {
+        background-color: #aaa;           /* color del "pulgar" del scroll */
+        border-radius: 4px;               /* bordes redondeados para estética */
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        background-color: #f0f0f0;
+        padding: 8px 16px;
+        border-radius: 8px 8px 0 0;
+        font-weight: bold;
+        color: #333333;
+        border: 1px solid #ccc;
+    }
+    .stTabs [aria-selected="true"] {
+        background-color: #ffdb99;
+        box-shadow: 0px 4px 6px rgba(60, 60, 60, 0.6);
+        color: black;
+        font-weight: 800 !important;
+        font-size: 16px !important;
+        border-bottom: none;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
-    if opcion_vista == "📌 Reglas destacadas":
+    tab1, tab2, tab3, tab4 = st.tabs([
+        "🟠 Reglas destacadas",
+        "🟠 Red de productos",
+        "🟠 Heatmap cruzado",
+        "🟠 Tabla completa"
+    ])
+
+    with tab1:
         st.subheader("📌 Reglas con mayor score (lift + soporte + confianza)")
+        st.markdown("""
+        🧠 <b>¿Qué estás viendo?</b><br>
+        Esta sección muestra un <b>resumen de las reglas más relevantes</b> encontradas a partir de las canastas de productos.<br>
+        Se ordenan por un <i>score compuesto</i> que combina métricas como soporte, confianza y lift para priorizar las reglas más útiles para el negocio.
+        """, unsafe_allow_html=True)
+
         st.dataframe(Top_5_Rules_by_Score, use_container_width=True)
 
-    elif opcion_vista == "🗺️ Red de productos":
+    with tab2:
         st.subheader("🗺️ Red de Relaciones entre Productos")
         st.markdown("""
-        Esta visualización muestra cómo se conectan los productos entre sí a partir de reglas de asociación. 
-        Cada nodo representa un producto, y los enlaces indican que se suelen comprar juntos. 
+        🧠 <b>¿Qué estás viendo?</b><br>
+        Esta visualización muestra cómo se conectan los productos entre sí a partir de reglas de asociación.<br>
+        Cada nodo representa un producto, y los enlaces indican que se suelen comprar juntos.<br>
         El grosor del enlace refleja la **fuerza de la relación** según la métrica seleccionada.
-        """)
-
+        """, unsafe_allow_html=True)
+      
         # ◯ Elegir métrica para evaluar relaciones
         metrica = st.selectbox("🔍 Elegí la métrica de relación:", ["lift", "confidence", "support"])
 
@@ -144,17 +189,28 @@ def show_section_5_rules(rules, tabular, Top_5_Rules_by_Score):
             - 📏 La métrica seleccionada es **{metrica}**, con un valor mínimo de `{valor_minimo}`.
             - 📊 Promedio de {metrica}: `{reglas_top[metrica].mean():.2f}`
             """)
+    with tab3:
+            st.subheader("📊 Heatmap cruzado entre productos")
+            st.markdown("""
+            🧠 <b>¿Qué estás viendo?</b><br>
+            Esta vista muestra la intensidad de co-ocurrencia entre productos en una matriz de calor.</b>.<br>
+            Permite identificar fácilmente combinaciones frecuentes que podrían ser aprovechadas para promociones o bundles.<br>
+            Las filas corresponden a productos base, y las columnas a productos recomendados.<br>
+            El color representa qué tan fuerte es la relación entre ellos.
+            """, unsafe_allow_html=True)                   
+            
+            # ◯ Transformación previa al heatmap
+            tabular_heatmap = tabular.set_index("antecedents")
 
-    elif opcion_vista == "📊 Heatmap cruzado":
-        st.subheader("📊 Heatmap cruzado entre productos")
-        from charts.HeatmapXTab import draw_heatmap
-        # ◯ Transformación previa al heatmap
-        tabular_heatmap = tabular.set_index("antecedents")
+            # ◯ Generar visualización
+            fig_heatmap = draw_heatmap(tabular_heatmap)
+            st.plotly_chart(fig_heatmap, use_container_width=True)
 
-        # ◯ Generar visualización
-        fig_heatmap = draw_heatmap(tabular_heatmap)
-        st.plotly_chart(fig_heatmap, use_container_width=True)
-
-    elif opcion_vista == "📋 Tabla completa":
+    with tab4:
         st.subheader("📋 Todas las reglas generadas")
+        st.markdown("""
+        Este es el listado completo de todas las reglas de asociación generadas, que cumplen con los parámetros mínimos definidos.
+        Es ideal para análisis detallado o auditoría. Podés exportarlas o analizarlas por separado.
+        """, unsafe_allow_html=True)
+                
         st.dataframe(rules, use_container_width=True)

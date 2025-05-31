@@ -24,15 +24,13 @@
 #     tabular_bundle.csv
 
 
+#    ------------------------------------------------------------------------------------------
+# 🟠 IMPORTs:
+#    ------------------------------------------------------------------------------------------
+
 import os
 port = os.environ.get("PORT", 8501)
 import ast  # Para convertir el string a lista real si es necesario
-from utils.loader import load_data  
-from utils.visual_helpers import ( 
-    mostrar_top_10_productos,
-    mostrar_transacciones_por_mes,
-    mostrar_ejemplo_canasta
-)
 import pandas as pd
 import numpy as np
 import plotly.express as px
@@ -42,9 +40,27 @@ import streamlit as st
 from PIL import Image
 from charts.HeatmapXTab import HeatmapCrosstab, draw_heatmap
 from charts.GraphNetwork import draw_graph
-from utils.show_explanation import show_explanation
+
+# ◯ Importar Utilities
+from utils.loader import load_data  
 
 
+# ◯ Funciones por sección:
+from sections.section_1_about import show_section_1_about
+from sections.section_2_summary import show_section_2_summary   
+from sections.section_3_methodology import show_section_3_methodology
+from sections.section_4_data_exploration import show_section_4
+from sections.section_5_rules import show_section_5_rules
+from sections.section_6_recommendations import show_section_6_recommendations
+from sections.section_7_actions import show_section_7_actions
+from sections.section_8_glosario import show_section_8_glosario
+
+
+
+#    ------------------------------------------------------------------------------------------
+# 🟠 PAGE SETTINGs:
+#    ------------------------------------------------------------------------------------------
+    
 # ◯ Configuración de página
 st.set_page_config(page_title="Market Basket Analysis", layout="wide")
 
@@ -80,12 +96,22 @@ st.sidebar.image(logo, use_container_width=True)
 #     unsafe_allow_html=True
 # )
 
-# ◯ Cargar datasets procesados (desde utils/loader.py)
+
+
+#    ------------------------------------------------------------------------------------------
+# 🟠 DATA LOAD:
+#    ------------------------------------------------------------------------------------------
+
+# Cargar datasets procesados (desde utils/loader.py)
 
 dataset_sample, Top_10_Mas_Vendidos, example_basket, monthly_transactions, rules, df_bundle_products, tabular, Top_5_Rules_by_Score = load_data()
 
-# ◯ Sidebar para navegación
-# ............................................................................................
+
+#    ------------------------------------------------------------------------------------------
+# 🟠 SIDEBAR:
+#    ------------------------------------------------------------------------------------------
+
+# Sidebar para navegación
 
 st.sidebar.title("🧭 Navegación")
 section = st.sidebar.radio("Ir a la sección:", (
@@ -98,18 +124,14 @@ section = st.sidebar.radio("Ir a la sección:", (
     "7. 💼 Acciones estratégicas para tu negocio",   
     "8. 📏 Glosario de Métricas", 
     "OLD 1. 🏠 Inicio",
-    "OLD 9. 📎 Créditos y recursos del proyecto",
-    # "🧪 Methodology",
-    # "📏 Key Metrics",
-    # "🔁 Cross Selling Products",
-    # "OLD 4.1 ⚙️ Reglas de Asociación",
-    # "OLD 7. 🗺️ Visualización de Relaciones",
-    # "OLD 5. 📦 Bundles de Productos",
-    # "OLD 6. 🛍️ Recomendaciones para tu carrito",
-    # "Heatmap del Bundle",
-    # "📌 Heatmap de Producto"
+    "OLD 9. 📎 Créditos y recursos del proyecto"
 ))
 
+
+
+#    ------------------------------------------------------------------------------------------
+# 🟠 PAGES:
+#    ------------------------------------------------------------------------------------------
 
 
 # 1. ◯ New Sección: ACERCAS DEL PROYECTO (Unificar Sección 1 (Resumen) y Sección 9 (Créditos))
@@ -123,7 +145,6 @@ section = st.sidebar.radio("Ir a la sección:", (
 #   - Contacto profesional
 
 if section.startswith("1."):
-    from sections.section_1_about import show_section_1_about
     show_section_1_about()
 
 # 2. ◯ Sección: RESUMEN DEL PROYECTO
@@ -140,7 +161,6 @@ if section.startswith("1."):
 #   - Tecnologías y herramientas utilizadas en el desarrollo
 
 elif section.startswith("2."):
-    from sections.section_2_summary import show_section_2_summary
     show_section_2_summary()
 
 # ◯ Sección 3: METODOLOGIA DE ANALISIS
@@ -154,7 +174,6 @@ elif section.startswith("2."):
 #   - Parámetros clave del modelo: combinación máxima y soporte mínimo
 
 elif section.startswith("3."):
-    from sections.section_3_methodology import show_section_3_methodology
     show_section_3_methodology()
 
 
@@ -171,7 +190,6 @@ elif section.startswith("3."):
 #   - Distribución mensual de transacciones
 
 elif section.startswith("4."):
-    from sections.section_4_data_exploration import show_section_4
     show_section_4(dataset_sample, Top_10_Mas_Vendidos, example_basket, monthly_transactions)
 
     
@@ -185,8 +203,7 @@ elif section.startswith("4."):
 #   - Heatmap cruzado entre productos
 #   - Tabla completa de todas las reglas generadas
 
-elif section.startswith("5. 🔎"):
-    from sections.section_5_rules import show_section_5_rules
+elif section.startswith("5."):
     show_section_5_rules(rules, tabular, Top_5_Rules_by_Score)
 
 
@@ -202,8 +219,7 @@ elif section.startswith("5. 🔎"):
 #   - Heatmap cruzado por producto
 #   - Identificación de oportunidades de cross-selling
 
-elif section.startswith("6. 🛒"):
-    from sections.section_6_recommendations import show_section_6_recommendations 
+elif section.startswith("6."):
     show_section_6_recommendations(rules, df_bundle_products, Top_5_Rules_by_Score)
     
 # 7. ◯ Sección: ACCIONES ESTRATÉGICAS PARA TU NEGOCIO
@@ -217,7 +233,6 @@ elif section.startswith("6. 🛒"):
 #   - Exportación de las acciones seleccionadas
 
 elif section.startswith("7."):
-    from sections.section_7_actions import show_section_7_actions
     show_section_7_actions(rules, Top_10_Mas_Vendidos)
 
 
@@ -231,5 +246,5 @@ elif section.startswith("7."):
 #   - Ejemplos de fórmulas aplicadas
 #   - Explicaciones orientadas a usuarios de negocio no técnicos
 
-elif section == "8. 📏 Glosario de Métricas":
-   import sections.section_8_glosario
+elif section == "8.":
+    show_section_8_glosario()

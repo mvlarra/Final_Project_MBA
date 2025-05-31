@@ -31,12 +31,43 @@ def show_section_6_recommendations(rules, df_bundle_products, Top_5_Rules_by_Sco
     st.title("🛒 Recomendaciones y Estrategias por Producto")
     st.markdown("Explorá distintas estrategias accionables a partir de productos reales, reglas frecuentes, bundles descubiertos y recomendaciones personalizadas.")
 
+
+    st.markdown("""
+    <style>
+    /* Espaciado entre tabs */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 5px;
+    }
+
+    /* Tab no seleccionada */
+    .stTabs [data-baseweb="tab"] {
+        background-color: #f0f0f0;
+        padding: 8px 16px;
+        border-radius: 8px 8px 0 0;
+        font-weight: bold;
+        color: #333333;
+        border: 1px solid #ccc;
+    }
+
+    /* Tab seleccionada */
+    .stTabs [aria-selected="true"] {
+        background-color: #ffdb99;
+        color: black;
+        font-weight: 800 !important;
+        font-size: 16px !important;
+        border-bottom: none;
+        box-shadow: 0px 4px 6px rgba(60, 60, 60, 0.6);  /* Sombra gris oscuro */
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+
     tabs = st.tabs([
-        "⚙️ Reglas de Asociación", 
-        "🎁 Bundles sugeridos", 
-        "✨ Recomendaciones personalizadas",
-        "📌 Heatmap de Producto",
-        "🔁 Cross Selling Products"
+        "🟠 Reglas de Asociación", 
+        "🟠 Bundles sugeridos", 
+        "🟠 Recomendaciones personalizadas",
+        "🟠 Heatmap de Producto",
+        "🟠 Cross Selling Products"
     ])
 
     # ◯ Reglas relevantes (desde OLD 4 - solo las destacadas)

@@ -2,7 +2,30 @@
 ###################################################################################################################################################
 # OLD
 ###################################################################################################################################################
+# Sidebar para navegación
 
+st.sidebar.title("🧭 Navegación")
+section = st.sidebar.radio("Ir a la sección:", (
+    "1. 📘 Acerca del Proyecto",
+    "2. 📋 Resumen del Proyecto",
+    "3. 🧪 Metodología del Análisis",
+    "4. 📊 Exploración de Datos",
+    "5. 🔎 Explorar Reglas de Asociación",
+    "6. 🛒 Recomendaciones y Estrategias por Producto",
+    "7. 💼 Acciones estratégicas para tu negocio",   
+    "8. 📏 Glosario de Métricas", 
+    "OLD 1. 🏠 Inicio",
+    "OLD 9. 📎 Créditos y recursos del proyecto",
+    # "🧪 Methodology",
+    # "📏 Key Metrics",
+    # "🔁 Cross Selling Products",
+    # "OLD 4.1 ⚙️ Reglas de Asociación",
+    # "OLD 7. 🗺️ Visualización de Relaciones",
+    # "OLD 5. 📦 Bundles de Productos",
+    # "OLD 6. 🛍️ Recomendaciones para tu carrito",
+    # "Heatmap del Bundle",
+    # "📌 Heatmap de Producto"
+))
 
 
 # # 6. ◯ Sección: RECOMENDACIONES PERSONALIZADAS
