@@ -11,6 +11,8 @@ import streamlit as st
 
 
 # 1. ◯ New Sección: ACERCAS DEL PROYECTO (Unificar Sección 1 (Resumen) y Sección 9 (Créditos))
+# ............................................................................................
+
 
 st.title("📘 Acerca del Proyecto")
 
