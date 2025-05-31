@@ -123,21 +123,25 @@ section = st.sidebar.radio("Ir a la sección:", (
 #   - Contacto profesional
 
 if section.startswith("1."):
-    import sections.section_1_about
-
+    from sections.section_1_about import show_section_1_about
+    show_section_1_about()
 
 # 2. ◯ Sección: RESUMEN DEL PROYECTO
 # ............................................................................................
 # Objetivo:
-#   Presentar una visión general del comportamiento de las transacciones y los productos más vendidos.
+#   Presentar un resumen ejecutivo del análisis realizado, destacando el propósito del proyecto, el origen de los datos,
+#   la metodología aplicada y los principales hallazgos obtenidos.
 # Contenido:
-#   - Distribución de transacciones por mes
-#   - Productos más vendidos
-#   - Canasta de compra real (ejemplo individual)
+#   - Objetivo del análisis y foco comercial
+#   - Fuente y características del dataset utilizado
+#   - Metodología empleada (Apriori, métricas de asociación)
+#   - Hallazgos destacados y ejemplos de reglas obtenidas
+#   - Recomendaciones accionables para el negocio
+#   - Tecnologías y herramientas utilizadas en el desarrollo
 
 elif section.startswith("2."):
-    import sections.section_2_summary
-    
+    from sections.section_2_summary import show_section_2_summary
+    show_section_2_summary()
 
 # ◯ Sección 3: METODOLOGIA DE ANALISIS
 # -----------------------------------------------------------------------------------------------------------------
@@ -150,7 +154,8 @@ elif section.startswith("2."):
 #   - Parámetros clave del modelo: combinación máxima y soporte mínimo
 
 elif section.startswith("3."):
-    import sections.section_3_methodology
+    from sections.section_3_methodology import show_section_3_methodology
+    show_section_3_methodology()
 
 
 
@@ -166,9 +171,9 @@ elif section.startswith("3."):
 #   - Distribución mensual de transacciones
 
 elif section.startswith("4."):
-    import sections.section_4_data_exploration
-    
-    
+    from sections.section_4_data_exploration import show_section_4
+    show_section_4(dataset_sample, Top_10_Mas_Vendidos, example_basket, monthly_transactions)
+
     
 # ◯ Seccion 5: EXPLORAR REGLAS DE ASOCIACIÓN (unificada)
 # ............................................................................................
@@ -181,7 +186,8 @@ elif section.startswith("4."):
 #   - Tabla completa de todas las reglas generadas
 
 elif section.startswith("5. 🔎"):
-    import sections.section_5_rules
+    from sections.section_5_rules import show_section_5_rules
+    show_section_5_rules(rules, tabular, Top_5_Rules_by_Score)
 
 
 
@@ -197,8 +203,9 @@ elif section.startswith("5. 🔎"):
 #   - Identificación de oportunidades de cross-selling
 
 elif section.startswith("6. 🛒"):
-    import sections.section_6_recommendations
-
+    from sections.section_6_recommendations import show_section_6_recommendations 
+    show_section_6_recommendations(rules, df_bundle_products, Top_5_Rules_by_Score)
+    
 # 7. ◯ Sección: ACCIONES ESTRATÉGICAS PARA TU NEGOCIO
 # ............................................................................................
 # Objetivo:
@@ -210,7 +217,8 @@ elif section.startswith("6. 🛒"):
 #   - Exportación de las acciones seleccionadas
 
 elif section.startswith("7."):
-    import sections.section_7_actions
+    from sections.section_7_actions import show_section_7_actions
+    show_section_7_actions(rules, Top_10_Mas_Vendidos)
 
 
 

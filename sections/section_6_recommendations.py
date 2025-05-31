@@ -9,10 +9,25 @@
 #   - Identificación de oportunidades de cross-selling
 
 import streamlit as st
+import streamlit as st
+from charts.HeatmapXTab import HeatmapCrosstab
+import plotly.graph_objects as go
+
+
 
 # ◯ Seccion 6: RECOMENDACIONES Y ESTRATEGIAS POR PRODUCTO
 # ............................................................................................
-elif section.startswith("6. 🛒"):
+
+def show_section_6_recommendations(rules, df_bundle_products, Top_5_Rules_by_Score):
+    """
+    Muestra la sección de recomendaciones y estrategias por producto, basada en reglas de asociación.
+    Permite al usuario explorar reglas destacadas, bundles sugeridos y recomendaciones personalizadas.
+    :param rules: DataFrame con las reglas de asociación generadas.
+    :param df_bundle_products: DataFrame con los bundles de productos descubiertos.
+    :param Top_5_Rules_by_Score: DataFrame con las 5 reglas destacadas por score.
+    """
+
+
     st.title("🛒 Recomendaciones y Estrategias por Producto")
     st.markdown("Explorá distintas estrategias accionables a partir de productos reales, reglas frecuentes, bundles descubiertos y recomendaciones personalizadas.")
 
@@ -191,7 +206,7 @@ elif section.startswith("6. 🛒"):
         else:
             st.warning("No se encontraron datos para el bundle seleccionado.")
 
- 
+
     # ◯ Recomendaciones personalizadas (desde OLD 6)
     with tabs[2]:
         st.subheader("🛍️ Recomendaciones para tu carrito")
@@ -244,7 +259,7 @@ elif section.startswith("6. 🛒"):
         else:
             st.warning("No se encontraron recomendaciones para este producto. Probá con otro.")            
             
-     # ◯ Heatmap por producto (movido desde sección separada)
+    # ◯ Heatmap por producto (movido desde sección separada)
     with tabs[3]:
         st.subheader == "📌 Heatmap de Producto"
         
