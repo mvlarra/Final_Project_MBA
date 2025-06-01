@@ -15,56 +15,16 @@ import streamlit as st
 def show_section_3_methodology():  # Funcion que muestra la sección de metodología del análisis, describiendo el origen del dataset, el enfoque metodológico y los parámetros utilizados.
     st.title("🧪 Metodología")
 
-    tab1, tab2, tab3, tab4 = st.tabs([
-        "🧪 Versión para la app (resumida y clara)",
+    tab2, tab3 =  st.tabs([
         "🧪 Versión enriquecida (detallada)",
         "📄 Versión técnica (para README)",
-        "🧪 Version Original (Metodología del Análisis)"
     ])
-
-    with tab1:
-        st.markdown("""
-        ## 🧪 Metodología Aplicada
-
-        Este análisis se basa en datos de transacciones reales provenientes del dataset **Online Retail II** (disponible en Kaggle), que contiene operaciones de una tienda online mayorista del Reino Unido entre 2009 y 2011.
-
-        🔍 **Objetivo general**: Identificar productos que se compran juntos con frecuencia para potenciar acciones de cross-selling y mejorar la disposición de productos.
-
-        ---
-
-        ### 📚 Datos y Preparación
-
-        - Se trabajó sobre transacciones de Reino Unido, excluyendo devoluciones y registros incompletos.
-        - Se eliminaron productos con descripciones faltantes o con cantidades negativas.
-        - Se construyó una matriz binaria `Factura x Producto` para aplicar análisis de canasta.
-
-        ---
-
-        ### 📊 Algoritmo Utilizado
-
-        - Se aplicó el algoritmo **Apriori** usando la librería `mlxtend`.
-        - Esta técnica permite identificar **itemsets frecuentes** y generar **reglas de asociación**, basadas en métricas como soporte, confianza y lift.
-
-        ---
-
-        ### ⚙️ Parámetros clave
-
-        - `min_support`: 0.01  
-        - `min_confidence`: 0.2  
-        - `lift`: > 2 para reglas destacadas
-
-        ---
-
-        ### 🎯 Resultados
-
-        - Se generaron reglas limpias, interpretables y con potencial comercial para recomendaciones, bundles y decisiones de disposición física de productos.
-        """)
 
     with tab2:
         st.markdown("""
         ## 🧪 Metodología Detallada
 
-        Este proyecto aplica **Market Basket Analysis** (Análisis de Canasta de Compras) utilizando datos reales del dataset [Online Retail II](https://www.kaggle.com/datasets/mashlyn/online-retail-ii-uci), que contiene más de 500.000 transacciones de una tienda online del Reino Unido.
+        Este proyecto aplica **Market Basket Analysis** (Análisis de Canasta de Compras) utilizando datos reales del dataset **Online Retail II**, que contiene más de **500.000 transacciones** de una tienda online del Reino Unido.
 
         ---
 
@@ -72,60 +32,66 @@ def show_section_3_methodology():  # Funcion que muestra la sección de metodolo
 
         🔍 Para asegurar la calidad del análisis, se realizaron los siguientes pasos de depuración:
 
-        - ✅ Filtrado de transacciones:
-            - Se consideraron solo ventas realizadas a clientes del **Reino Unido**, por consistencia geográfica.
-            - Se eliminaron devoluciones (códigos de factura con 'C') y filas con `Quantity <= 0` o `UnitPrice <= 0`.
-            - Se excluyeron productos sin descripción o con códigos genéricos irrelevantes.
-        - ✅ Tratamiento de valores nulos:
-            - Se eliminaron filas con `CustomerID` faltante.
-        - ✅ Estandarización de texto:
-            - Se unificaron descripciones a minúsculas y se corrigieron errores comunes para mejorar la agrupación de productos.
-        - ✅ Generación de matriz binaria:
-            - Se creó una **matriz `Factura x Producto`** con valores `1` si un producto fue comprado en esa transacción.
+        ✅ **Filtrado de transacciones**  
+        - Se consideraron solo ventas realizadas a clientes del Reino Unido, por consistencia geográfica.  
+        - Se eliminaron devoluciones (códigos de factura con `'C'`) y filas con `Quantity <= 0` o `UnitPrice <= 0`.  
+        - Se excluyeron productos sin descripción o con códigos genéricos irrelevantes.  
+
+        ✅ **Tratamiento de valores nulos**  
+        - Se eliminaron filas con `CustomerID` faltante.  
+
+        ✅ **Estandarización de texto**  
+        - Se unificaron descripciones a minúsculas y se corrigieron errores comunes para mejorar la agrupación de productos.  
+
+        ✅ **Generación de matriz binaria**  
+        - Se creó una matriz **Factura x Producto** con valores `1` si un producto fue comprado en esa transacción.
 
         ---
 
         ### 📈 2. Algoritmo de Reglas de Asociación
 
-        Para detectar productos que se compran juntos frecuentemente se aplicó el algoritmo **Apriori**, implementado con la librería `mlxtend`.
+        Para detectar productos que se compran juntos frecuentemente se aplicó el algoritmo **Apriori**, implementado con la librería `mlxtend`, una biblioteca confiable de Python especializada en extensiones de aprendizaje automático.
 
-        > 🧪 Algoritmo seleccionado: **Apriori**  
-        > Justificación: fácil interpretación, buen desempeño en datasets pequeños y medianos, ideal para análisis exploratorio.
-
-        ---
-
-        ### ⚙️ 3. Parámetros y Métricas
-
-        | Métrica   | Significado | Umbral utilizado |
-        |-----------|-------------|------------------|
-        | `Support` | Frecuencia relativa de un itemset | ≥ 0.01 |
-        | `Confidence` | Probabilidad de co-ocurrencia dado un antecedente | ≥ 0.2 |
-        | `Lift`    | Intensidad de la relación entre dos productos | ≥ 2 |
-
-        📌 También se calculó **`Conviction`**, aunque no se priorizó en la visualización.
+        🧪 **Algoritmo seleccionado: Apriori**  
+        - **Justificación:** fácil interpretación, buen desempeño en datasets pequeños y medianos, ideal para análisis exploratorio.  
+        - Altamente efectivo para identificar *frequent itemsets* (conjuntos de ítems frecuentes) y derivar reglas de asociación, basándose en métricas predefinidas como el **support** y la **confidence**.
 
         ---
 
-        ### 🧹 4. Filtrado de Reglas
+        ### ⚙️ Parámetros utilizados en Apriori
 
-        - 🔁 Se eliminaron reglas duplicadas o reflejadas (A→B y B→A).
-        - 📊 Se priorizaron reglas con:
-            - Productos de alta frecuencia de compra
-            - Interpretación clara para el negocio
-        - 🧺 Se destacaron combinaciones con potencial de *cross-selling* o *agrupamiento físico en tienda*.
+        | Parámetro                     | Descripción                                              | Valor         | ¿Esto asegura que...?                                                                 |
+        |------------------------------|----------------------------------------------------------|---------------|----------------------------------------------------------------------------------------|
+        | Maximum Combination Length   | Longitud máxima de combinación de ítems                  | 2             | Solo se consideren pares de productos, facilitando interpretaciones y decisiones.     |
+        | Minimum Co-Occurrence Support| Umbral mínimo de soporte de coocurrencia                 | 0.005 (0.5%)  | Se filtren combinaciones raras, enfocándose en asociaciones realmente frecuentes.     |
+        | Support                      | Frecuencia relativa de un itemset                        | ≥ 0.01        | Las reglas identificadas aparezcan en al menos el 1% de todas las transacciones.      |
+        | Confidence                   | Probabilidad de co-ocurrencia dado un antecedente       | ≥ 0.2         | Las reglas sugeridas tengan una probabilidad razonable de repetirse en nuevas ventas. |
+        | Lift                         | Intensidad de la relación entre dos productos            | ≥ 2           | Las asociaciones detectadas sean más fuertes que las esperadas por azar.             |
+
+        📌 También se calculó **Conviction**, aunque no se priorizó en la visualización.
 
         ---
 
-        ### 📈 5. Visualización y Exploración
+        ### 🧹 3. Filtrado de Reglas
+
+        🔁 Se eliminaron reglas duplicadas o reflejadas (A→B y B→A).  
+        📊 Se priorizaron reglas con:   
+            - Productos de alta frecuencia de compra   
+            - Interpretación clara para el negocio  
+        🧺 Se destacaron combinaciones con potencial de **cross-selling** o **agrupamiento físico** en tienda.
+
+        ---
+
+        ### 📈 4. Visualización y Exploración
 
         Las reglas y resultados se presentan mediante:
 
-        - 📊 Tablas ordenadas por métricas clave
-        - 🧠 Interpretaciones automáticas por producto
-        - 🔗 Redes de co-ocurrencia
-        - 🧯 Heatmap cruzado entre productos
+        - 📊 Tablas ordenadas por métricas clave  
+        - 🧠 Interpretaciones automáticas por producto  
+        - 🔗 Redes de co-ocurrencia  
+        - 🧯 Heatmap cruzado entre productos  
 
-        Todo se organiza en una interfaz amigable para el análisis por parte del usuario final.
+        > Todo se organiza en una interfaz amigable para el análisis por parte del usuario final.
         """)
 
     with tab3:
@@ -177,28 +143,4 @@ def show_section_3_methodology():  # Funcion que muestra la sección de metodolo
         - Association graphs (network of co-occurrences)
         - Cross-product heatmaps
         - Contextual recommendations based on real baskets
-        """)
-
-    with tab4:
-
-        st.title("🧪 Metodología del Análisis")
-
-        st.markdown("""
-        Los datos utilizados provienen del dataset 'Online Retail II'.
-
-        - Este conjunto de datos abarca todas las transacciones realizadas por un minorista en línea del Reino Unido (registrado y sin tienda física), desde el 1 de diciembre de 2009 hasta el 9 de diciembre de 2011.
-        - La empresa se especializa en la venta de artículos de regalo distintivos para diversas ocasiones.
-
-        Para llevar a cabo el análisis de Market Basket se utiliza:
-
-        - El `Apriori Algorithm`, altamente efectivo para identificar `frequent itemsets` (conjuntos de ítems frecuentes) y derivar reglas de asociación, basándose en métricas predefinidas como el support y la confidence.
-        - Para ejecutar el algoritmo Apriori, se emplea la `mlxtend library`, una biblioteca confiable de Python especializada en extensiones de aprendizaje automático.
-
-        Los siguientes parámetros fueron configurados para el algoritmo:
-
-        - **`Maximum Combination Length:`**  
-        Se establece una longitud máxima de combinación de 2 ítems. Esta decisión permite enfocarse en pares de productos, favoreciendo un análisis más específico de coocurrencias.
-
-        - **`Minimum Co-Occurrence Support Threshold:`**  
-        Se define un umbral mínimo de soporte de coocurrencia del 0.5%. Esto asegura que solo se consideren asociaciones con una presencia significativa en el dataset.
         """)

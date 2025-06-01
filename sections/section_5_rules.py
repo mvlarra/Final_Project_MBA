@@ -81,15 +81,67 @@ def show_section_5_rules(rules, tabular, Top_5_Rules_by_Score):
         "🟠 Tabla completa"
     ])
 
-    with tab1:
-        st.subheader("📌 Reglas con mayor score (lift + soporte + confianza)")
+    with tab1: # ◯ Reglas relevantes (desde OLD 4 - solo las destacadas)
+        
+        st.markdown("En esta sección verás las principales reglas encontradas con el algoritmo Apriori")
+
+        st.markdown("---")
+        st.subheader("📈 Top 5 Reglas por Soporte")
+        st.markdown("Estas son las 5 reglas más comunes, ordenadas por soporte. El soporte representa la proporción de transacciones donde aparece ese conjunto de productos.")
+
+        # ◯ Nota explicativa con ejemplo concreto, estilo más sutil
+        st.markdown(
+            """
+            <small><i>Ejemplo:</i> Si los productos <b>Taza</b> y <b>Plato</b> aparecen juntos en 50 de 1000 tickets, su soporte es 0.05 (es decir, el 5% de las transacciones).</small>
+            """,
+            unsafe_allow_html=True
+        )
+
+        top_support = rules.sort_values("support", ascending=False).iloc[::2].head(5).reset_index(drop=True)
+        st.dataframe(top_support, use_container_width=True)
+
+
+        st.markdown("---")
+        st.subheader("🏆 Top 5 de las Reglas de Asociación (por Score)")
+
         st.markdown("""
-        🧠 <b>¿Qué estás viendo?</b><br>
-        Esta sección muestra un <b>resumen de las reglas más relevantes</b> encontradas a partir de las canastas de productos.<br>
-        Se ordenan por un <i>score compuesto</i> que combina métricas como soporte, confianza y lift para priorizar las reglas más útiles para el negocio.
-        """, unsafe_allow_html=True)
+        Al evaluar las reglas de asociación, utilizamos métricas clave como **:orange[support]**, **:orange[confidence]** y **:orange[lift]** para determinar su relevancia.
+
+        Cada regla se clasifica de forma independiente según estas métricas, y luego se calcula un **ranking promedio** entre las tres posiciones.
+
+        Este ranking promedio actúa como un **puntaje compuesto**, que refleja el rendimiento general de cada regla a través de las distintas métricas.
+
+        La siguiente tabla muestra las **5 reglas de asociación principales** basadas en este puntaje compuesto.
+        """)
+        
+        # Mostrar la tabla
 
         st.dataframe(Top_5_Rules_by_Score, use_container_width=True)
+        
+        st.markdown("---")
+   
+        st.markdown("""
+        <span style='font-size: 0.85rem; color: gray;'>
+        
+        #### ✅ Ejemplos de recomendaciones basadas en estas reglas
+        
+        1. **Si alguien compra “TAZA DE TÉ Y PLATILLO VERDE REGENCY”, recomendale también “TAZA DE TÉ Y PLATILLO ROSES REGENCY”.**  
+        Alta confianza (76%) y fuerte lift (22× más probable que al azar).
+
+        2. **Si alguien compra “TAZA DE TÉ Y PLATILLO ROSES REGENCY”, recomendale también “TAZA DE TÉ Y PLATILLO VERDE REGENCY”.**  
+        Alta probabilidad y relación recíproca con la anterior.
+
+        3. **Quien compra la versión rosa, tiene alta chance (83%) de interesarse también en la verde.**  
+        Ideal para bundles visualmente combinados.
+
+        4. **Si compran la verde, podrías ofrecer también la rosa, aunque con menor confianza (63%).**  
+        Útil como recomendación cruzada secundaria.
+
+        5. **Compradores de la versión rosa también suelen elegir la versión ROSES.**  
+        Oportunidad para agrupar productos similares en promociones.
+
+        </span>
+        """, unsafe_allow_html=True)
 
     with tab2:
         st.subheader("🗺️ Red de Relaciones entre Productos")

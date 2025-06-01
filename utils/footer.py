@@ -14,8 +14,6 @@ def show_footer_interpretation(titulo, que_ves, que_significa, que_hacer, nota_p
     """
     st.markdown(f"""
     ---
-    ### 🧠 {titulo}
-
     📊 **¿Qué estás viendo?**  
     {que_ves}
 

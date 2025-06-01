@@ -61,74 +61,16 @@ def show_section_6_recommendations(rules, df_bundle_products, Top_5_Rules_by_Sco
     </style>
     """, unsafe_allow_html=True)
 
-
     tabs = st.tabs([
-        "🟠 Reglas de Asociación", 
         "🟠 Bundles sugeridos", 
         "🟠 Recomendaciones personalizadas",
         "🟠 Heatmap de Producto",
         "🟠 Cross Selling Products"
     ])
 
-    # ◯ Reglas relevantes (desde OLD 4 - solo las destacadas)
-    with tabs[0]:
+  
+    with tabs[1]:        # ◯ Bundles sugeridos (desde OLD 5)
         
-        st.markdown("En esta sección verás las principales reglas encontradas con el algoritmo Apriori")
-
-        st.markdown("---")
-        st.subheader("📈 Top 5 Regles by Soporte")
-        st.markdown("Estas son las 5 reglas más comunes, ordenadas por soporte. El soporte representa la proporción de transacciones donde aparece ese conjunto de productos.")
-
-        # ◯ Nota explicativa con ejemplo concreto, estilo más sutil
-        st.markdown(
-            """
-            <small><i>Ejemplo:</i> Si los productos <b>Taza</b> y <b>Plato</b> aparecen juntos en 50 de 1000 tickets, su soporte es 0.05 (es decir, el 5% de las transacciones).</small>
-            """,
-            unsafe_allow_html=True
-        )
-
-        top_support = rules.sort_values("support", ascending=False).iloc[::2].head(5).reset_index(drop=True)
-        st.dataframe(top_support, use_container_width=True)
-
-
-        st.markdown("---")
-        st.subheader("🏆 Top 5 Association Rules by Score")
-
-        st.markdown("""
-        While evaluating association rules, we utilize key metrics such as **:orange[support]**, **:orange[confidence]**, and **:orange[lift]** to discern their significance.
-
-        Each rule is independently ranked based on these metrics, and a **mean rank** is computed across all three rankings.
-
-        This mean rank serves as a **composite score**, capturing the overall performance of each rule across the different metrics.  
-
-        The table below shows the **top 5 association rules** based on the composite score.
-        """)
-        # Mostrar la tabla
-
-        st.dataframe(Top_5_Rules_by_Score, use_container_width=True)
-
-        st.markdown("### ✅ Recomendaciones basadas en las reglas")
-
-        st.markdown("""
-        1. **Si alguien compra “TAZA DE TÉ Y PLATILLO VERDE REGENCY”, recomendale también “TAZA DE TÉ Y PLATILLO ROSES REGENCY”.**  
-        Alta confianza (76%) y fuerte lift (22× más probable que al azar).
-
-        2. **Si alguien compra “TAZA DE TÉ Y PLATILLO ROSES REGENCY”, recomendale también “TAZA DE TÉ Y PLATILLO VERDE REGENCY”.**  
-        Alta probabilidad y relación recíproca con la anterior.
-
-        3. **Quien compra la versión rosa, tiene alta chance (83%) de interesarse también en la verde.**  
-        Ideal para bundles visualmente combinados.
-
-        4. **Si compran la verde, podrías ofrecer también la rosa, aunque con menor confianza (63%).**  
-        Útil como recomendación cruzada secundaria.
-
-        5. **Compradores de la versión rosa también suelen elegir la versión ROSES.**  
-        Oportunidad para agrupar productos similares en promociones.
-        """)
-
-
-    # ◯ Bundles sugeridos (desde OLD 5)
-    with tabs[1]:
         st.subheader("🎁 Bundles recomendados")
         st.markdown("""
         Cada *bundle* agrupa productos que suelen comprarse juntos de forma consistente.  

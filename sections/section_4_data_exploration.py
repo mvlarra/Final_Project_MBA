@@ -69,11 +69,6 @@ def show_section_4(dataset_sample, Top_10_Mas_Vendidos, example_basket, monthly_
     "🟠 Distribución mensual"
     ])
 
-    st.markdown("""
-    `Fuente de datos:`  
-    Dataset Online Retail II de la UCI Machine Learning Repository.
-    """)
-    
     with tab1:          # ◯ Mostrar dataset general
         st.markdown("---")
         st.subheader("`🧾 Vista general del dataset`")
