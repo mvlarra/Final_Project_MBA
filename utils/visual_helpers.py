@@ -108,15 +108,22 @@ def mostrar_ejemplo_canasta(df):
     st.dataframe(df, use_container_width=True)
     
     
-def mostrar_matriz_binaria(df_binaria):
+def mostrar_matriz_binaria(df_binaria, top_n=10):
     """
-    Muestra un fragmento de la matriz binaria (Factura × Producto).
+    Muestra un fragmento filtrado de la matriz binaria (Factura × Producto),
+    destacando las columnas más relevantes (más compradas).
     """
     st.markdown("---")
-    st.subheader("🧾 Ejemplo de Matriz Binaria")
-    st.markdown("""
-    Este fragmento representa cómo se estructura la información luego del preprocesamiento:  
-    cada fila es una transacción y cada columna un producto.  
-    Un valor `1` indica que ese producto fue comprado en esa transacción.
-    """)
-    st.dataframe(df_binaria.head(10), use_container_width=True)
+    st.markdown("🧾 Ejemplo de Matriz Binaria")
+
+    # Eliminar columnas no relevantes
+    df_binaria = df_binaria.drop(columns=["Unnamed: 0", "Unnamed: 0.1"], errors='ignore')
+
+    # Obtener los productos más frecuentes
+    top_columns = df_binaria.sum().sort_values(ascending=False).head(top_n).index
+
+    # Filtrar filas que contengan al menos un '1' en esos productos
+    df_filtrada = df_binaria[df_binaria[top_columns].sum(axis=1) > 0]
+
+    # Mostrar las primeras filas filtradas
+    st.dataframe(df_filtrada[top_columns].head(15), use_container_width=True)

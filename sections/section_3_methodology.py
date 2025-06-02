@@ -12,10 +12,11 @@ from utils.visual_helpers import mostrar_matriz_binaria
 
 
 
+
 # ◯ Sección 3: METODOLOGIA DE ANALISIS
 # -----------------------------------------------------------------------------------------------------------------
 
-def show_section_3_methodology():  # Funcion que muestra la sección de metodología del análisis, describiendo el origen del dataset, el enfoque metodológico y los parámetros utilizados.
+def show_section_3_methodology(matriz_binaria):  # Funcion que muestra la sección de metodología del análisis, describiendo el origen del dataset, el enfoque metodológico y los parámetros utilizados.
     st.title("🧪 Metodología")
 
     st.markdown("""
@@ -77,9 +78,15 @@ def show_section_3_methodology():  # Funcion que muestra la sección de metodolo
         - Se unificaron descripciones a minúsculas y se corrigieron errores comunes para mejorar la agrupación de productos.  
 
         ✅ **Generación de matriz binaria**  
-        - Se creó una matriz **Factura x Producto** con valores `1` si un producto fue comprado en esa transacción.
-        """)  
-      mostrar_matriz_binaria(matriz_binaria)
+        - Para poder aplicar el algorithmo fue necesario crear una matriz de **Factura x Producto**
+        - Luego del procesamiento, su estructura es la siguiente:  
+            * cada fila es una transacción y 
+            * cada columna un producto.  
+            * El valor 1 indica que ese producto fue comprado en esa transacción.  
+    
+        Veamos mas abajo, las primeras filas de la matriz binaria centrada en los **{top_n} productos más frecuentes**.  
+        """)
+      mostrar_matriz_binaria(matriz_binaria, top_n=10)  # Mostrar un fragmento de la matriz binaria filtrada
 
     with tab2:
         st.markdown("""

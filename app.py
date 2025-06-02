@@ -162,8 +162,6 @@ elif section.startswith("3."):
     show_section_3_methodology(matriz_binaria)
 
 
-
-
 # ◯ Sección 4: EXPLORACIÓN DE DATOS
 # ............................................................................................
 # Objetivo:
