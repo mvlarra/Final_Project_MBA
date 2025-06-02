@@ -18,14 +18,35 @@ def show_section_1_about():
     # Contenido: Objetivo, tecnologías utilizadas, recursos, contacto
     # .........................................................................
     
-    st.title("📘 Acerca del Proyecto")
+    st.markdown("""
+    <div style='text-align: left; 
+        font-size: 3.2em;
+        display: inline-block;
+        boldness: 600;
+    '>
+    🛒 Market Basket Analysis
+    </div> 
+    """, unsafe_allow_html=True)
+
+    st.markdown("## 📘 Acerca del Proyecto")
 
     st.markdown("""
-    Este proyecto fue desarrollado como parte del **Bootcamp de Data Science & Machine Learning en 4Geeks Academy**,  
-    por **Valentina Larrañaga**.
-
-    ---
-    ### 🎯 Objetivo
+    Este proyecto fue desarrollado como parte del **Bootcamp de Data Science & Machine Learning en 4Geeks Academy**, por **Valentina Larrañaga**.
+    Busca transformar datos transaccionales en estrategias accionables para retail, aplicando Market Basket Analysis con reglas de asociación.
+    """)
+    
+    st.markdown("---")
+    st.markdown("### 🔎 Enfoque del análisis")
+    st.markdown("""
+    El recorrido de la app está organizado de forma progresiva: Va desde la exploración de los datos hasta las recomendaciones estratégicas.
+    ```
+    📦 Datos de Transacciones → 📊Exploracion de los Datos → 🔎 Reglas de Asociación → 🧠 Recomendaciones Personalizadas → 💼 Acciones Estratégicas
+    ```
+    """)
+           
+    st.markdown("---")
+    st.markdown("### 🎯 Objetivos Especificos")
+    st.markdown("""
     Identificar patrones de compra frecuentes y generar recomendaciones accionables para mejorar la estrategia comercial.
 
     **`1. Descubrimiento de Reglas de Asociación`**  
@@ -39,25 +60,30 @@ def show_section_1_about():
 
     **`4. Ubicación Estratégica de Productos`**  
     Organizar los productos en la tienda física o en línea de forma que se fomente la compra de artículos relacionados, creando una experiencia de compra más conveniente y satisfactoria.
+    """)
 
-
-    ---
-    ### 🚀 Tecnologías utilizadas
+    st.markdown("---")
+    st.markdown("### 🚀 Tecnologías utilizadas")
+    st.markdown("""
     - Python · pandas · numpy  
     - mlxtend (reglas de asociación)  
     - plotly · matplotlib  
     - Streamlit  
     - GitHub Codespaces
     - **Render (despliegue en la nube)**
-
-    ---
-    ### 🌐 Recursos
+    """)
+    
+    st.markdown("---")
+    st.markdown("### 🌐 Recursos")
+    st.markdown("""
     - Código fuente: [GitHub del proyecto](https://github.com/mvlarra/Final_Project_MBA)  
     - Dataset: Online Retail Dataset (UCI / Kaggle)  
-    - App en vivo: (📎 Agregar URL cuando esté desplegada)
+    - App en vivo: (📎 https://market-basket-analysis-xb0x.onrender.com/)
+    """)
 
-    ---
-    ### 📫 Contacto
+    st.markdown("---")
+    st.markdown("### 📫 Contacto")
+    st.markdown("""
     - [LinkedIn](https://www.linkedin.com/in/valentinalarra)  
     - [GitHub](https://github.com/mvlarra)
     """)

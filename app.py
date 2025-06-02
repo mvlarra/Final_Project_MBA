@@ -47,14 +47,13 @@ from utils.loader import load_data
 
 # ◯ Funciones por sección:
 from sections.section_1_about import show_section_1_about
-from sections.section_2_summary import show_section_2_summary   
 from sections.section_3_methodology import show_section_3_methodology
 from sections.section_4_data_exploration import show_section_4
 from sections.section_5_rules import show_section_5_rules
 from sections.section_6_recommendations import show_section_6_recommendations
 from sections.section_7_actions import show_section_7_actions
 from sections.section_8_glosario import show_section_8_glosario
-
+from sections.section_9_summary import show_section_9_summary   
 
 
 #    ------------------------------------------------------------------------------------------
@@ -116,13 +115,13 @@ dataset_sample, Top_10_Mas_Vendidos, example_basket, monthly_transactions, rules
 st.sidebar.title("🧭 Navegación")
 section = st.sidebar.radio("Ir a la sección:", (
     "1. 📘 Acerca del Proyecto",
-    "2. 📋 Resumen del Proyecto",
     "3. 🧪 Metodología del Análisis",
     "4. 📊 Exploración de Datos",
     "5. 🔎 Explorar Reglas de Asociación",
     "6. 🛒 Recomendaciones y Estrategias por Producto",
     "7. 💼 Acciones estratégicas para tu negocio",   
     "8. 📏 Glosario de Métricas", 
+    "9. 📋 Conclusiones",
     "OLD 1. 🏠 Inicio",
     "OLD 9. 📎 Créditos y recursos del proyecto"
 ))
@@ -147,21 +146,7 @@ section = st.sidebar.radio("Ir a la sección:", (
 if section.startswith("1."):
     show_section_1_about()
 
-# 2. ◯ Sección: RESUMEN DEL PROYECTO
-# ............................................................................................
-# Objetivo:
-#   Presentar un resumen ejecutivo del análisis realizado, destacando el propósito del proyecto, el origen de los datos,
-#   la metodología aplicada y los principales hallazgos obtenidos.
-# Contenido:
-#   - Objetivo del análisis y foco comercial
-#   - Fuente y características del dataset utilizado
-#   - Metodología empleada (Apriori, métricas de asociación)
-#   - Hallazgos destacados y ejemplos de reglas obtenidas
-#   - Recomendaciones accionables para el negocio
-#   - Tecnologías y herramientas utilizadas en el desarrollo
 
-elif section.startswith("2."):
-    show_section_2_summary()
 
 # ◯ Sección 3: METODOLOGIA DE ANALISIS
 # -----------------------------------------------------------------------------------------------------------------
@@ -248,3 +233,20 @@ elif section.startswith("7."):
 
 elif section == "8.":
     show_section_8_glosario()
+    
+
+# 9. ◯ Sección: RESUMEN DEL PROYECTO
+# ............................................................................................
+# Objetivo:
+#   Presentar un resumen ejecutivo del análisis realizado, destacando el propósito del proyecto, el origen de los datos,
+#   la metodología aplicada y los principales hallazgos obtenidos.
+# Contenido:
+#   - Objetivo del análisis y foco comercial
+#   - Fuente y características del dataset utilizado
+#   - Metodología empleada (Apriori, métricas de asociación)
+#   - Hallazgos destacados y ejemplos de reglas obtenidas
+#   - Recomendaciones accionables para el negocio
+#   - Tecnologías y herramientas utilizadas en el desarrollo
+
+elif section.startswith("9."):
+    show_section_9_summary()

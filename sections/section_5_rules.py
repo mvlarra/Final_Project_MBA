@@ -8,6 +8,7 @@
 #   - Tabla completa de todas las reglas generadas
 
 import streamlit as st
+import pandas as pd
 import plotly.graph_objects as go
 import networkx as nx
 from charts.HeatmapXTab import draw_heatmap
@@ -74,8 +75,9 @@ def show_section_5_rules(rules, tabular, Top_5_Rules_by_Score):
     </style>
     """, unsafe_allow_html=True)
 
-    tab1, tab2, tab3, tab4 = st.tabs([
+    tab1, tab2, tab3, tab4, tab5 = st.tabs([
         "🟠 Reglas destacadas",
+        "🟠 Reglas por Producto"    
         "🟠 Red de productos",
         "🟠 Heatmap cruzado",
         "🟠 Tabla completa"
@@ -143,7 +145,50 @@ def show_section_5_rules(rules, tabular, Top_5_Rules_by_Score):
         </span>
         """, unsafe_allow_html=True)
 
+    
     with tab2:
+        st.subheader("🔎 Filtrar Reglas por Producto Antecedente y/o Concecuente")
+        st.markdown("""
+        Esta sección te permite explorar las reglas de asociación filtrando por productos específicos.
+        Podés seleccionar productos que actúan como antecedentes o consecuentes para ver las reglas asociadas.
+        """, unsafe_allow_html=True)
+
+        # Leer archivo de reglas
+        try:
+            rules_df = pd.read_csv("data/processed/summary_rules.csv")
+
+            # Limpieza de strings en columnas de sets si es necesario
+            rules_df["antecedents"] = rules_df["antecedents"].str.replace(r"[{}']", "", regex=True)
+            rules_df["consequents"] = rules_df["consequents"].str.replace(r"[{}']", "", regex=True)
+
+            # Obtener listas únicas para filtros
+            antecedent_options = sorted(rules_df["antecedents"].unique())
+            consequent_options = sorted(rules_df["consequents"].unique())
+
+            # Interfaz de selección en dos columnas
+            col1, col2 = st.columns(2)
+
+            with col1:
+                selected_antecedents = st.multiselect("Select Antecedents", antecedent_options)
+
+            with col2:
+                selected_consequents = st.multiselect("Select Consequents", consequent_options)
+
+            # Aplicar filtros
+            filtered_df = rules_df.copy()
+
+            if selected_antecedents:
+                filtered_df = filtered_df[filtered_df["antecedents"].isin(selected_antecedents)]
+
+            if selected_consequents:
+                filtered_df = filtered_df[filtered_df["consequents"].isin(selected_consequents)]
+
+            st.dataframe(filtered_df.reset_index(drop=True))
+
+        except FileNotFoundError:
+            st.warning("⚠️ No se encontró el archivo 'summary_rules.csv'. Verificá la ruta.")
+    
+    with tab3:
         st.subheader("🗺️ Red de Relaciones entre Productos")
         st.markdown("""
         🧠 <b>¿Qué estás viendo?</b><br>
@@ -244,7 +289,7 @@ def show_section_5_rules(rules, tabular, Top_5_Rules_by_Score):
             """)
         footer_red_productos()
    
-    with tab3:
+    with tab4:
             st.subheader("📊 Heatmap cruzado entre productos")
             st.markdown("""
             🧠 <b>¿Qué estás viendo?</b><br>
@@ -263,7 +308,7 @@ def show_section_5_rules(rules, tabular, Top_5_Rules_by_Score):
             footer_heatmap()
         
 
-    with tab4:
+    with tab5:
         st.subheader("📋 Todas las reglas generadas")
         st.markdown("""
         Este es el listado completo de todas las reglas de asociación generadas, que cumplen con los parámetros mínimos definidos.

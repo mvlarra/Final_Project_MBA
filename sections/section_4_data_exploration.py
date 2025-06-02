@@ -32,6 +32,13 @@ def show_section_4(dataset_sample, Top_10_Mas_Vendidos, example_basket, monthly_
     st.title("📊 Exploración de Datos")
     
     st.markdown("""
+    Esta sección permite realizar una primera aproximación visual al dataset para comprender su estructura y contenido.
+    El objetivo es familiarizarse con los datos antes de aplicar técnicas de análisis más avanzadas.
+    Luego procederemos a trabajar en la limipieza y el procesamiento de los datos. 
+    Pasos Claves para asegurar un análisis efectivo y sin ruidos. 
+    """)
+    
+    st.markdown("""
     <style>
     /* Espaciado entre tabs */
     .stTabs [data-baseweb="tab-list"] {
