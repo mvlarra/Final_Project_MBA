@@ -8,9 +8,12 @@
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",  // Monta tu carpeta local dentro del contenedor
     "workspaceFolder": "/workspace", // Hace que VS Code trabaje desde esa carpeta montada
 
-    // Comando que se ejecuta al crear el contenedor.
-    // Instala los paquetes listados en requirements.txt
-    "onCreateCommand": "cd /workspace && pip3 install -r requirements.txt",
+   // Comando que se ejecuta al crear el contenedor.
+   // Instala los paquetes listados en requirements.txt
+   // Si existe requirements-dev.txt, lo usa (ideal para desarrollo local).
+   // Si no existe (como en Render), usa requirements.txt.
+   "onCreateCommand": "cd /workspace && if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; else pip install -r requirements.txt; fi",
+
                     
     // Comando que se ejecuta después de que el contenedor está listo:
     // - sudo apt-get update                        | Actualiza paquetes del sistema
