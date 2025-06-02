@@ -8,6 +8,9 @@
 #   - Parámetros clave del modelo: combinación máxima y soporte mínimo
 
 import streamlit as st
+from utils.visual_helpers import mostrar_matriz_binaria
+
+
 
 # ◯ Sección 3: METODOLOGIA DE ANALISIS
 # -----------------------------------------------------------------------------------------------------------------
@@ -52,16 +55,14 @@ def show_section_3_methodology():  # Funcion que muestra la sección de metodolo
     
     # Tabs principales
     tab1, tab2, tab3, tab4 = st.tabs([
-        "🟠 1. Limpieza y Preparación de Datos",
-        "🟠 2. Modelo Aplicado",
-        "🟠 3. Parámetros y Filtrado de Reglas",
-        "🟠 4. Visualización y Resultados"
+        "🟠 Limpieza y Preparación de Datos",
+        "🟠 Modelo Aplicado",
+        "🟠 Parámetros y Filtrado de Reglas",
+        "🟠 Visualización y Resultados"
     ])
     
     with tab1:
       st.markdown("""
-        ### 📁 1. Limpieza y Preparación de Datos
-
         🔍 Para asegurar la calidad del análisis, se realizaron los siguientes pasos de depuración:
 
         ✅ **Filtrado de transacciones**  
@@ -77,11 +78,8 @@ def show_section_3_methodology():  # Funcion que muestra la sección de metodolo
 
         ✅ **Generación de matriz binaria**  
         - Se creó una matriz **Factura x Producto** con valores `1` si un producto fue comprado en esa transacción.
-        """)
-        
-      with st.expander("🔍 Ver ejemplo de matriz binaria"):
-        st.dataframe(matriz_binaria.head(5))
-        
+        """)  
+      mostrar_matriz_binaria(matriz_binaria)
 
     with tab2:
         st.markdown("""
@@ -119,9 +117,7 @@ def show_section_3_methodology():  # Funcion que muestra la sección de metodolo
           - Productos de alta frecuencia de compra   
           - Interpretación clara para el negocio  
       🧺 Se destacaron combinaciones con potencial de **cross-selling** o **agrupamiento físico** en tienda.
-    """)
-
-
+      """)
 
     with tab4:
       st.markdown("""  

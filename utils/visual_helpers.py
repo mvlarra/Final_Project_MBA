@@ -106,3 +106,17 @@ def mostrar_ejemplo_canasta(df):
     """)
 
     st.dataframe(df, use_container_width=True)
+    
+    
+def mostrar_matriz_binaria(df_binaria):
+    """
+    Muestra un fragmento de la matriz binaria (Factura × Producto).
+    """
+    st.markdown("---")
+    st.subheader("🧾 Ejemplo de Matriz Binaria")
+    st.markdown("""
+    Este fragmento representa cómo se estructura la información luego del preprocesamiento:  
+    cada fila es una transacción y cada columna un producto.  
+    Un valor `1` indica que ese producto fue comprado en esa transacción.
+    """)
+    st.dataframe(df_binaria.head(10), use_container_width=True)

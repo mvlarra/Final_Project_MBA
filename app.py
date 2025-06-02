@@ -103,7 +103,7 @@ st.sidebar.image(logo, use_container_width=True)
 
 # Cargar datasets procesados (desde utils/loader.py)
 
-dataset_sample, Top_10_Mas_Vendidos, example_basket, monthly_transactions, rules, df_bundle_products, tabular, Top_5_Rules_by_Score = load_data()
+dataset_sample, Top_10_Mas_Vendidos, example_basket, monthly_transactions, matriz_binaria, rules, df_bundle_products, tabular, Top_5_Rules_by_Score = load_data()
 
 
 #    ------------------------------------------------------------------------------------------
@@ -159,7 +159,7 @@ if section.startswith("1."):
 #   - Parámetros clave del modelo: combinación máxima y soporte mínimo
 
 elif section.startswith("3."):
-    show_section_3_methodology()
+    show_section_3_methodology(matriz_binaria)
 
 
 
