@@ -77,7 +77,7 @@ def show_section_5_rules(rules, tabular, Top_5_Rules_by_Score):
 
     tab1, tab2, tab3, tab4, tab5 = st.tabs([
         "🟠 Reglas destacadas",
-        "🟠 Reglas por Producto"    
+        "🟠 Reglas por Producto",    
         "🟠 Red de productos",
         "🟠 Heatmap cruzado",
         "🟠 Tabla completa"
@@ -149,7 +149,7 @@ def show_section_5_rules(rules, tabular, Top_5_Rules_by_Score):
     with tab2:
         st.subheader("🔎 Filtrar Reglas por Producto Antecedente y/o Concecuente")
         st.markdown("""
-        Esta sección te permite explorar las reglas de asociación filtrando por productos específicos.
+        Esta sección te permite explorar las reglas de asociación filtrando por productos específicos.  
         Podés seleccionar productos que actúan como antecedentes o consecuentes para ver las reglas asociadas.
         """, unsafe_allow_html=True)
 

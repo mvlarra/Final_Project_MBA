@@ -80,9 +80,9 @@ def show_section_3_methodology(matriz_binaria):  # Funcion que muestra la secci�
         ✅ **Generación de matriz binaria**  
         - Para poder aplicar el algorithmo fue necesario crear una matriz de **Factura x Producto**
         - Luego del procesamiento, su estructura es la siguiente:  
-            * cada fila es una transacción y 
-            * cada columna un producto.  
-            * El valor 1 indica que ese producto fue comprado en esa transacción.  
+            * cada Fila es una Transacción  
+            * cada Columna un Producto.  
+            * El valor `1` indica que ese producto `fue comprado` en esa transacción.  
     
         Veamos mas abajo, las primeras filas de la matriz binaria centrada en los **{top_n} productos más frecuentes**.  
         """)
