@@ -189,6 +189,12 @@ venv/
 .env
 *.env
 
+# Evitamos que Render instale librerias inecesarias. 
+# Agregando esta linea aca, Git dejará de trackear requirements-dev.txt y Render no lo verá.
+requirements-dev.txt
+
+
+
 # Archivos grandes o sensibles
 *.csv
 *.xlsx
