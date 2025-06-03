@@ -158,7 +158,7 @@ def show_section_5_rules(rules, tabular, Top_5_Rules_by_Score):
             # ◯ Aplicar filtros más adelante, pero definimos el DataFrame ya
             filtered_df = rules_df.copy()
             
-            st.markdown(f"<div style='color:#00BFFF; font-size:23px;'>"Reglas Encontradas por el Algoritmo: {total_rules:,}")
+            st.markdown(f"<div style='color:#00BFFF; font-size:23px;'>Reglas Encontradas por el Algoritmo: {total_rules:,}</div>", unsafe_allow_html=True)
             st.markdown("---")
 
             # ◯ Mostrar criterios de generación al principio
