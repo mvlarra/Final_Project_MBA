@@ -180,8 +180,7 @@ def show_section_5_rules(rules, tabular, Top_5_Rules_by_Score):
             st.markdown("---")            
             
             st.markdown(
-                f"<br><div style='color:#ffff99; font-size:21px;'>"
-                f"🟡 Mostrando {len(filtered_df)} de {total_rules:,} Reglas Encontradas"
+                f"<div style='color:#00BFFF; font-size:21px;'>🔵 Mostrando {len(filtered_df)} de {total_rules:,} Reglas Encontradas"
                 ,unsafe_allow_html=True
             )
             
