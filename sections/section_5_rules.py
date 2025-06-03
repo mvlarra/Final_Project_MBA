@@ -144,49 +144,81 @@ def show_section_5_rules(rules, tabular, Top_5_Rules_by_Score):
 
         </span>
         """, unsafe_allow_html=True)
-
     
-    with tab2:
-        st.subheader("🔎 Filtrar Reglas por Producto Antecedente y/o Concecuente")
-        st.markdown("""
-        Esta sección te permite explorar las reglas de asociación filtrando por productos específicos.  
-        Podés seleccionar productos que actúan como antecedentes o consecuentes para ver las reglas asociadas.
-        """, unsafe_allow_html=True)
-
-        # Leer archivo de reglas
-        try:
+    with tab2:    
+        try:        
+            # ◯ Leer archivo con resumen de reglas
             rules_df = pd.read_csv("data/processed/summary_rules.csv")
-
-            # Limpieza de strings en columnas de sets si es necesario
+            total_rules = len(rules_df)
+                
+            # ◯ Limpieza de strings de conjuntos
             rules_df["antecedents"] = rules_df["antecedents"].str.replace(r"[{}']", "", regex=True)
             rules_df["consequents"] = rules_df["consequents"].str.replace(r"[{}']", "", regex=True)
-
-            # Obtener listas únicas para filtros
-            antecedent_options = sorted(rules_df["antecedents"].unique())
-            consequent_options = sorted(rules_df["consequents"].unique())
-
-            # Interfaz de selección en dos columnas
-            col1, col2 = st.columns(2)
-
-            with col1:
-                selected_antecedents = st.multiselect("Select Antecedents", antecedent_options)
-
-            with col2:
-                selected_consequents = st.multiselect("Select Consequents", consequent_options)
-
-            # Aplicar filtros
+            
+            # ◯ Aplicar filtros más adelante, pero definimos el DataFrame ya
             filtered_df = rules_df.copy()
+            
+            st.subheader(f"Reglas Encontradas por el Algoritmo: {total_rules:,}")
 
+            # ◯ Mostrar criterios de generación al principio
+            st.markdown("""
+            Este es el listado completo de reglas de asociación que cumplen con los criterios mínimos establecidos al usar el algoritmo Apriori.  
+            Estos criterios son:
+
+            - **`Soporte` ≥ 0.01** → aparecen en al menos el 1% de las transacciones.  
+            *Indica frecuencia: qué tan común es la combinación.*
+
+            - **`Confianza` ≥ 0.20** → al menos 20% de las veces que alguien compra el producto A, también compra el B.  
+            *Mide la precisión de la recomendación.*
+
+            - **`Lift` ≥ 2** → los productos se compran juntos al menos 2 veces más de lo esperado por azar.  
+            *Refleja fuerza o relevancia de la relación. Ordenar por este criterio para ver las asociaciones mas significativas*
+            
+            La vista es ideal para un análisis detallado, validación del modelo o exportación para revisión externa.
+            """, unsafe_allow_html=True)
+            
+            st.markdown("---")            
+            
+            st.markdown(
+                f"<br><div style='color:#ffff99; font-size:21px;'>"
+                f"🟡 Mostrando {len(filtered_df)} de {total_rules:,} Reglas Encontradas"
+                ,unsafe_allow_html=True
+            )
+            
+            # ◯ Descripción general de la sección
+            st.markdown("""
+            Tambien podes explorar las reglas de asociación filtrando por productos específicos.  
+            Podés seleccionar elementos que actúan como **antecedentes** (productos comprados primero) o **consecuentes** (productos recomendados después).
+
+            ℹ️ *Si no seleccionás ningún filtro, se mostrará el listado completo de reglas generadas.*
+            
+            ---
+            """, unsafe_allow_html=True)   
+    
+            # ◯ Filtros paralelos
+            antecedent_options = sorted(rules_df["antecedents"].unique())
+            consequent_options = sorted(rules_df["consequents"].unique())   
+             
+            col1, col2 = st.columns(2)
+            with col1:
+                selected_antecedents = st.multiselect("🅰️ Filtrar por Antecedente:", antecedent_options)
+            with col2:
+                selected_consequents = st.multiselect("🅱️ Filtrar por Consecuente:", consequent_options)
+
+            # ◯ Aplicar filtros si corresponde
+            filtered_df = rules_df.copy()
             if selected_antecedents:
                 filtered_df = filtered_df[filtered_df["antecedents"].isin(selected_antecedents)]
-
             if selected_consequents:
                 filtered_df = filtered_df[filtered_df["consequents"].isin(selected_consequents)]
-
+                                   
+            # ◯ Mostrar tabla filtrada
             st.dataframe(filtered_df.reset_index(drop=True))
-
+        
         except FileNotFoundError:
-            st.warning("⚠️ No se encontró el archivo 'summary_rules.csv'. Verificá la ruta.")
+            st.warning("⚠️ No se encontró el archivo `summary_rules.csv`. Verificá que esté en la carpeta `data/processed`.")
+
+
     
     with tab3:
         st.subheader("🗺️ Red de Relaciones entre Productos")
@@ -308,12 +340,3 @@ def show_section_5_rules(rules, tabular, Top_5_Rules_by_Score):
             footer_heatmap()
         
 
-    with tab5:
-        st.subheader("📋 Todas las reglas generadas")
-        st.markdown("""
-        Este es el listado completo de todas las reglas de asociación generadas, que cumplen con los parámetros mínimos definidos.
-        Es ideal para análisis detallado o auditoría. Podés exportarlas o analizarlas por separado.
-        """, unsafe_allow_html=True)
-                
-        st.dataframe(rules, use_container_width=True)
-        footer_reglas_asociacion()

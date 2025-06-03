@@ -69,7 +69,7 @@ def show_section_6_recommendations(rules, df_bundle_products, Top_5_Rules_by_Sco
     ])
 
   
-    with tabs[1]:        # ◯ Bundles sugeridos (desde OLD 5)
+    with tabs[0]:        # ◯ Bundles sugeridos (desde OLD 5)
         
         st.subheader("🎁 Bundles recomendados")
         st.markdown("""
@@ -181,7 +181,7 @@ def show_section_6_recommendations(rules, df_bundle_products, Top_5_Rules_by_Sco
 
 
     # ◯ Recomendaciones personalizadas (desde OLD 6)
-    with tabs[2]:
+    with tabs[1]:
         st.subheader("🛍️ Recomendaciones para tu carrito")
         
         st.markdown("""
@@ -235,7 +235,7 @@ def show_section_6_recommendations(rules, df_bundle_products, Top_5_Rules_by_Sco
         footer_recomendaciones_carrito()       
             
     # ◯ Heatmap por producto (movido desde sección separada)
-    with tabs[3]:
+    with tabs[2]:
         st.subheader == "📌 Heatmap de Producto"
         
         st.markdown("## 📌 Heatmap de Co-ocurrencia por Producto")
@@ -393,7 +393,7 @@ def show_section_6_recommendations(rules, df_bundle_products, Top_5_Rules_by_Sco
 
     # ◯ Sección Cross Selling Products
     # -----------------------------------------------------------------------------------------------------------------
-    with tabs[4]:
+    with tabs[3]:
             st.markdown("## 🔁 Cross Selling Products")
             st.markdown("""
             **Top 5 Cross-Selling Products**
