@@ -1,56 +1,29 @@
 {
-    // Nombre del contenedor que aparecerá en VS Code
     "name": "Python 3 - Data Science",
-  
-    // Imagen base oficial de Microsoft con Python 3.11
     "image": "mcr.microsoft.com/devcontainers/python:0-3.11",
-  
-    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",  // Monta tu carpeta local dentro del contenedor
-    "workspaceFolder": "/workspace", // Hace que VS Code trabaje desde esa carpeta montada
-
-   // Comando que se ejecuta al crear el contenedor.
-   // Instala los paquetes listados en requirements.txt
-   // Si existe requirements-dev.txt, lo usa (ideal para desarrollo local).
-   // Si no existe (como en Render), usa requirements.txt.
-   "onCreateCommand": "cd /workspace && if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; else pip install -r requirements.txt; fi",
-
-                    
-    // Comando que se ejecuta después de que el contenedor está listo:
-    // - sudo apt-get update                        | Actualiza paquetes del sistema
-    // - sudo apt-get install -y tree               | Instala el comando `tree` para ver estructuras de carpetas
-    // - python3 -m pip install ipykernel           | Instala `ipykernel` para poder registrar kernels personalizados
-    // - python3 -m ipykernel install --user --name devcontainer --display-name "Python 3 (devcontainer)"        | "Registra el kernel con el nombre visible 'Python 3 (devcontainer)'.
-    // - echo 'export PS1="(devcontainer) $PS1"' >> ~/.bashrc     |  Personaliza el prompt del terminal
-    // - Los tres parametros siguientes, crean script para que pandas siempre muestre la cantidad de decimales
-    //   definida y el separador de miles ({:,.1f}). 
-    //   Esto es solo a nivel de visualizacion. No modifica el df.        
-    //    - mkdir -p ~/.ipython/profile_default/startup              | Crea la carpeta de arranque automática de IPython si no existe
-    //    - echo "import pandas as pd\npd.set_option('display.float_format', '{:,.1f}'.format)" \     | Crea un archivo .py ahí dentro.
-    //    - > ~/.ipython/profile_default/startup/00-display-float-format.py       | Escribe el código que configura pandas para mostrar siempre la cantidad de decimales definidos, y el separador de miles.
-    
-
-    // JSON y soporta varias líneas de codigo en una misma instruccion
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",  
+    "workspaceFolder": "/workspace", 
+ 
+    "onCreateCommand": "cd /workspace && if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; else pip install -r requirements.txt; fi",
     "postCreateCommand": "sudo apt-get update && sudo apt-get install -y tree && python3 -m pip install ipykernel && python3 -m ipykernel install --user --name devcontainer --display-name 'Python 3 (devcontainer)' && echo 'export PS1=\"(devcontainer) $PS1\"' >> ~/.bashrc && mkdir -p ~/.ipython/profile_default/startup && echo \"import pandas as pd\npd.set_option('display.float_format', '{:,.1f}'.format)\" > ~/.ipython/profile_default/startup/00-display-float-format.py", 
-  
-    // Personalizaciones para el entorno de Visual Studio Code
+    "postStartCommand": "cd /workspace && pip install -r requirements.txt && if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi && streamlit run app.py",
+ 
     "customizations": {
       "vscode": {
-        // Extensiones que se instalarán automáticamente
         "extensions": [
-          "monokai.theme-monokai-pro-vscode", // Tema Monokai Pro para Visual Studio Code, proporcionando un esquema de colores atractivo y fácil de leer. (Me interesa Monokai++)              
-          "ms-toolsai.jupyter",           // Soporte para trabajar con Jupyter Notebooks, permitiendo la ejecución y visualización de código interactivo.
-          "ms-toolsai.jupyter-keymap",    // Atajos de teclado para trabajar con Jupyter Notebooks, facilitando la navegación y edición.
-          "ms-toolsai.jupyter-renderers", // Extensión para mejorar la visualización de datos en Jupyter Notebooks, permitiendo renderizar gráficos y otros tipos de datos de manera más efectiva.      
-          "ms-python.python",             // Extensión esencial para el desarrollo en Python, habilitando características como linting, autocompletado y depuración.
-          "ms-python.vscode-pylance",     // Proporciona soporte avanzado para Python, incluyendo autocompletado y análisis de código.
-          "ms-edgedev.data-wrangler",     // Herramienta para manipulación de datos, permitiendo transformar, limpiar y visualizar datos de manera sencilla y rápida.
-          "ms-azuretools.vscode-docker",  // Extensión para trabajar con Docker, facilitando la creación, gestión y depuración de contenedores directamente desde VS Code.
-          "GitHub.copilot",               // Proporciona sugerencias de código basadas en IA, acelerando la escritura de código al predecir las líneas siguientes (requiere suscripción a Copilot Pro).
-          "mechatroner.rainbow-csv"       // Extensión para mejorar la visualización de archivos CSV, asignando colores a las columnas para facilitar la lectura y análisis de datos.
+          "monokai.theme-monokai-pro-vscode",
+          "ms-toolsai.jupyter",
+          "ms-toolsai.jupyter-keymap",
+          "ms-toolsai.jupyter-renderers",
+          "ms-python.python",
+          "ms-python.vscode-pylance",
+          "ms-edgedev.data-wrangler",
+          "ms-azuretools.vscode-docker",
+          "GitHub.copilot",
+          "mechatroner.rainbow-csv"
         ]
       }
-    }
-    // Use 'forwardPorts' to make a list of ports inside the container available locally.
-	  // "forwardPorts": [],
-  }
-  
+    },
+    
+    "forwardPorts": [8501]
+}
