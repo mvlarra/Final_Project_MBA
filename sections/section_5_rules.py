@@ -75,13 +75,12 @@ def show_section_5_rules(rules, tabular, Top_5_Rules_by_Score):
     </style>
     """, unsafe_allow_html=True)
 
-    tab1, tab2, tab3, tab4, tab5 = st.tabs([
+    tab1, tab2, tab3, tab4 = st.tabs([
         "🟠 Reglas destacadas",
         "🟠 Reglas por Producto",    
         "🟠 Red de productos",
         "🟠 Heatmap cruzado",
-        "🟠 Tabla completa"
-    ])
+     ])
 
     with tab1: # ◯ Reglas relevantes (desde OLD 4 - solo las destacadas)
         
