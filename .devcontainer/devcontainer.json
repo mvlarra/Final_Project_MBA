@@ -3,11 +3,13 @@
     "image": "mcr.microsoft.com/devcontainers/python:0-3.11",
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",  
     "workspaceFolder": "/workspace", 
- 
+    "containerEnv": {"BROWSER": "firefox"},
+
+
     "onCreateCommand": "cd /workspace && if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; else pip install -r requirements.txt; fi",
     "postCreateCommand": "sudo apt-get update && sudo apt-get install -y tree && python3 -m pip install ipykernel && python3 -m ipykernel install --user --name devcontainer --display-name 'Python 3 (devcontainer)' && echo 'export PS1=\"(devcontainer) $PS1\"' >> ~/.bashrc && mkdir -p ~/.ipython/profile_default/startup && echo \"import pandas as pd\npd.set_option('display.float_format', '{:,.1f}'.format)\" > ~/.ipython/profile_default/startup/00-display-float-format.py", 
-    "postStartCommand": "cd /workspace && pip install -r requirements.txt && if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi && streamlit run app.py",
- 
+    "postStartCommand": "cd /workspace && echo '✅ Contenedor listo. Iniciando dependencias...' && pip install -r requirements.txt && if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi && echo '🚀 Iniciando Streamlit...' && streamlit run app.py",
+
     "customizations": {
       "vscode": {
         "extensions": [

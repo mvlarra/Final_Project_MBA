@@ -11,6 +11,7 @@ matplotlib==3.8.4
 seaborn==0.12.2
 plotly==5.17.0
 pydeck==0.9.1
+networkx==3.3        # Para graficar redes de productos en reglas de asociación
 
 # Archivos y utilidades
 openpyxl==3.1.2
