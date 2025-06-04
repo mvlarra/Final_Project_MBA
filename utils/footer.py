@@ -46,11 +46,7 @@ def footer_red_productos():
 # ◯ Ejemplo de uso para sección: Heatmap de Producto
 def footer_heatmap():
     show_footer_interpretation(
-        titulo="Interacciones cruzadas entre productos",
-        que_ves="Un heatmap donde se observa qué productos aparecen juntos con mayor frecuencia.",
-        que_significa="Las combinaciones con colores más intensos indican alta co-ocurrencia.",
-        que_hacer="Colocar estos productos en promociones combinadas o bundles.",
-        nota_profesor="Generado con seaborn. Matriz calculada a partir de la co-ocurrencia de productos binarizados."
+           nota_profesor="Generado con seaborn. Matriz calculada a partir de la co-ocurrencia de productos binarizados."
     )
 
 # ◯ Ejemplo para Recomendaciones para tu carrito
