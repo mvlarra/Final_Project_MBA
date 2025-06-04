@@ -44,7 +44,6 @@ from charts.GraphNetwork import draw_graph
 # ◯ Importar Utilities
 from utils.loader import load_data  
 
-
 # ◯ Funciones por sección:
 from sections.section_1_about import show_section_1_about
 from sections.section_3_methodology import show_section_3_methodology
@@ -62,16 +61,6 @@ from sections.section_9_summary import show_section_9_summary
 # ◯ Configuración de página
 st.set_page_config(page_title="Market Basket Analysis", layout="wide")
 
-# Ajustar el tamaño de letra base en toda la app
-st.markdown("""
-    <style>
-    html, body, [class*="css"]  {
-        font-size: 10px !important;
-        font-family:Lato !important;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
 #    ------------------------------------------------------------------------------------------
 # 🟠 DATA LOAD:
 #    ------------------------------------------------------------------------------------------
@@ -88,11 +77,11 @@ dataset_sample, Top_10_Mas_Vendidos, example_basket, monthly_transactions, matri
 # Sidebar para navegación
 
 # Cargar imagen desde ruta relativa al archivo app.py
-logo = Image.open("app/images/Img_0.png")
+logo = Image.open("app/images/Img_0_0.png")
 
 # Título
 st.sidebar.markdown(
-    "<h1 style='text-align: center; font-family:Open Sans; font-size: 22px;'>🛒 Market Basket Analysis</h1>",
+    "<h1 style='text-align: left; font-family:Open Sans; font-size: 22px;'>🛒 Market Basket Analysis</h1>",
     unsafe_allow_html=True
 )
 

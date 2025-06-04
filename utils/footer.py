@@ -40,11 +40,7 @@ def footer_reglas_asociacion():
 # ◯ Ejemplo de uso para sección: Red de Productos
 def footer_red_productos():
     show_footer_interpretation(
-        titulo="Red de productos relacionados",
-        que_ves="Un grafo que muestra productos conectados por reglas de asociación.",
-        que_significa="Los nodos conectados tienen alta probabilidad de co-ocurrencia en una misma compra.",
-        que_hacer="Usar esta información para decidir layout de góndolas o agrupación temática online.",
-        nota_profesor="Visualización construida con NetworkX y Plotly. Las aristas representan reglas con lift > 2."
+             nota_profesor="Visualización construida con NetworkX y Plotly. Las aristas representan reglas con lift > 2."
     )
 
 # ◯ Ejemplo de uso para sección: Heatmap de Producto
