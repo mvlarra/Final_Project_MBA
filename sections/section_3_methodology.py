@@ -10,9 +10,6 @@
 import streamlit as st
 from utils.visual_helpers import mostrar_matriz_binaria
 
-
-
-
 # ◯ Sección 3: METODOLOGIA DE ANALISIS
 # -----------------------------------------------------------------------------------------------------------------
 
@@ -67,9 +64,8 @@ def show_section_3_methodology(matriz_binaria):  # Funcion que muestra la secci�
     
     # Tabs principales
     tab1, tab2, tab3, tab4, tab5 = st.tabs([
-        "🟠 Limpieza y Preparación de Datos",
+        "🟠 Preprocesamiento de Datos",
         "🟠 Modelo Aplicado",
-        "🟠 Parámetros y Filtrado de Reglas",
         "🟠 Visualización y Resultados",
         "🟠 Glosario de Métricas"
     ])
@@ -101,7 +97,7 @@ def show_section_3_methodology(matriz_binaria):  # Funcion que muestra la secci�
       mostrar_matriz_binaria(matriz_binaria, top_n=10)  # Mostrar un fragmento de la matriz binaria filtrada
 
     with tab2:
-        st.markdown("""
+      st.markdown("""
         ---
         ## Modelo Aplicado
 
@@ -113,7 +109,8 @@ def show_section_3_methodology(matriz_binaria):  # Funcion que muestra la secci�
 
         ---
 
-        ### ⚙️ Parámetros utilizados en Apriori
+        ### Parámetros utilizados en Apriori
+
 
         | Parámetro                     | Descripción                                              | Valor         | ¿Esto asegura que...?                                                                 |
         |------------------------------|----------------------------------------------------------|---------------|----------------------------------------------------------------------------------------|
@@ -127,15 +124,15 @@ def show_section_3_methodology(matriz_binaria):  # Funcion que muestra la secci�
 
       """)
 
-    with tab3:
       st.markdown(""" 
-      ## Parametros y Filtrado de Reglas
-
-      * Se eliminaron reglas duplicadas o reflejadas (A→B y B→A).  
-      * Se priorizaron reglas con:   
-        - Productos de alta frecuencia de compra   
-        - Interpretación clara para el negocio  
-      * Se destacaron combinaciones con potencial de **cross-selling** o **agrupamiento físico** en tienda.
+        ### Reglas Seleccionadas
+        
+        Las reglas de asociación se filtraron y priorizaron de la siguiente manera:
+        * Se eliminaron reglas duplicadas o reflejadas (A→B y B→A).  
+        * Se priorizaron reglas con:   
+          - Productos de alta frecuencia de compra   
+          - Interpretación clara para el negocio  
+        * Se destacaron combinaciones con potencial de **cross-selling** o **agrupamiento físico** en tienda.
       """)
 
     with tab4:
