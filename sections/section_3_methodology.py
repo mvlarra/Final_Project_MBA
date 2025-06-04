@@ -25,41 +25,53 @@ def show_section_3_methodology(matriz_binaria):  # Funcion que muestra la secci�
     
     # Formato de Tabs
     st.markdown("""
-    <style>
-    /* Espaciado entre tabs */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 6px;
-    }
+      <style>
+      
+      
+      .stTabs [data-baseweb="tab-list"] {
+      overflow-x: auto !important;      /* permite scroll horizontal */
+      white-space: nowrap;              /* evita que se bajen de línea */
+      display: flex;                    /* asegura que se alineen horizontalmente */
+      flex-wrap: nowrap;                /* evita que se acomoden en más de una línea */
+      scrollbar-width: thin;            /* (opcional) scroll más fino en Firefox */
+      }
 
-    /* Tabs base (no seleccionadas) */
-    .stTabs [data-baseweb="tab"] {
-        background-color: #f0f0f0;
-        padding: 10px 20px;
-        border-radius: 8px 8px 0 0;
-        border: 1px solid #ccc;
-        color: #333;
-        font-weight: 600;
-        font-size: 14px;
-    }
-
-    /* Tab activa */
-    .stTabs [aria-selected="true"] {
-        background-color: #ffdb99;
-        color: black;
-        font-weight: 800 !important;
-        font-size: 18px !important;
-        border-bottom: none;
-        box-shadow: 0px 4px 6px rgba(60, 60, 60, 0.6); /* ← Sombra gris oscura */
-    }
-    </style>
-    """, unsafe_allow_html=True)
+      
+      /* Scrollbar para navegadores WebKit (Chrome, Edge, Safari) */
+      .stTabs [data-baseweb="tab-list"]::-webkit-scrollbar {
+          height: 6px;                      /* altura de la barra de scroll */
+      }
+      .stTabs [data-baseweb="tab-list"]::-webkit-scrollbar-thumb {
+          background-color: #aaa;           /* color del "pulgar" del scroll */
+          border-radius: 4px;               /* bordes redondeados para estética */
+      }
+      
+      .stTabs [data-baseweb="tab"] {
+          background-color: #f0f0f0;
+          padding: 8px 16px;
+          border-radius: 8px 8px 0 0;
+          font-weight: bold;
+          color: #333333;
+          border: 1px solid #ccc;
+      }
+      .stTabs [aria-selected="true"] {
+          background-color: #ffdb99;
+          box-shadow: 0px 4px 6px rgba(60, 60, 60, 0.6);
+          color: black;
+          font-weight: 800 !important;
+          font-size: 16px !important;
+          border-bottom: none;
+      }
+      </style>
+      """, unsafe_allow_html=True)
     
     # Tabs principales
-    tab1, tab2, tab3, tab4 = st.tabs([
+    tab1, tab2, tab3, tab4, tab5 = st.tabs([
         "🟠 Limpieza y Preparación de Datos",
         "🟠 Modelo Aplicado",
         "🟠 Parámetros y Filtrado de Reglas",
-        "🟠 Visualización y Resultados"
+        "🟠 Visualización y Resultados",
+        "🟠 Glosario de Métricas"
     ])
     
     with tab1:
@@ -139,3 +151,52 @@ def show_section_3_methodology(matriz_binaria):  # Funcion que muestra la secci�
 
       > Todo se organiza en una interfaz amigable para el análisis por parte del usuario final.
     """)
+      
+      
+    with tab5:    # SECTION 8 – GLOSARIO DE MÉTRICAS
+                  # Objetivo:
+                  #   Proporcionar definiciones claras y fórmulas clave de las métricas utilizadas en el análisis de reglas de asociación.
+                  # Contenido:
+                  #   - Definiciones de Support, Confidence, Lift, Leverage y Conviction
+                  #   - Ejemplos de fórmulas aplicadas
+                  #   - Explicaciones orientadas a usuarios de negocio no técnicos
+           
+      st.subheader("📏 Glosario de Métricas")
+
+      st.markdown("""
+      **:orange[Support]**  
+      The proportion of transactions that contain a specific itemset. High support values indicate that the itemset is frequently purchased together.
+
+      - *Item Support:*  
+      `Support(A) = Transactions containing A / Total number of transactions`
+
+      - *Co-occurrence Support:*  
+      `Support(A ∪ B) = Transactions containing both A and B / Total number of transactions`
+
+
+      **:orange[Confidence]**    
+      The conditional probability that a transaction containing item A will also contain item B.
+
+      - `Confidence(A → B) = Support(A ∪ B) / Support(A) × 100%`  
+      - `Confidence(B → A) = Support(A ∪ B) / Support(B) × 100%`
+
+
+      **:orange[Lift]**  
+      Indicates how much more likely item B is purchased when item A is purchased, compared to when item B is purchased independently.
+
+      - `Lift(A → B) = Support(A ∪ B) / (Support(A) × Support(B))`
+
+
+      **:orange[Leverage]**  
+      Measures how much more often A and B occur together than expected if they were independent.
+
+      - `Leverage(A → B) = Support(A ∪ B) − (Support(A) × Support(B))`
+
+
+      **:orange[Conviction]**  
+      Indicates the strength of implication in the rule. High values (>1) suggest stronger dependency.
+
+      - `Conviction(A → B) = (1 − Support(B)) / (1 − Confidence(A → B))`  
+      - `Conviction(B → A) = (1 − Support(A)) / (1 − Confidence(B → A))`
+      """)
+      

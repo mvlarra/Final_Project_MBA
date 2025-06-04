@@ -52,7 +52,6 @@ from sections.section_4_data_exploration import show_section_4
 from sections.section_5_rules import show_section_5_rules
 from sections.section_6_recommendations import show_section_6_recommendations
 from sections.section_7_actions import show_section_7_actions
-from sections.section_8_glosario import show_section_8_glosario
 from sections.section_9_summary import show_section_9_summary   
 
 
@@ -106,7 +105,6 @@ section = st.sidebar.radio("Ir a la sección:", (
     "5. 🔎 Explorar Reglas de Asociación",
     "6. 🛒 Recomendaciones y Estrategias por Producto",
     "7. 💼 Acciones estratégicas para tu negocio",   
-    "8. 📏 Glosario de Métricas", 
     "9. 📋 Conclusiones"
 ))
 
@@ -201,21 +199,6 @@ elif section.startswith("6."):
 
 elif section.startswith("7."):
     show_section_7_actions(rules, Top_10_Mas_Vendidos)
-
-
-
-# ◯ Sección 8: GOLOSARIO DE METRICAS
-# -----------------------------------------------------------------------------------------------------------------
-# Objetivo:
-#   Proporcionar definiciones claras y fórmulas clave de las métricas utilizadas en el análisis de reglas de asociación.
-# Contenido:
-#   - Definiciones de Support, Confidence, Lift, Leverage y Conviction
-#   - Ejemplos de fórmulas aplicadas
-#   - Explicaciones orientadas a usuarios de negocio no técnicos
-
-elif section == "8.":
-    show_section_8_glosario()
-    
 
 # 9. ◯ Sección: RESUMEN DEL PROYECTO
 # ............................................................................................

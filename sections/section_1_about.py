@@ -18,7 +18,7 @@ def show_section_1_about():
     # Contenido: Objetivo, tecnologías utilizadas, recursos, contacto
     # .........................................................................
     
-    st.markdown("# 📘 Acerca del Proyecto:   Market Basket Analysis")
+    st.markdown("# 📘 Acerca del Proyecto")
 
     st.markdown("""
     Este proyecto fue desarrollado como parte del **Bootcamp de Data Science & Machine Learning en 4Geeks Academy**, por **Valentina Larrañaga**.

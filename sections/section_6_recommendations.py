@@ -26,41 +26,53 @@ def show_section_6_recommendations(rules, df_bundle_products, Top_5_Rules_by_Sco
     :param df_bundle_products: DataFrame con los bundles de productos descubiertos.
     :param Top_5_Rules_by_Score: DataFrame con las 5 reglas destacadas por score.
     """
-
-
     st.title("🛒 Recomendaciones y Estrategias por Producto")
     st.markdown("Explorá distintas estrategias accionables a partir de productos reales, reglas frecuentes, bundles descubiertos y recomendaciones personalizadas.")
 
 
     st.markdown("""
-    <style>
-    /* Espaciado entre tabs */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 5px;
-    }
+      <style>
+      
+      
+      .stTabs [data-baseweb="tab-list"] {
+      overflow-x: auto !important;      /* permite scroll horizontal */
+      white-space: nowrap;              /* evita que se bajen de línea */
+      display: flex;                    /* asegura que se alineen horizontalmente */
+      flex-wrap: nowrap;                /* evita que se acomoden en más de una línea */
+      scrollbar-width: thin;            /* (opcional) scroll más fino en Firefox */
+      }
 
-    /* Tab no seleccionada */
-    .stTabs [data-baseweb="tab"] {
-        background-color: #f0f0f0;
-        padding: 8px 16px;
-        border-radius: 8px 8px 0 0;
-        font-weight: bold;
-        color: #333333;
-        border: 1px solid #ccc;
-    }
-
-    /* Tab seleccionada */
-    .stTabs [aria-selected="true"] {
-        background-color: #ffdb99;
-        color: black;
-        font-weight: 800 !important;
-        font-size: 16px !important;
-        border-bottom: none;
-        box-shadow: 0px 4px 6px rgba(60, 60, 60, 0.6);  /* Sombra gris oscuro */
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
+      
+      /* Scrollbar para navegadores WebKit (Chrome, Edge, Safari) */
+      .stTabs [data-baseweb="tab-list"]::-webkit-scrollbar {
+          height: 6px;                      /* altura de la barra de scroll */
+      }
+      .stTabs [data-baseweb="tab-list"]::-webkit-scrollbar-thumb {
+          background-color: #aaa;           /* color del "pulgar" del scroll */
+          border-radius: 4px;               /* bordes redondeados para estética */
+      }
+      
+      .stTabs [data-baseweb="tab"] {
+          background-color: #f0f0f0;
+          padding: 8px 16px;
+          border-radius: 8px 8px 0 0;
+          font-weight: bold;
+          color: #333333;
+          border: 1px solid #ccc;
+      }
+      .stTabs [aria-selected="true"] {
+          background-color: #ffdb99;
+          box-shadow: 0px 4px 6px rgba(60, 60, 60, 0.6);
+          color: black;
+          font-weight: 800 !important;
+          font-size: 16px !important;
+          border-bottom: none;
+      }
+      </style>
+      """, unsafe_allow_html=True)
+    
+    
+    
     tabs = st.tabs([
         "🟠 Bundles sugeridos", 
         "🟠 Recomendaciones personalizadas",

@@ -39,34 +39,44 @@ def show_section_4(dataset_sample, Top_10_Mas_Vendidos, example_basket, monthly_
     """)
     
     st.markdown("""
-    <style>
-    /* Espaciado entre tabs */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 6px;
-    }
+        <style>
+           
+        .stTabs [data-baseweb="tab-list"] {
+        overflow-x: auto !important;      /* permite scroll horizontal */
+        white-space: nowrap;              /* evita que se bajen de línea */
+        display: flex;                    /* asegura que se alineen horizontalmente */
+        flex-wrap: nowrap;                /* evita que se acomoden en más de una línea */
+        scrollbar-width: thin;            /* (opcional) scroll más fino en Firefox */
+        }
 
-    /* Tabs base (no seleccionadas) */
-    .stTabs [data-baseweb="tab"] {
-        background-color: #f0f0f0;
-        padding: 10px 20px;
-        border-radius: 8px 8px 0 0;
-        border: 1px solid #ccc;
-        color: #333;
-        font-weight: 600;
-        font-size: 14px;
-    }
-
-    /* Tab activa */
-    .stTabs [aria-selected="true"] {
-        background-color: #ffdb99;
-        color: black;
-        font-weight: 800 !important;
-        font-size: 18px !important;
-        border-bottom: none;
-        box-shadow: 0px 4px 6px rgba(60, 60, 60, 0.6); /* ← Sombra gris oscura */
-    }
-    </style>
-    """, unsafe_allow_html=True)
+        
+        /* Scrollbar para navegadores WebKit (Chrome, Edge, Safari) */
+        .stTabs [data-baseweb="tab-list"]::-webkit-scrollbar {
+            height: 6px;                      /* altura de la barra de scroll */
+        }
+        .stTabs [data-baseweb="tab-list"]::-webkit-scrollbar-thumb {
+            background-color: #aaa;           /* color del "pulgar" del scroll */
+            border-radius: 4px;               /* bordes redondeados para estética */
+        }
+        
+        .stTabs [data-baseweb="tab"] {
+            background-color: #f0f0f0;
+            padding: 8px 16px;
+            border-radius: 8px 8px 0 0;
+            font-weight: bold;
+            color: #333333;
+            border: 1px solid #ccc;
+        }
+        .stTabs [aria-selected="true"] {
+            background-color: #ffdb99;
+            box-shadow: 0px 4px 6px rgba(60, 60, 60, 0.6);
+            color: black;
+            font-weight: 800 !important;
+            font-size: 16px !important;
+            border-bottom: none;
+        }
+        </style>
+        """, unsafe_allow_html=True)
    
     
     tab1, tab2, tab3, tab4 = st.tabs([
