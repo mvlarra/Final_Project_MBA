@@ -97,18 +97,16 @@ st.sidebar.markdown(
 logo = Image.open("app/images/Img_0.png")
 st.sidebar.image(logo, use_container_width=True)
 
-st.sidebar.title("🧭 Navegación")
+st.sidebar.title("Navegación")
 section = st.sidebar.radio("Ir a la sección:", (
-    "1. 📘 Acerca del Proyecto",
-    "4. 📊 Exploración de Datos",
-    "3. 🧪 Metodología del Análisis",
-    "5. 🔎 Explorar Reglas de Asociación",
-    "6. 🛒 Recomendaciones y Estrategias por Producto",
-    "7. 💼 Acciones estratégicas para tu negocio",   
-    "9. 📋 Conclusiones"
+    "1. ✔️ Acerca del Proyecto",
+    "4. ✔️ Exploración de Datos",
+    "3. ✔️ Metodología del Análisis",
+    "5. ✔️ Reglas de Asociación",
+    "6. ✔️ Recomendaciones por Producto",
+    "7. ✔️ Estratégicas de negocio",   
+    "9. ✔️ Conclusiones"
 ))
-
-
 
 #    ------------------------------------------------------------------------------------------
 # 🟠 PAGES:

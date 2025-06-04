@@ -26,7 +26,7 @@ def show_section_6_recommendations(rules, df_bundle_products, Top_5_Rules_by_Sco
     :param df_bundle_products: DataFrame con los bundles de productos descubiertos.
     :param Top_5_Rules_by_Score: DataFrame con las 5 reglas destacadas por score.
     """
-    st.title("🛒 Recomendaciones y Estrategias por Producto")
+    st.title("🛒 Recomendaciones y Estrategias")
     st.markdown("Explorá distintas estrategias accionables a partir de productos reales, reglas frecuentes, bundles descubiertos y recomendaciones personalizadas.")
 
 
