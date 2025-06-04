@@ -19,6 +19,7 @@ def show_section_1_about():
     # .........................................................................
     
     st.markdown("# 📘 Acerca del Proyecto")
+    st.markdown("---")
 
     st.markdown("""
     Este proyecto fue desarrollado como parte del **Bootcamp de Data Science & Machine Learning en 4Geeks Academy**, por **Valentina Larrañaga**.

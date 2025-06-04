@@ -28,6 +28,7 @@ def show_section_5_rules(rules, tabular, Top_5_Rules_by_Score):
     """
 
     st.title("🔎 Explorar Reglas de Asociación")
+    st.markdown("---")
 
     st.markdown("""
     Elegí una forma de visualizar las reglas de asociación generadas a partir de las canastas de productos.  

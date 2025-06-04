@@ -21,9 +21,12 @@ def show_section_7_actions(rules, Top_10_Mas_Vendidos):
     :param rules: DataFrame con las reglas de asociación generadas.
     :param Top_10_Mas_Vendidos: DataFrame con el top 10 de productos más vendidos.
     """
+    
+    st.title("💼 Acciones Estratégicas para el Negocio")
+    st.markdown("---")
+    
     st.markdown("""
-      <style>
-      
+      <style>      
       
       .stTabs [data-baseweb="tab-list"] {
       overflow-x: auto !important;      /* permite scroll horizontal */
@@ -71,11 +74,9 @@ def show_section_7_actions(rules, Top_10_Mas_Vendidos):
     ])
 
   
-    with tabs[0]:    
-        st.title("💼 Acciones estratégicas para tu negocio")
-
+    with tabs[1]:    
         st.markdown("""
-        Basado en los patrones encontrados en los datos, estas son **acciones sugeridas** orientadas a generar impacto real en las ventas.  
+        Basado en los patrones encontrados en los datos, estas son **`acciones sugeridas`** orientadas a generar impacto real en las ventas.  
         Cada acción está relacionada con productos clave del análisis y podés marcar su prioridad de implementación.
 
         ✅ El objetivo es **convertir los hallazgos en oportunidades de mejora**, aplicando estrategias como bundles, descuentos o reubicación de productos para **incrementar los ingresos, optimizar la rotación, potenciar la estrategia comercial y mejorar la experiencia de compra**.
@@ -190,17 +191,14 @@ def show_section_7_actions(rules, Top_10_Mas_Vendidos):
         else:
             st.info("Seleccioná al menos una acción para ver el resumen o exportarlo.")
             
-    with tabs[1]:
+    with tabs[0]:
             # ◯ Sección 5: ACCIONES ESTRATÉGICAS PARA TU NEGOCIO
             # -----------------------------------------------------------------------------------------------------------------
             # Objetivo:
             #   Presentar ideas prácticas y personalizadas que surgen del análisis de reglas de asociación.
             #   Enfocarse en mejorar la rentabilidad, retención de clientes y experiencia de compra.
 
-        st.markdown("## 💼 Acciones estratégicas para tu negocio")
-        
-        st.markdown("---")
-        st.markdown("### 🎯 Objetivo de esta sección")
+        # ◯ Objetivo de esta seccion
         st.markdown("""
         En base al análisis de reglas de asociación y comportamiento de compra de tus clientes,
         te presentamos un conjunto de acciones que podés implementar en tu estrategia comercial.
@@ -208,25 +206,26 @@ def show_section_7_actions(rules, Top_10_Mas_Vendidos):
 
         # ◯ Acciones por categoría
         st.markdown("### 🧩 Acciones recomendadas")
+        st.markdown("---")
         
         acciones = {
-            "🛍️ Bundles inteligentes": [
+            "✔️ Bundles inteligentes": [
                 "Agrupar productos con alta confianza (ej: 80%) y lift elevado para maximizar ventas conjuntas.",
                 "Ejemplo: Ofrecé la taza verde Regency junto con la rosa, dado que se compran juntas frecuentemente."
             ],
-            "🎁 Promociones cruzadas": [
+            "✔️ Promociones cruzadas": [
                 "Aplicar descuentos o puntos extra cuando se agregan productos relacionados al carrito.",
                 "Ejemplo: Si se compra un set de platos florales, sugerí vasos del mismo estilo con 10% OFF."
             ],
-            "🧠 Recomendaciones personalizadas": [
+            "✔️ Recomendaciones personalizadas": [
                 "Usar las reglas con mayor lift para sugerencias dinámicas en el sitio o post-compra.",
                 "Ejemplo: Recomendá un artículo complementario apenas se visualiza uno clave."
             ],
-            "📦 Optimización de inventario": [
+            "✔️ Optimización de inventario": [
                 "Identificar productos que se venden solo en conjunto y evitar sobrestock de los que no rotan solos.",
                 "Ejemplo: Un adorno que siempre se compra junto a una vela podría necesitar menos stock individual."
             ],
-            "📊 Decisiones basadas en datos": [
+            "✔️ Decisiones basadas en datos": [
                 "Priorizá productos con alta frecuencia en reglas como foco de campañas y displays en tienda.",
                 "Ejemplo: Los 5 productos más frecuentes como antecedente pueden ser destacados en la home."
             ]
@@ -241,9 +240,13 @@ def show_section_7_actions(rules, Top_10_Mas_Vendidos):
         # ◯ Llamado a la acción
         st.markdown("---")
         st.markdown("### ✅ ¿Qué podés hacer hoy?")
+        st.markdown("---")
+        
         st.markdown("""
-        - Elegí **2 o 3 acciones** y probalas durante una semana.
-        - Medí resultados: ¿aumentaron las ventas de ciertos productos? ¿se agregaron más ítems al carrito?
+        - En la siguiente tab elegí **2 o 3 acciones** y probalas durante una semana.
+        - Medí resultados: 
+            * ¿aumentaron las ventas de ciertos productos? 
+            * ¿se agregaron más ítems al carrito?
         - Ajustá tus estrategias y repetí con nuevos productos clave.
         """)   
-        
+        st.markdown("---")

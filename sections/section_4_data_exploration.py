@@ -30,6 +30,7 @@ def show_section_4(dataset_sample, Top_10_Mas_Vendidos, example_basket, monthly_
     """
 
     st.title("📊 Exploración de Datos")
+    st.markdown("---")
     
     st.markdown("""
     Esta sección permite realizar una primera aproximación visual al dataset para comprender su estructura y contenido.

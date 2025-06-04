@@ -16,15 +16,12 @@ from utils.visual_helpers import mostrar_matriz_binaria
 def show_section_3_methodology(matriz_binaria):  # Funcion que muestra la sección de metodología del análisis, describiendo el origen del dataset, el enfoque metodológico y los parámetros utilizados.
     st.title("🧪 Metodología")
 
-    st.markdown("""
-    Este proyecto aplica **Market Basket Analysis** utilizando datos reales del dataset **Online Retail II**, que contiene más de **500.000 transacciones** de una tienda online del Reino Unido.
-    """)
-    
+    st.markdown("---")
+       
     # Formato de Tabs
     st.markdown("""
       <style>
-      
-      
+            
       .stTabs [data-baseweb="tab-list"] {
       overflow-x: auto !important;      /* permite scroll horizontal */
       white-space: nowrap;              /* evita que se bajen de línea */
@@ -63,10 +60,9 @@ def show_section_3_methodology(matriz_binaria):  # Funcion que muestra la secci�
       """, unsafe_allow_html=True)
     
     # Tabs principales
-    tab1, tab2, tab3, tab4, tab5 = st.tabs([
+    tab1, tab2, tab3 = st.tabs([
         "🟠 Preprocesamiento de Datos",
         "🟠 Modelo Aplicado",
-        "🟠 Visualización y Resultados",
         "🟠 Glosario de Métricas"
     ])
     
@@ -135,22 +131,7 @@ def show_section_3_methodology(matriz_binaria):  # Funcion que muestra la secci�
         * Se destacaron combinaciones con potencial de **cross-selling** o **agrupamiento físico** en tienda.
       """)
 
-    with tab4:
-      st.markdown("""  
-      ## Visualización y Exploración
-
-      Las reglas y resultados se presentan mediante:
-
-      - 📊 Tablas ordenadas por métricas clave  
-      - 🧠 Interpretaciones automáticas
-      - 🔗 Redes de co-ocurrencia  
-      - 🧯 Heatmap cruzado entre productos  
-
-      > Todo se organiza en una interfaz amigable para el análisis por parte del usuario final.
-    """)
-      
-      
-    with tab5:    # SECTION 8 – GLOSARIO DE MÉTRICAS
+    with tab3:    # SECTION 8 – GLOSARIO DE MÉTRICAS
                   # Objetivo:
                   #   Proporcionar definiciones claras y fórmulas clave de las métricas utilizadas en el análisis de reglas de asociación.
                   # Contenido:

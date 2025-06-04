@@ -87,17 +87,24 @@ dataset_sample, Top_10_Mas_Vendidos, example_basket, monthly_transactions, matri
 
 # Sidebar para navegación
 
-# ◯ TÍTULO en la barra lateral
+# Cargar imagen desde ruta relativa al archivo app.py
+logo = Image.open("app/images/Img_0.png")
+
+# Título
 st.sidebar.markdown(
     "<h1 style='text-align: center; font-family:Open Sans; font-size: 22px;'>🛒 Market Basket Analysis</h1>",
     unsafe_allow_html=True
 )
 
-# ◯ Mostrar imagen en el sidebar
-logo = Image.open("app/images/Img_0.png")
-st.sidebar.image(logo, use_container_width=True)
+# Imagen debajo, centrada y más pequeña
+st.sidebar.image(logo)
 
-st.sidebar.title("Navegación")
+# ◯ Espaciado y línea divisoria
+st.sidebar.markdown("""
+    <div style='margin-bottom: 10px;'></div>
+    <hr style='margin-top: 0px; margin-bottom: 15px; border: 1px solid #444444;' />
+""", unsafe_allow_html=True)
+
 section = st.sidebar.radio("Ir a la sección:", (
     "1. ✔️ Acerca del Proyecto",
     "4. ✔️ Exploración de Datos",
