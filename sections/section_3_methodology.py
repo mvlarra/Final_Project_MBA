@@ -91,7 +91,7 @@ def show_section_3_methodology(matriz_binaria):  # Funcion que muestra la secci�
     with tab2:
         st.markdown("""
         ---
-        ### 📈 2. Modelo Aplicado
+        ## Modelo Aplicado
 
         Para detectar productos que se compran juntos frecuentemente se aplicó el algoritmo **Apriori**, implementado con la librería `mlxtend`, una biblioteca confiable de Python especializada en extensiones de aprendizaje automático.
 
@@ -117,18 +117,18 @@ def show_section_3_methodology(matriz_binaria):  # Funcion que muestra la secci�
 
     with tab3:
       st.markdown(""" 
-      ### 🧹 3. Filtrado de Reglas
+      ## Parametros y Filtrado de Reglas
 
-      🔁 Se eliminaron reglas duplicadas o reflejadas (A→B y B→A).  
-      📊 Se priorizaron reglas con:   
-          - Productos de alta frecuencia de compra   
-          - Interpretación clara para el negocio  
-      🧺 Se destacaron combinaciones con potencial de **cross-selling** o **agrupamiento físico** en tienda.
+      * Se eliminaron reglas duplicadas o reflejadas (A→B y B→A).  
+      * Se priorizaron reglas con:   
+        - Productos de alta frecuencia de compra   
+        - Interpretación clara para el negocio  
+      * Se destacaron combinaciones con potencial de **cross-selling** o **agrupamiento físico** en tienda.
       """)
 
     with tab4:
       st.markdown("""  
-      ### 📈 4. Visualización y Exploración
+      ## Visualización y Exploración
 
       Las reglas y resultados se presentan mediante:
 

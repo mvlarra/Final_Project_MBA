@@ -76,13 +76,94 @@ def show_section_5_rules(rules, tabular, Top_5_Rules_by_Score):
     """, unsafe_allow_html=True)
 
     tab1, tab2, tab3, tab4 = st.tabs([
-        "🟠 Reglas destacadas",
-        "🟠 Reglas por Producto",    
+        "🟠 Reglas Encontradas",
+        "🟠 Reglas Destacadas",
         "🟠 Red de productos",
         "🟠 Heatmap cruzado",
      ])
 
-    with tab1: # ◯ Reglas relevantes (desde OLD 4 - solo las destacadas)
+    with tab1:
+        try:
+            # ◯ Leer archivo con resumen de reglas
+            rules_df = pd.read_csv("data/processed/summary_rules.csv")
+            total_rules = len(rules_df)
+
+            # ◯ Limpieza de strings de conjuntos
+            rules_df["antecedents"] = rules_df["antecedents"].str.replace(r"[{}']", "", regex=True)
+            rules_df["consequents"] = rules_df["consequents"].str.replace(r"[{}']", "", regex=True)
+
+            # ◯ Copia del DataFrame para aplicar filtros luego
+            filtered_df = rules_df.copy()
+
+            # ◯ Título y total de reglas encontradas
+            st.markdown("---")            
+            st.markdown(
+                f"<div style='font-size:20px;'>🔵 Total de Reglas Encontradas: <b>{total_rules:,}</b></div>",
+                unsafe_allow_html=True
+            )
+            st.markdown("---")  
+            
+            # ◯ Criterios del modelo en Expander
+            with st.expander("ℹ️ Ver criterios de generación del modelo"):
+                st.markdown("""
+                **Criterios utilizados con el algoritmo Apriori:**
+
+                - `Soporte ≥ 0.01`: aparecen en ≥1% de las transacciones.
+                - `Confianza ≥ 0.20`: precisión mínima del 20%.
+                - `Lift ≥ 2`: 2 veces más probable que lo esperado por azar.
+
+                Estos valores garantizan que las reglas mostradas tengan relevancia estadística y utilidad comercial.
+                """)
+
+            # ◯ Descripción para el usuario
+            st.markdown("""
+            Explorá las reglas de asociación generadas.  
+            Podés usar los filtros para encontrar relaciones específicas entre productos.
+
+            - **Antecedente:** lo que se compra primero  
+            - **Consecuente:** lo que suele comprarse después
+
+            Si no seleccionás filtros, se muestran todas las reglas encontradas.
+            """)
+
+            st.markdown("---")
+            st.markdown("### 🔵 Filtros por Producto")
+
+            # ◯ Opciones únicas
+            antecedent_options = sorted(rules_df["antecedents"].unique())
+            consequent_options = sorted(rules_df["consequents"].unique())
+
+            # ◯ Selección de filtros
+            col1, col2 = st.columns(2)
+            with col1:
+                selected_antecedents = st.multiselect("🔽 Antecedente", antecedent_options)
+            with col2:
+                selected_consequents = st.multiselect("🔽 Consecuente", consequent_options)
+
+            # ◯ Aplicar filtros si corresponde
+            filtered_df = rules_df.copy()
+            if selected_antecedents:
+                filtered_df = filtered_df[filtered_df["antecedents"].isin(selected_antecedents)]
+            if selected_consequents:
+                filtered_df = filtered_df[filtered_df["consequents"].isin(selected_consequents)]
+
+            # ◯ Mostrar resumen de cantidad de reglas filtradas
+            st.markdown(
+                f"<div style='font-size:18px;'>➡️ Mostrando <b>{len(filtered_df):,}</b> reglas filtradas de un total de <b>{total_rules:,}</b></div>",
+                unsafe_allow_html=True
+            )
+
+            st.markdown("---")
+
+            # ◯ Mostrar tabla con columnas relevantes
+            cols_to_show = ['antecedents', 'consequents', 'support', 'confidence', 'lift']
+            st.dataframe(filtered_df[cols_to_show].reset_index(drop=True))
+
+        except FileNotFoundError:
+            st.warning("⚠️ No se encontró el archivo `summary_rules.csv`. Verificá que esté en la carpeta `data/processed`.")
+
+
+    with tab2: # ◯ Reglas relevantes (desde OLD 4 - solo las destacadas)
         
         st.markdown("En esta sección verás las principales reglas encontradas con el algoritmo Apriori")
 
@@ -143,81 +224,6 @@ def show_section_5_rules(rules, tabular, Top_5_Rules_by_Score):
 
         </span>
         """, unsafe_allow_html=True)
-    
-    with tab2:    
-        try:        
-            # ◯ Leer archivo con resumen de reglas
-            rules_df = pd.read_csv("data/processed/summary_rules.csv")
-            total_rules = len(rules_df)
-                
-            # ◯ Limpieza de strings de conjuntos
-            rules_df["antecedents"] = rules_df["antecedents"].str.replace(r"[{}']", "", regex=True)
-            rules_df["consequents"] = rules_df["consequents"].str.replace(r"[{}']", "", regex=True)
-            
-            # ◯ Aplicar filtros más adelante, pero definimos el DataFrame ya
-            filtered_df = rules_df.copy()
-            
-            st.markdown(f"<div style='color:#00BFFF; font-size:23px;'>Reglas Encontradas por el Algoritmo: {total_rules:,}</div>", unsafe_allow_html=True)
-            st.markdown("---")
-
-            # ◯ Mostrar criterios de generación al principio
-            st.markdown("""
-            Este es el listado completo de reglas de asociación que cumplen con los criterios mínimos establecidos al usar el algoritmo Apriori.  
-            Estos criterios son:
-
-            - **`Soporte` ≥ 0.01** → aparecen en al menos el 1% de las transacciones.  
-            *Indica frecuencia: qué tan común es la combinación.*
-
-            - **`Confianza` ≥ 0.20** → al menos 20% de las veces que alguien compra el producto A, también compra el B.  
-            *Mide la precisión de la recomendación.*
-
-            - **`Lift` ≥ 2** → los productos se compran juntos al menos 2 veces más de lo esperado por azar.  
-            *Refleja fuerza o relevancia de la relación. Ordenar por este criterio para ver las asociaciones mas significativas*
-            
-            La vista es ideal para un análisis detallado, validación del modelo o exportación para revisión externa.
-            """, unsafe_allow_html=True)
-            
-            st.markdown("---")            
-            
-            st.markdown(
-                f"<div style='color:#00BFFF; font-size:21px;'>🔵 Mostrando {len(filtered_df)} de {total_rules:,} Reglas Encontradas"
-                ,unsafe_allow_html=True
-            )
-            
-            # ◯ Descripción general de la sección
-            st.markdown("""
-            Tambien podes explorar las reglas de asociación filtrando por productos específicos.  
-            Podés seleccionar elementos que actúan como **antecedentes** (productos comprados primero) o **consecuentes** (productos recomendados después).
-
-            ℹ️ *Si no seleccionás ningún filtro, se mostrará el listado completo de reglas generadas.*
-            
-            ---
-            """, unsafe_allow_html=True)   
-    
-            # ◯ Filtros paralelos
-            antecedent_options = sorted(rules_df["antecedents"].unique())
-            consequent_options = sorted(rules_df["consequents"].unique())   
-             
-            col1, col2 = st.columns(2)
-            with col1:
-                selected_antecedents = st.multiselect("🅰️ Filtrar por Antecedente:", antecedent_options)
-            with col2:
-                selected_consequents = st.multiselect("🅱️ Filtrar por Consecuente:", consequent_options)
-
-            # ◯ Aplicar filtros si corresponde
-            filtered_df = rules_df.copy()
-            if selected_antecedents:
-                filtered_df = filtered_df[filtered_df["antecedents"].isin(selected_antecedents)]
-            if selected_consequents:
-                filtered_df = filtered_df[filtered_df["consequents"].isin(selected_consequents)]
-                                   
-            # ◯ Mostrar tabla filtrada
-            st.dataframe(filtered_df.reset_index(drop=True))
-        
-        except FileNotFoundError:
-            st.warning("⚠️ No se encontró el archivo `summary_rules.csv`. Verificá que esté en la carpeta `data/processed`.")
-
-
     
     with tab3:
         st.subheader("🗺️ Red de Relaciones entre Productos")

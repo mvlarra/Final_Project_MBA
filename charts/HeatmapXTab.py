@@ -111,7 +111,7 @@ def draw_heatmap(df):
     try:
         # Forzar a DataFrame flotante
         df_clean = df.copy()
-        df_clean = df_clean.applymap(lambda x: float(x) if isinstance(x, (int, float)) else 0.0)
+        df_clean = df_clean.apply(lambda col: col.map(lambda x: float(x) if isinstance(x, (int, float)) else 0.0))
         z = df_clean.values
 
         x_labels = df_clean.columns.tolist()

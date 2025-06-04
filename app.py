@@ -67,35 +67,11 @@ st.set_page_config(page_title="Market Basket Analysis", layout="wide")
 st.markdown("""
     <style>
     html, body, [class*="css"]  {
-        font-size: 14px !important;
+        font-size: 10px !important;
+        font-family:Lato !important;
     }
     </style>
 """, unsafe_allow_html=True)
-
-
-# ◯ Mostrar imagen en el sidebar
-logo = Image.open("app/images/Img_0.png")
-st.sidebar.image(logo, use_container_width=True)
-
-# # ◯ Texto centrado debajo de la imagen
-# st.sidebar.markdown(
-#     """
-#     <div style="
-#         text-align: center;
-#         font-size: 30px;
-#         font-family:  'Poppins', 'Quicksand', sans-serif;
-#         font-weight: 600;
-#         margin-top: 10px;
-#     ">
-#         🛍️ MBA
-#     </div>
-
-#     <hr style="margin-top: 10px; margin-bottom: 20px; border: none; border-top: 1px solid #88888833;" />
-#     """,
-#     unsafe_allow_html=True
-# )
-
-
 
 #    ------------------------------------------------------------------------------------------
 # 🟠 DATA LOAD:
@@ -112,18 +88,26 @@ dataset_sample, Top_10_Mas_Vendidos, example_basket, monthly_transactions, matri
 
 # Sidebar para navegación
 
+# ◯ TÍTULO en la barra lateral
+st.sidebar.markdown(
+    "<h1 style='text-align: center; font-family:Open Sans; font-size: 22px;'>🛒 Market Basket Analysis</h1>",
+    unsafe_allow_html=True
+)
+
+# ◯ Mostrar imagen en el sidebar
+logo = Image.open("app/images/Img_0.png")
+st.sidebar.image(logo, use_container_width=True)
+
 st.sidebar.title("🧭 Navegación")
 section = st.sidebar.radio("Ir a la sección:", (
     "1. 📘 Acerca del Proyecto",
-    "3. 🧪 Metodología del Análisis",
     "4. 📊 Exploración de Datos",
+    "3. 🧪 Metodología del Análisis",
     "5. 🔎 Explorar Reglas de Asociación",
     "6. 🛒 Recomendaciones y Estrategias por Producto",
     "7. 💼 Acciones estratégicas para tu negocio",   
     "8. 📏 Glosario de Métricas", 
-    "9. 📋 Conclusiones",
-    "OLD 1. 🏠 Inicio",
-    "OLD 9. 📎 Créditos y recursos del proyecto"
+    "9. 📋 Conclusiones"
 ))
 
 
