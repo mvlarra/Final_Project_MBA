@@ -12,7 +12,6 @@ import streamlit as st
 import streamlit as st
 from charts.HeatmapXTab import HeatmapCrosstab
 import plotly.graph_objects as go
-from utils.footer import footer_reglas_asociacion, footer_red_productos, footer_heatmap, footer_recomendaciones_carrito, footer_canasta_real
 
 
 # ◯ Seccion 6: RECOMENDACIONES Y ESTRATEGIAS POR PRODUCTO
@@ -26,15 +25,11 @@ def show_section_6_recommendations(rules, df_bundle_products, Top_5_Rules_by_Sco
     :param df_bundle_products: DataFrame con los bundles de productos descubiertos.
     :param Top_5_Rules_by_Score: DataFrame con las 5 reglas destacadas por score.
     """
-    st.title("🛒 Recomendaciones por Producto")
-    st.markdown("---")
-    
-    st.markdown("Explorá distintas estrategias accionables a partir de productos reales, reglas frecuentes, bundles descubiertos y recomendaciones personalizadas.")
+
 
     st.markdown("""
       <style>
-      
-      
+         
       .stTabs [data-baseweb="tab-list"] {
       overflow-x: auto !important;      /* permite scroll horizontal */
       white-space: nowrap;              /* evita que se bajen de línea */
@@ -73,13 +68,13 @@ def show_section_6_recommendations(rules, df_bundle_products, Top_5_Rules_by_Sco
       """, unsafe_allow_html=True)
     
     
-    
     tabs = st.tabs([
         "🟠 Bundles sugeridos", 
         "🟠 Recomendaciones personalizadas",
         "🟠 Heatmap de Producto",
         "🟠 Cross Selling Products"
     ])
+
 
   
     with tabs[0]:        # ◯ Bundles sugeridos (desde OLD 5)
@@ -199,11 +194,15 @@ def show_section_6_recommendations(rules, df_bundle_products, Top_5_Rules_by_Sco
         
         st.markdown("""
         Seleccioná un producto para obtener recomendaciones basadas en patrones de compra frecuentes.  
-        Estas sugerencias ayudan a aumentar el ticket promedio mediante **ventas cruzadas inteligentes**.
-
+        Luego veremos la lista de productos recomendados en base a los productos ya presentes en el carrito.  
+        Como estrategia comercial, podrian mostrarse como recomendaciones dinámicas en el checkout, ayudando a aumentar el ticket promedio mediante **ventas cruzadas inteligentes**. 
+        
         Las recomendaciones se basan en reglas del tipo:  
         *"Los clientes que compraron X, también compraron Y"*
         """)
+        
+
+  
         
         rules['antecedents'] = rules['antecedents'].apply(lambda x: [x] if isinstance(x, str) else x)
         rules['consequents'] = rules['consequents'].apply(lambda x: [x] if isinstance(x, str) else x)
@@ -245,7 +244,12 @@ def show_section_6_recommendations(rules, df_bundle_products, Top_5_Rules_by_Sco
         else:
             st.warning("No se encontraron recomendaciones para este producto. Probá con otro.")
     
-        footer_recomendaciones_carrito()       
+        # footer:
+        st.markdown(f"""
+        {"<div style='font-size:12px;color:gray;margin-top:10px;'>ℹ️ Utiliza reglas de asociación inversas aplicadas sobre los ítems seleccionados. Se aplican filtros por confianza y lift.</div>"}
+        """, unsafe_allow_html=True)
+        
+             
             
     # ◯ Heatmap por producto (movido desde sección separada)
     with tabs[2]:

@@ -22,8 +22,7 @@ def show_section_7_actions(rules, Top_10_Mas_Vendidos):
     :param Top_10_Mas_Vendidos: DataFrame con el top 10 de productos más vendidos.
     """
     
-    st.title("💼 Acciones Estratégicas para el Negocio")
-    st.markdown("---")
+
     
     st.markdown("""
       <style>      
@@ -72,8 +71,7 @@ def show_section_7_actions(rules, Top_10_Mas_Vendidos):
         "🟠 New",
  
     ])
-
-  
+    
     with tabs[1]:    
         st.markdown("""
         Basado en los patrones encontrados en los datos, estas son **`acciones sugeridas`** orientadas a generar impacto real en las ventas.  

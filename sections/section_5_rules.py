@@ -12,7 +12,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import networkx as nx
 from charts.HeatmapXTab import draw_heatmap
-from utils.footer import footer_reglas_asociacion, footer_red_productos, footer_heatmap, footer_recomendaciones_carrito, footer_canasta_real
+
 
 
 # ◯ Seccion 5: EXPLORAR REGLAS DE ASOCIACIÓN (unificada)
@@ -27,18 +27,9 @@ def show_section_5_rules(rules, tabular, Top_5_Rules_by_Score):
     :param Top_5_Rules_by_Score: DataFrame con las 5 reglas destacadas por score.
     """
 
-    st.title("🔎 Explorar Reglas de Asociación")
-    st.markdown("---")
-
-    st.markdown("""
-    Elegí una forma de visualizar las reglas de asociación generadas a partir de las canastas de productos.  
-    Podés alternar entre diferentes perspectivas para entender mejor los patrones de compra.
-    """)
-
     st.markdown("""
     <style>
-    
-    
+        
     .stTabs [data-baseweb="tab-list"] {
     overflow-x: auto !important;      /* permite scroll horizontal */
     white-space: nowrap;              /* evita que se bajen de línea */
@@ -82,6 +73,8 @@ def show_section_5_rules(rules, tabular, Top_5_Rules_by_Score):
         "🟠 Red de productos",
         "🟠 Heatmap cruzado",
      ])
+    
+
 
     with tab1:
         try:
@@ -325,7 +318,12 @@ def show_section_5_rules(rules, tabular, Top_5_Rules_by_Score):
             - 📏 La métrica seleccionada es **{metrica}**, con un valor mínimo de `{valor_minimo}`.
             - 📊 Promedio de {metrica}: `{reglas_top[metrica].mean():.2f}`
             """)
-        footer_red_productos()
+        
+        # Footer:
+        st.markdown(f"""
+        {"<div style='font-size:12px;color:gray;margin-top:10px;'>ℹ️ Visualización construida con NetworkX y Plotly. Las aristas representan reglas con lift > 2.</div>"}
+        """, unsafe_allow_html=True)    
+
    
     with tab4:
             st.subheader("📊 Heatmap cruzado entre productos")
@@ -343,6 +341,8 @@ def show_section_5_rules(rules, tabular, Top_5_Rules_by_Score):
             # ◯ Generar visualización
             fig_heatmap = draw_heatmap(tabular_heatmap)
             st.plotly_chart(fig_heatmap, use_container_width=True)
-            footer_heatmap()
-        
-
+            
+        # footter:
+        st.markdown(f"""
+        {"<div style='font-size:12px;color:gray;margin-top:10px;'>ℹ️ Generado con seaborn. Matriz calculada a partir de la co-ocurrencia de productos binarizados.</div>"}
+        """, unsafe_allow_html=True)

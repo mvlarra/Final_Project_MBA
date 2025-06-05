@@ -16,7 +16,7 @@
 import streamlit as st
 
 def show_section_9_summary():
-    st.title("📋 Conclusiones")
+
 
     st.subheader("📌 Objetivo General")
     st.markdown("""

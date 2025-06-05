@@ -8,10 +8,11 @@
 #   - Distribución mensual de transacciones
 
 import streamlit as st
-from utils.footer import footer_reglas_asociacion, footer_red_productos, footer_heatmap, footer_recomendaciones_carrito, footer_canasta_real
 
 # ◯ Sección 4: EXPLORACIÓN DE DATOS
 # ............................................................................................
+
+
 
 from utils.visual_helpers import (
     mostrar_top_10_productos,
@@ -28,17 +29,7 @@ def show_section_4(dataset_sample, Top_10_Mas_Vendidos, example_basket, monthly_
     :param example_basket: DataFrame con un ejemplo de canasta de compra.
     :param monthly_transactions: DataFrame con transacciones por mes.
     """
-
-    st.title("📊 Exploración de Datos")
-    st.markdown("---")
-    
-    st.markdown("""
-    Esta sección permite realizar una primera aproximación visual al dataset para comprender su estructura y contenido.
-    El objetivo es familiarizarse con los datos antes de aplicar técnicas de análisis más avanzadas.
-    Luego procederemos a trabajar en la limipieza y el procesamiento de los datos. 
-    Pasos Claves para asegurar un análisis efectivo y sin ruidos. 
-    """)
-    
+  # ◯ Tabs antes del título 
     st.markdown("""
         <style>
            
@@ -86,7 +77,12 @@ def show_section_4(dataset_sample, Top_10_Mas_Vendidos, example_basket, monthly_
     "🟠 Ejemplo de una transacción", 
     "🟠 Distribución mensual"
     ])
+    
+    
+    # Tabs principales 
+  
 
+    
     with tab1:          # ◯ Mostrar dataset general
         st.markdown("---")
         st.subheader("`🧾 Vista general del dataset`")
@@ -99,8 +95,11 @@ def show_section_4(dataset_sample, Top_10_Mas_Vendidos, example_basket, monthly_
         mostrar_top_10_productos(Top_10_Mas_Vendidos)
         
     with tab3:          # ◯ Mostrar ejemplo de canasta de compra    
-        mostrar_ejemplo_canasta(example_basket)
-        footer_canasta_real()        
-    
+        mostrar_ejemplo_canasta(example_basket)      
+        # footer:
+        st.markdown(f"""
+        {"<div style='font-size:12px;color:gray;margin-top:10px;'>ℹ️ Esta sección muestra datos crudos no transformados con nombres de productos traducidos para facilitar su interpretación.</div>"}
+        """, unsafe_allow_html=True)
+        
     with tab4:          # ◯ Mostrar transacciones por mes   
         mostrar_transacciones_por_mes(monthly_transactions)

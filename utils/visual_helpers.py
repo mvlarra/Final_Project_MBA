@@ -113,7 +113,6 @@ def mostrar_matriz_binaria(df_binaria, top_n=10):
     Muestra un fragmento filtrado de la matriz binaria (Factura × Producto),
     destacando las columnas más relevantes (más compradas).
     """
-    st.markdown("---")
     st.markdown("🧾 Ejemplo de Matriz Binaria")
 
     # Eliminar columnas no relevantes

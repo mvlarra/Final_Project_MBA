@@ -99,7 +99,7 @@ section = st.sidebar.radio("Ir a la sección:", (
     "4. ✔️ Exploración de Datos",
     "3. ✔️ Metodología del Análisis",
     "5. ✔️ Reglas de Asociación",
-    "6. ✔️ Recomendaciones por Producto",
+    "6. ✔️ Recomendaciones", # x Producto
     "7. ✔️ Estratégicas de negocio",   
     "9. ✔️ Conclusiones"
 ))
@@ -120,6 +120,8 @@ section = st.sidebar.radio("Ir a la sección:", (
 #   - Contacto profesional
 
 if section.startswith("1."):
+    st.markdown("# 📘 Acerca del Proyecto")
+    st.markdown("---")
     show_section_1_about()
 
 
@@ -135,6 +137,8 @@ if section.startswith("1."):
 #   - Parámetros clave del modelo: combinación máxima y soporte mínimo
 
 elif section.startswith("3."):
+    st.title("🧪 Metodología")
+    st.markdown("---")  
     show_section_3_methodology(matriz_binaria)
 
 
@@ -149,6 +153,15 @@ elif section.startswith("3."):
 #   - Distribución mensual de transacciones
 
 elif section.startswith("4."):
+    st.title("📊 Exploración de Datos")
+    st.markdown("---")
+    
+    st.markdown("""
+    Antes de comenzar a trabajar en el Procesamiento de los Datos y la Metodologia de Analisis aplicada, nos enfocaremos en la **Exploración de Datos**.   
+    Este paso  es fundamental para obtener una vision general del dataset y la estructura de los datos.  
+    Permite entender la naturaleza de los datos, identificar posibles problemas de calidad y descubrir patrones interesantes.  
+    Además, ayuda a formular hipótesis y preguntas que guiarán el análisis posterior.
+    """)
     show_section_4(dataset_sample, Top_10_Mas_Vendidos, example_basket, monthly_transactions)
 
     
@@ -163,6 +176,13 @@ elif section.startswith("4."):
 #   - Tabla completa de todas las reglas generadas
 
 elif section.startswith("5."):
+    st.title("🔎 Explorar Reglas de Asociación")
+    st.markdown("---")
+
+    st.markdown("""
+    Elegí una forma de visualizar las reglas de asociación generadas a partir de las canastas de productos.  
+    Podés alternar entre diferentes perspectivas para entender mejor los patrones de compra.
+    """)
     show_section_5_rules(rules, tabular, Top_5_Rules_by_Score)
 
 
@@ -179,6 +199,11 @@ elif section.startswith("5."):
 #   - Identificación de oportunidades de cross-selling
 
 elif section.startswith("6."):
+    st.title("🛒 Recomendaciones por Producto")
+    st.markdown("---")
+    
+    st.markdown("Explorá distintas estrategias accionables a partir de productos reales, reglas frecuentes, bundles descubiertos y recomendaciones personalizadas.")
+  
     show_section_6_recommendations(rules, df_bundle_products, Top_5_Rules_by_Score)
     
 # 7. ◯ Sección: ACCIONES ESTRATÉGICAS PARA TU NEGOCIO
@@ -192,6 +217,8 @@ elif section.startswith("6."):
 #   - Exportación de las acciones seleccionadas
 
 elif section.startswith("7."):
+    st.title("💼 Acciones Estratégicas para el Negocio")
+    st.markdown("---")
     show_section_7_actions(rules, Top_10_Mas_Vendidos)
 
 # 9. ◯ Sección: RESUMEN DEL PROYECTO
@@ -208,4 +235,6 @@ elif section.startswith("7."):
 #   - Tecnologías y herramientas utilizadas en el desarrollo
 
 elif section.startswith("9."):
+    st.title("📋 Conclusiones")
+    st.markdown("---")
     show_section_9_summary()

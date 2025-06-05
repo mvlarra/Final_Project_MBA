@@ -14,9 +14,8 @@ from utils.visual_helpers import mostrar_matriz_binaria
 # -----------------------------------------------------------------------------------------------------------------
 
 def show_section_3_methodology(matriz_binaria):  # Funcion que muestra la sección de metodología del análisis, describiendo el origen del dataset, el enfoque metodológico y los parámetros utilizados.
-    st.title("🧪 Metodología")
-
-    st.markdown("---")
+     
+  # ◯ Tabs antes del título     
        
     # Formato de Tabs
     st.markdown("""
@@ -67,28 +66,30 @@ def show_section_3_methodology(matriz_binaria):  # Funcion que muestra la secci�
     ])
     
     with tab1:
+      st.markdown("---")    
       st.markdown("""
-        🔍 Para asegurar la calidad del análisis, se realizaron los siguientes pasos de depuración:
+        ## Procesamiento de los Datos
+        Para asegurar la calidad del análisis, se realizaron los siguientes pasos de depuración:
 
-        ✅ **Filtrado de transacciones**  
-        - Se consideraron solo ventas realizadas a clientes del Reino Unido, por consistencia geográfica.  
-        - Se eliminaron devoluciones (códigos de factura con `'C'`) y filas con `Quantity <= 0` o `UnitPrice <= 0`.  
-        - Se excluyeron productos sin descripción o con códigos genéricos irrelevantes.  
+        ### Filtrado de transacciones:
+          - Se consideraron solo ventas realizadas a clientes del Reino Unido, por consistencia geográfica.  
+          - Se eliminaron devoluciones (códigos de factura con `'C'`) y filas con `Quantity <= 0` o `UnitPrice <= 0`.  
+          - Se excluyeron productos sin descripción o con códigos genéricos irrelevantes.  
 
-        ✅ **Tratamiento de valores nulos**  
-        - Se eliminaron filas con `CustomerID` faltante.  
+        ### Tratamiento de valores nulos:
+          - Se eliminaron filas con `CustomerID` faltante.  
 
-        ✅ **Estandarización de texto**  
-        - Se unificaron descripciones a minúsculas y se corrigieron errores comunes para mejorar la agrupación de productos.  
+        ### Estandarización de texto:
+          - Se unificaron descripciones a minúsculas y se corrigieron errores comunes para mejorar la agrupación de productos.  
 
-        ✅ **Generación de matriz binaria**  
-        - Para poder aplicar el algorithmo fue necesario crear una matriz de **Factura x Producto**
-        - Luego del procesamiento, su estructura es la siguiente:  
-            * cada Fila es una Transacción  
-            * cada Columna un Producto.  
-            * El valor `1` indica que ese producto `fue comprado` en esa transacción.  
+        ### Generación de matriz binaria:
+          - Para poder aplicar el algorithmo fue necesario crear una matriz de **Factura x Producto**
+          - Luego del procesamiento, su estructura es la siguiente:  
+              * cada Fila es una Transacción  
+              * cada Columna un Producto.  
+              * El valor `1` indica que ese producto `fue comprado` en esa transacción.  
     
-        Veamos mas abajo, las primeras filas de la matriz binaria centrada en los **{top_n} productos más frecuentes**.  
+        Veamos mas abajo, las primeras filas de la matriz binaria centrada en los productos más frecuentes  
         """)
       mostrar_matriz_binaria(matriz_binaria, top_n=10)  # Mostrar un fragmento de la matriz binaria filtrada
 

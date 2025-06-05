@@ -17,28 +17,28 @@ def show_section_1_about():
     # Función para mostrar la sección 1: Acerca del Proyecto
     # Contenido: Objetivo, tecnologías utilizadas, recursos, contacto
     # .........................................................................
-    
-    st.markdown("# 📘 Acerca del Proyecto")
-    st.markdown("---")
 
     st.markdown("""
-    Este proyecto fue desarrollado como parte del **Bootcamp de Data Science & Machine Learning en 4Geeks Academy**, por **Valentina Larrañaga**.
-    Busca transformar datos transaccionales en estrategias accionables para retail, aplicando Market Basket Analysis con reglas de asociación.
+    Este proyecto fue desarrollado como parte del **Bootcamp de `Data Science & Machine Learning` en `4Geeks Academy`**, por **`Valentina Larrañaga`**.  
+    
+    Busca transformar datos transaccionales en estrategias accionables para retail, aplicando `Market Basket Analysis`.  
+    Este analsis permite detectar patrones de compra entre productos, para diseñar `Estrategias Comerciales` que aumenten el `Ticket Promedio` y el `evenue` por venta.
     """)
     
     st.markdown("---")
     st.markdown("### 🔎 Enfoque del análisis")
     st.markdown("""
-    El recorrido de la app está organizado de forma progresiva: Va desde la exploración de los datos hasta las recomendaciones estratégicas.
+    El recorrido de la app está organizado de forma progresiva:  
+    Va desde la exploración de los datos hasta las recomendaciones estratégicas.
     ```
-    📦 Datos de Transacciones → 📊Exploracion de los Datos → 🔎 Reglas de Asociación → 🧠 Recomendaciones Personalizadas → 💼 Acciones Estratégicas
+    📦 Datos → 🔎 Reglas de Asociación → 🧠 Recomendaciones Personalizadas → 💼 Acciones Estratégicas
     ```
     """)
            
     st.markdown("---")
     st.markdown("### 🎯 Objetivos Especificos")
     st.markdown("""
-    Identificar patrones de compra frecuentes y generar recomendaciones accionables para mejorar la estrategia comercial.
+    Identificar patrones de compra frecuentes y generar recomendaciones accionables para `mejorar la estrategia comercial`.
 
     **`1. Descubrimiento de Reglas de Asociación`**  
     Identificar asociaciones y correlaciones entre productos o artículos en un conjunto de datos. Descubrir reglas que indiquen la probabilidad de que ciertos artículos se compren juntos.
