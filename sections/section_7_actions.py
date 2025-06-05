@@ -67,18 +67,107 @@ def show_section_7_actions(rules, Top_10_Mas_Vendidos):
     
     
     tabs = st.tabs([
-        "🟠 Old", 
-        "🟠 New",
+        "🟠 Acciones Sugeridas", 
+        "🟠 Plan de implementación",
  
     ])
     
-    with tabs[1]:    
-        st.markdown("""
-        Basado en los patrones encontrados en los datos, estas son **`acciones sugeridas`** orientadas a generar impacto real en las ventas.  
-        Cada acción está relacionada con productos clave del análisis y podés marcar su prioridad de implementación.
 
-        ✅ El objetivo es **convertir los hallazgos en oportunidades de mejora**, aplicando estrategias como bundles, descuentos o reubicación de productos para **incrementar los ingresos, optimizar la rotación, potenciar la estrategia comercial y mejorar la experiencia de compra**.
+            
+    with tabs[0]:
+            # ◯ Sección 5: ACCIONES ESTRATÉGICAS PARA TU NEGOCIO
+            # -----------------------------------------------------------------------------------------------------------------
+            # Objetivo:
+            #   Presentar ideas prácticas y personalizadas que surgen del análisis de reglas de asociación.
+            #   Enfocarse en mejorar la rentabilidad, retención de clientes y experiencia de compra.
+
+        st.caption("Estrategias agrupadas por tipo de acción, diseñadas para inspirar decisiones comerciales.")
+        
+        # ◯ Objetivo de esta seccion
+        st.markdown("""
+        En base al análisis de reglas de asociación y comportamiento de compra de tus clientes,
+        te presentamos un conjunto de acciones que podés implementar en tu estrategia comercial.
         """)
+
+        # ◯ Acciones por categoría
+        st.markdown("### 🧩 Acciones recomendadas")
+        st.markdown("---")
+        
+        acciones = {
+            "✔️ Bundles inteligentes": [
+                "Agrupar productos con alta confianza (ej: 80%) y lift elevado para maximizar ventas conjuntas.",
+                "Ejemplo: Ofrecé la taza verde Regency junto con la rosa, dado que se compran juntas frecuentemente."
+            ],
+            "✔️ Promociones cruzadas": [
+                "Aplicar descuentos o puntos extra cuando se agregan productos relacionados al carrito.",
+                "Ejemplo: Si se compra un set de platos florales, sugerí vasos del mismo estilo con 10% OFF."
+            ],
+            "✔️ Recomendaciones personalizadas": [
+                "Usar las reglas con mayor lift para sugerencias dinámicas en el sitio o post-compra.",
+                "Ejemplo: Recomendá un artículo complementario apenas se visualiza uno clave."
+            ],
+            "✔️ Optimización de inventario": [
+                "Identificar productos que se venden solo en conjunto y evitar sobrestock de los que no rotan solos.",
+                "Ejemplo: Un adorno que siempre se compra junto a una vela podría necesitar menos stock individual."
+            ],
+            "✔️ Campañas Puntuales": [
+                "Priorizá productos con alta frecuencia en reglas como foco de campañas y displays en tienda.",
+                "Ejemplo: Los 5 productos más frecuentes como antecedente pueden ser destacados en la home."
+            ],            
+            "✔️ Acciones operativas y formativas": [
+            "Crear reportes de seguimiento para monitorear qué reglas siguen vigentes.",
+            "Capacitar al equipo de ventas sobre productos que suelen comprarse juntos."
+            ]
+        }
+
+        for categoria, ideas in acciones.items():
+            st.markdown(f"#### {categoria}")
+            for idea in ideas:
+                st.markdown(f"- {idea}")
+                
+            # Agregar caption según la categoría, con números reales
+            if categoria == "✔️ Bundles inteligentes":
+                st.caption("📊 Basado en reglas con lift > 3 (relación 3 veces más fuerte que el azar).")
+
+            elif categoria == "✔️ Promociones cruzadas":
+                st.caption("📊 Basado en reglas con confidence > 0.70 (probabilidad del 70% de que se compren juntos).")
+
+            elif categoria == "✔️ Recomendaciones personalizadas":
+                st.caption("📊 Basado en reglas con confidence > 0.60 y support > 5%.")
+
+            elif categoria == "✔️ Optimización de inventario":
+                st.caption("📊 Basado en productos que aparecen con mayor frecuencia como antecedente.")
+
+            elif categoria == "✔️ Campañas Puntuales":
+                st.caption("📊 Enfoque en los 5 productos más frecuentes como antecedente en reglas.")
+
+            elif categoria == "✔️ Acciones operativas y formativas":
+                st.caption("🛠️ Acción operativa basada en productos con alta conexión o comportamiento dependiente.")
+
+            st.markdown("")  # Espacio adicional entre categorías        
+
+
+        # ◯ Llamado a la acción
+        st.markdown("---")
+        st.markdown("### 👉🏻 Proximo Paso: Implementación de acciones")
+        st.markdown("---")
+        
+        st.markdown("""
+        - En la siguiente tab elegí **2 o 3 acciones** y probalas durante una semana.
+        - Medí resultados: 
+            * ¿aumentaron las ventas de ciertos productos? 
+            * ¿se agregaron más ítems al carrito?
+        - Ajustá tus estrategias y repetí con nuevos productos clave.
+        """)   
+        st.markdown("---")
+
+
+
+    with tabs[1]:  
+        st.caption("Seleccioná y priorizá acciones concretas para generar un plan comercial personalizado.")
+          
+        st.markdown("Convertí los hallazgos analíticos en un plan comercial concreto. Seleccioná, priorizá y descargá las acciones que más impacto pueden tener en tu negocio.")
+
 
         # ◯ Asegurar que antecedents y consequents estén en formato lista
         rules['antecedents'] = rules['antecedents'].apply(lambda x: [x] if isinstance(x, str) else x)
@@ -87,7 +176,7 @@ def show_section_7_actions(rules, Top_10_Mas_Vendidos):
         # ◯ Construir DataFrame con acciones, productos y lógica
         acciones = [
             {
-                "Acción": "📦 Crear bundles con productos frecuentemente comprados juntos",
+                "Acción": "📦 Crear bundles con productos que se compran juntos frecuentemente",
                 "Productos sugeridos": "<br>• " + "<br>• ".join(
                     [f"{', '.join(r['antecedents'])} + {', '.join(r['consequents'])}" 
                         for _, r in rules.sort_values(by='lift', ascending=False).head(3).iterrows()]
@@ -188,63 +277,3 @@ def show_section_7_actions(rules, Top_10_Mas_Vendidos):
                                 file_name="acciones_recomendadas.csv", mime="text/csv")
         else:
             st.info("Seleccioná al menos una acción para ver el resumen o exportarlo.")
-            
-    with tabs[0]:
-            # ◯ Sección 5: ACCIONES ESTRATÉGICAS PARA TU NEGOCIO
-            # -----------------------------------------------------------------------------------------------------------------
-            # Objetivo:
-            #   Presentar ideas prácticas y personalizadas que surgen del análisis de reglas de asociación.
-            #   Enfocarse en mejorar la rentabilidad, retención de clientes y experiencia de compra.
-
-        # ◯ Objetivo de esta seccion
-        st.markdown("""
-        En base al análisis de reglas de asociación y comportamiento de compra de tus clientes,
-        te presentamos un conjunto de acciones que podés implementar en tu estrategia comercial.
-        """)
-
-        # ◯ Acciones por categoría
-        st.markdown("### 🧩 Acciones recomendadas")
-        st.markdown("---")
-        
-        acciones = {
-            "✔️ Bundles inteligentes": [
-                "Agrupar productos con alta confianza (ej: 80%) y lift elevado para maximizar ventas conjuntas.",
-                "Ejemplo: Ofrecé la taza verde Regency junto con la rosa, dado que se compran juntas frecuentemente."
-            ],
-            "✔️ Promociones cruzadas": [
-                "Aplicar descuentos o puntos extra cuando se agregan productos relacionados al carrito.",
-                "Ejemplo: Si se compra un set de platos florales, sugerí vasos del mismo estilo con 10% OFF."
-            ],
-            "✔️ Recomendaciones personalizadas": [
-                "Usar las reglas con mayor lift para sugerencias dinámicas en el sitio o post-compra.",
-                "Ejemplo: Recomendá un artículo complementario apenas se visualiza uno clave."
-            ],
-            "✔️ Optimización de inventario": [
-                "Identificar productos que se venden solo en conjunto y evitar sobrestock de los que no rotan solos.",
-                "Ejemplo: Un adorno que siempre se compra junto a una vela podría necesitar menos stock individual."
-            ],
-            "✔️ Decisiones basadas en datos": [
-                "Priorizá productos con alta frecuencia en reglas como foco de campañas y displays en tienda.",
-                "Ejemplo: Los 5 productos más frecuentes como antecedente pueden ser destacados en la home."
-            ]
-        }
-
-        for categoria, ideas in acciones.items():
-            st.markdown(f"#### {categoria}")
-            for idea in ideas:
-                st.markdown(f"- {idea}")
-            st.markdown("")
-
-        # ◯ Llamado a la acción
-        st.markdown("---")
-        st.markdown("### ✅ ¿Qué podés hacer hoy?")
-        st.markdown("---")
-        
-        st.markdown("""
-        - En la siguiente tab elegí **2 o 3 acciones** y probalas durante una semana.
-        - Medí resultados: 
-            * ¿aumentaron las ventas de ciertos productos? 
-            * ¿se agregaron más ítems al carrito?
-        - Ajustá tus estrategias y repetí con nuevos productos clave.
-        """)   
-        st.markdown("---")

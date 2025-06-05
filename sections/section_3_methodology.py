@@ -100,16 +100,16 @@ def show_section_3_methodology(matriz_binaria):  # Funcion que muestra la secci�
         
         
         ### Parámetros del Algoritmo
-        - **Maximum Combination Length:** define la longitud máxima de las combinaciones de productos a considerar. 
-            👉🏻 En nuestro caso fijaremos este parametro en 2, con el fin de considerar unicamente pares de productos, para facilitar la interpretaciones y la toma de decisiones.
-        - **Minimum Co-Occurrence Support:** establece un umbral mínimo de soporte para filtrar combinaciones raras, asegurando que solo se consideren asociaciones significativas.       
-            👉🏻 En nuestro caso lo definimos en 0.005 para enfocarnos en asociaciones realmente frecuentes, descartando asociaciones raras.
-        - **Support:** mide la frecuencia relativa de un conjunto de productos en las transacciones, ayudando a identificar asociaciones comunes
-            👉🏻 En nuestro caso es definido en ≥ 0.01, asegurando que las reglas identificadas aparezcan en al menos el 1% de todas las transacciones, garantizando relevancia.
-        - **Confidence:** indica la probabilidad de que un producto sea comprado dado otro producto, lo que ayuda a evaluar la fuerza de la asociación.
-            👉🏻 En nuestro caso lo fijamos en ≥ 0.2, asegurando que las reglas sugeridas tengan una probabilidad razonable de repetirse en nuevas ventas.
-        - **Lift:** mide la intensidad de la relación entre dos productos, comparando la probabilidad de que se compren juntos con la probabilidad de que se compren independientemente.
-            👉🏻 En nuestro caso lo fijamos en ≥ 2, asegurando que las asociaciones detectadas sean más fuertes que las esperadas por azar, lo que indica una relación significativa entre los productos.
+        - **Maximum Combination Length:** define la longitud máxima de las combinaciones de productos a considerar.   
+            👉🏻 En nuestro caso fijaremos este parametro en 2, con el fin de considerar unicamente pares de productos, para facilitar la interpretaciones y la toma de decisiones.  
+        - **Minimum Co-Occurrence Support:** establece un umbral mínimo de soporte para filtrar combinaciones raras, asegurando que solo se consideren asociaciones significativas.        
+            👉🏻 En nuestro caso lo definimos en 0.005 para enfocarnos en asociaciones realmente frecuentes, descartando asociaciones raras.  
+        - **Support:** mide la frecuencia relativa de un conjunto de productos en las transacciones, ayudando a identificar asociaciones comunes  
+            👉🏻 En nuestro caso es definido en ≥ 0.01, asegurando que las reglas identificadas aparezcan en al menos el 1% de todas las transacciones, garantizando relevancia.  
+        - **Confidence:** indica la probabilidad de que un producto sea comprado dado otro producto, lo que ayuda a evaluar la fuerza de la asociación.  
+            👉🏻 En nuestro caso lo fijamos en ≥ 0.2, asegurando que las reglas sugeridas tengan una probabilidad razonable de repetirse en nuevas ventas.  
+        - **Lift:** mide la intensidad de la relación entre dos productos, comparando la probabilidad de que se compren juntos con la probabilidad de que se compren independientemente.  
+            👉🏻 En nuestro caso lo fijamos en ≥ 2, asegurando que las asociaciones detectadas sean más fuertes que las esperadas por azar, lo que indica una relación significativa entre los productos.  
         - **Leverage:** mide la diferencia entre la probabilidad de que dos productos se compren juntos y la probabilidad de que se compren independientemente, ayudando a identificar asociaciones significativas.    
      
              
