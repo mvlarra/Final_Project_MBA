@@ -342,7 +342,7 @@ def show_section_5_rules(rules, tabular, Top_5_Rules_by_Score):
             fig_heatmap = draw_heatmap(tabular_heatmap)
             st.plotly_chart(fig_heatmap, use_container_width=True)
             
-        # footter:
-        st.markdown(f"""
-        {"<div style='font-size:12px;color:gray;margin-top:10px;'>ℹ️ Generado con seaborn. Matriz calculada a partir de la co-ocurrencia de productos binarizados.</div>"}
-        """, unsafe_allow_html=True)
+            # footter:
+            st.markdown(f"""
+            {"<div style='font-size:12px;color:gray;margin-top:10px;'>ℹ️ Generado con seaborn. Matriz calculada a partir de la co-ocurrencia de productos binarizados.</div>"}
+            """, unsafe_allow_html=True)
