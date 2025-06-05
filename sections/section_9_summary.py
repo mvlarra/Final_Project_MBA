@@ -55,9 +55,11 @@ def show_section_9_summary():
 
     st.markdown("---")
 
-    st.subheader("📋 Metricas y Recomendaciones")
-    st.markdown("""   
-   
+    st.markdown("""
+    <div style='font-size:10px'>
+    
+    #### 📋 Metricas y Recomendaciones")
+      
     | Categoría de Acción                  | Métrica aplicada                          | 📊 Qué nos dice la métrica (visión analítica)                                                                 | 🚀 Acción recomendada (aplicación práctica)                                       |
     |--------------------------------------|-------------------------------------------|----------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
     | ✔️ Bundles inteligentes              | Lift > 3                                  | Productos que se compran juntos con una relación 3× más fuerte que el azar.                                   | Ofrecer bundles de productos frecuentemente comprados juntos.                   |
@@ -66,7 +68,9 @@ def show_section_9_summary():
     | ✔️ Optimización de inventario        | Top productos como antecedente en reglas  | Algunos productos suelen impulsar la compra de otros; son disparadores clave.                                 | Optimizar layout en tienda física o e-commerce, y ajustar niveles de stock.     |
     | ✔️ Campañas Puntuales                | Top 5 productos más frecuentes en reglas  | Productos más influyentes en la red de asociaciones, ideales para captar atención.                            | Usarlos como foco en campañas, promociones destacadas o visual merchandising.   |
     | ✔️ Acciones operativas y formativas  | Basado en reglas conectadas               | Algunos productos o patrones tienen alta conexión; clave para decisiones internas o formación.                | Capacitar al equipo de ventas y generar reportes de seguimiento periódicos.     |
-    """)
+
+    </div>
+    """, unsafe_allow_html=True)
     
     st.markdown("---")
 

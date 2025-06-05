@@ -69,7 +69,7 @@ def show_section_3_methodology(matriz_binaria):  # Funcion que muestra la secci�
     with tab1:
       st.markdown("""
         ---
-        ## **Algoritmo Apriori** 
+        ## Modelo Elegido: **Algoritmo Apriori** 
         
         ### ¿Qué es Apriori?
         Apriori es un algoritmo de `Minería de Datos` utilizado para descubrir `Reglas de Asociación` en grandes conjuntos de datos.  
