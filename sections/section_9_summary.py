@@ -55,14 +55,19 @@ def show_section_9_summary():
 
     st.markdown("---")
 
-    st.subheader("✅ Aplicaciones y Recomendaciones")
-    st.markdown("""
-    - Ofrecer **bundles** de productos frecuentemente comprados juntos.  
-    - Incorporar **recomendaciones personalizadas** en el carrito.  
-    - Optimizar el **layout en tienda física o e-commerce**.  
-    - Diseñar **campañas promocionales** basadas en afinidad entre ítems.
+    st.subheader("📋 Metricas y Recomendaciones")
+    st.markdown("""   
+   
+    | Categoría de Acción                  | Métrica aplicada                          | 📊 Qué nos dice la métrica (visión analítica)                                                                 | 🚀 Acción recomendada (aplicación práctica)                                       |
+    |--------------------------------------|-------------------------------------------|----------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
+    | ✔️ Bundles inteligentes              | Lift > 3                                  | Productos que se compran juntos con una relación 3× más fuerte que el azar.                                   | Ofrecer bundles de productos frecuentemente comprados juntos.                   |
+    | ✔️ Promociones cruzadas              | Confidence > 0.70                         | Alta probabilidad (más del 70%) de que los productos se compren en la misma transacción.                      | Diseñar campañas promocionales con descuentos por compra combinada.             |
+    | ✔️ Recomendaciones personalizadas    | Confidence > 0.60 y Support > 5%          | Asociación frecuente y con probabilidad razonable de que los productos aparezcan juntos.                      | Incorporar recomendaciones personalizadas en el carrito o página de producto.   |
+    | ✔️ Optimización de inventario        | Top productos como antecedente en reglas  | Algunos productos suelen impulsar la compra de otros; son disparadores clave.                                 | Optimizar layout en tienda física o e-commerce, y ajustar niveles de stock.     |
+    | ✔️ Campañas Puntuales                | Top 5 productos más frecuentes en reglas  | Productos más influyentes en la red de asociaciones, ideales para captar atención.                            | Usarlos como foco en campañas, promociones destacadas o visual merchandising.   |
+    | ✔️ Acciones operativas y formativas  | Basado en reglas conectadas               | Algunos productos o patrones tienen alta conexión; clave para decisiones internas o formación.                | Capacitar al equipo de ventas y generar reportes de seguimiento periódicos.     |
     """)
-
+    
     st.markdown("---")
 
     st.subheader("🛠️ Posibles Mejoras Futuras")

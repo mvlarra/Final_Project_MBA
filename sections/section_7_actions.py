@@ -120,10 +120,15 @@ def show_section_7_actions(rules, Top_10_Mas_Vendidos):
             ]
         }
 
-        for categoria, ideas in acciones.items():
-            st.markdown(f"#### {categoria}")
-            for idea in ideas:
-                st.markdown(f"- {idea}")
+        # for categoria, ideas in acciones.items():
+        #     st.markdown(f"#### {categoria}")
+        #     for idea in ideas:
+        #         st.markdown(f"- {idea}")
+                
+        st.markdown(f"<div style='font-weight:600; font-size:17px; margin-top:15px;'>{categoria}</div>", unsafe_allow_html=True)
+    
+        for idea in ideas:
+            st.markdown(f"<div style='font-size:14px; line-height:1.4;'>• {idea}</div>", unsafe_allow_html=True)        
                 
             # Agregar caption según la categoría, con números reales
             if categoria == "✔️ Bundles inteligentes":
@@ -264,6 +269,7 @@ def show_section_7_actions(rules, Top_10_Mas_Vendidos):
             })
 
         # ◯ Mostrar resumen de acciones marcadas
+        st.markdown("---")
         st.markdown("### 🧾 Acciones seleccionadas")
         resumen_df = pd.DataFrame(resultados_finales)
         seleccionadas = resumen_df[resumen_df["Marcado"] == True]
@@ -277,3 +283,4 @@ def show_section_7_actions(rules, Top_10_Mas_Vendidos):
                                 file_name="acciones_recomendadas.csv", mime="text/csv")
         else:
             st.info("Seleccioná al menos una acción para ver el resumen o exportarlo.")
+        st.markdown("---")
