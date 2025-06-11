@@ -10,7 +10,7 @@
 
 <p align="center">
   <a href="https://market-basket-analysis-xb0x.onrender.com" target="_blank">
-    <img src="/workspace/app/images/Img_0.png" alt="Preview" width="200">
+    <img src="https://raw.githubusercontent.com/mvlarra/Final_Project_MBA/main/app/images/Img_0.png" alt="Preview" width="200">
   </a>
 </p>
 
