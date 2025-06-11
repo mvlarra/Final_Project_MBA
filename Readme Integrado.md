@@ -88,6 +88,8 @@ Este proyecto aplica técnicas de Market Basket Analysis para detectar patrones 
 #### 📋 Conclusiones y Resultados
 >![Conclusiones](docs/img/7_conclusiones.png)
 
+
+
 ---
 
 ## 🛍️ Recomendaciones y Acciones Estratégicas
@@ -185,6 +187,6 @@ La app está desplegada en [Render](https://market-basket-analysis-xb0x.onrender
 
 ## 👤 Autor y Créditos
 
-Desarrollado por [Valentina Larrañaga](https://www.linkedin.com/in/valentinalarra/)\
+Desarrollado por [Valentina Larrañaga](https://www.linkedin.com/in/valentinalarranaga)  
 Bootcamp de Data Science & Machine Learning — 4Geeks Academy
 
