@@ -1,6 +1,29 @@
-# 🛒 Market Basket Analysis
+# 🛒 Market Basket Analysis — Streamlit App for Retail
 
-### Proyecto final — Bootcamp Data Science & Machine Learning (4Geeks Academy)
+![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-App-red?logo=streamlit)
+![mlxtend](https://img.shields.io/badge/Apriori-mlxtend-orange)
+![Retail](https://img.shields.io/badge/Retail-Analytics-teal)
+![Status](https://img.shields.io/badge/Deployed-Render-green)
+
+---
+
+<p align="center">
+  <a href="https://market-basket-analysis-xb0x.onrender.com" target="_blank">
+    <img src="/workspace/app/images/Img_0.png" alt="Preview" width="200">
+  </a>
+</p>
+
+<p align="center">
+  🔗 <strong><a href="https://market-basket-analysis-xb0x.onrender.com" target="_blank">Abrir la app interactiva en vivo →</a></strong>
+</p>
+
+---
+
+**Repositorio del proyecto final** del bootcamp de *Data Science & Machine Learning* de 4Geeks Academy.  
+Esta app interactiva permite analizar transacciones reales de retail para generar recomendaciones personalizadas, descubrir patrones frecuentes y proponer acciones comerciales accionables.
+
+---
 
 Desarrollado por: **Valentina Larrañaga**\
 App interactiva: [🔗 Ver app en vivo](https://market-basket-analysis-xb0x.onrender.com/)\
