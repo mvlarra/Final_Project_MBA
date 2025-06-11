@@ -76,12 +76,19 @@ Este proyecto aplica técnicas de Market Basket Analysis para detectar patrones 
 
 #### 💼 Acciones Estratégicas
 
+
+##### 🧩 Sugerencias agrupadas por tipo
+>![Acciones sugeridas](docs/img/6_acciones_sugeridas.png)
+
+##### 🧾 Acciones seleccionadas y plan descargable
+>![Acciones seleccionadas](docs/img/6_acciones_seleccionadas.png)
+
+
+
 #### 📋 Conclusiones y Resultados
+>![Conclusiones](docs/img/7_conclusiones.png)
 
 ---
-
-![alt text](image.png)
-
 
 ## 🛍️ Recomendaciones y Acciones Estratégicas
 
@@ -93,8 +100,15 @@ Este proyecto aplica técnicas de Market Basket Analysis para detectar patrones 
 
 ## 📋 Conclusiones y aprendizajes
 
-- Se logró una app funcional con navegación intuitiva, visualizaciones y propuestas de negocio.
-- Se integraron herramientas de ciencia de datos con enfoque práctico para retail.
+Este proyecto permitió aplicar técnicas de análisis de canasta de productos con un enfoque práctico y orientado al negocio.
+
+Se logró:
+- Detectar reglas de asociación con alta confianza (hasta 76%) y lift mayor a 20
+- Generar bundles reales y recomendaciones personalizadas con base estadística
+- Transformar hallazgos en acciones estratégicas agrupadas, priorizables y exportables
+- Desarrollar una app interactiva, clara y profesional, pensada para tomadores de decisión
+
+💡 Todo esto sobre un dataset real del sector retail y utilizando herramientas 100% open source.
 
 ---
 

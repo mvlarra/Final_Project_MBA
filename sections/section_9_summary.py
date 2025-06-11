@@ -58,7 +58,7 @@ def show_section_9_summary():
     st.markdown("""
     <div style='font-size:10px'>
     
-    #### 📋 Metricas y Recomendaciones")
+    #### 📋 Metricas y Recomendaciones
       
     | Categoría de Acción                  | Métrica aplicada                          | 📊 Qué nos dice la métrica (visión analítica)                                                                 | 🚀 Acción recomendada (aplicación práctica)                                       |
     |--------------------------------------|-------------------------------------------|----------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|

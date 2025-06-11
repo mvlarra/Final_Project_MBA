@@ -124,11 +124,15 @@ def show_section_7_actions(rules, Top_10_Mas_Vendidos):
         #     st.markdown(f"#### {categoria}")
         #     for idea in ideas:
         #         st.markdown(f"- {idea}")
-                
-        st.markdown(f"<div style='font-weight:600; font-size:17px; margin-top:15px;'>{categoria}</div>", unsafe_allow_html=True)
+        for categoria, ideas in acciones.items():
+            st.markdown(f"<div style='font-weight:600; font-size:17px; margin-top:15px;'>{categoria}</div>", unsafe_allow_html=True)
+
+            for idea in ideas:
+                st.markdown(f"<div style='font-size:14px; line-height:1.4;'>• {idea}</div>", unsafe_allow_html=True)        
+        # st.markdown(f"<div style='font-weight:600; font-size:17px; margin-top:15px;'>{categoria}</div>", unsafe_allow_html=True)
     
-        for idea in ideas:
-            st.markdown(f"<div style='font-size:14px; line-height:1.4;'>• {idea}</div>", unsafe_allow_html=True)        
+        # for idea in ideas:
+            # st.markdown(f"<div style='font-size:14px; line-height:1.4;'>• {idea}</div>", unsafe_allow_html=True)        
                 
             # Agregar caption según la categoría, con números reales
             if categoria == "✔️ Bundles inteligentes":
