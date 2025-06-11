@@ -1,79 +1,191 @@
-> [!NOTE]
-> If you encounter an error with the Jupyter Notebook on GitHub, please use this link to open it [nbviewer](https://nbviewer.org/github/Agungvpzz/Basket-Analysis/blob/main/Basket%20Analysis.ipynb)
+# 🛒 Market Basket Analysis
 
-# Basket Analysis
-## Introduction
-Market Basket Analysis is a data mining technique employed to discover relationships and patterns within large datasets, particularly in the context of market analysis. By identifying frequently co-occurring items in transactions, businesses can gain valuable insights into customer behavior, optimize product placement, and enhance overall marketing strategies.
+### Proyecto final — Bootcamp Data Science & Machine Learning (4Geeks Academy)
 
-## Data Understanding
-This Online Retail II data set contains all the transactions occurring for a UK-based and registered, non-store online retail between 01/12/2009 and 09/12/2011. The company mainly sells unique all-occasion giftware. Many customers of the company are wholesalers.
+Desarrollado por: **Valentina Larrañaga**\
+App interactiva: [🔗 Ver app en vivo](https://market-basket-analysis-xb0x.onrender.com/)\
+Repositorio GitHub: [📁 Ir al repositorio](https://github.com/mvlarra/Final_Project_MBA)
 
-The dataset can be accessed at the following link:
-https://www.kaggle.com/datasets/mashlyn/online-retail-ii-uci/
+---
 
-## Business Goals
-Market business analysis aims to provide businesses with a comprehensive understanding of their market environment, competition, opportunities, threats, and customer behavior to inform strategic decision-making.
+## 📘 Resumen del Proyecto
 
-## Objectives
-1. **Association Rule Discovery**: Identify associations and correlations among products or items in a dataset. Discover rules that indicate the likelihood of certain items being bought together.
-2. **Cross-Selling Opportunities**: Uncover opportunities for cross-selling by understanding which products are frequently purchased together.
-4. **Optimizing Product Layout**: Arrange products in-store or online in a way that encourages the purchase of related items, creating a more convenient and satisfying shopping experience.
+Este proyecto aplica técnicas de Market Basket Analysis para detectar patrones de compra frecuentes y proponer estrategias comerciales accionables en el contexto de retail.
 
-## Method
-<h3>Apriori algorithm</h3>
+---
 
-- We utilize the Apriori algorithm for conducting market basket analysis.
-- This algorithm proves highly effective in discerning frequent itemsets and deriving association rules, relying on predefined metrics like support and confidence.
-- To execute the Apriori algorithm, we utilize the mlxtend library, a reliable Python library for machine learning extensions.
+## 🎯 Objetivo del proyecto
 
-**The following parameters are configured for the algorithm:**
-- Maximum Combination Length
-  - We set the maximum combination length to 2 items.
-  - This choice is made to focus on pairs of items, allowing for a more targeted analysis of co-occurrences.
-- Minimum Occurrence Product
-  - We set the minimum support threshold at 1% to focus on the most commonly purchased products.
-- Minimum Co-Occurrence Support Threshold
-  - A minimum co-occurrence support threshold of 1% is established to filter out infrequent itemsets.
-  - This ensures that only associations with a significant presence in the dataset are considered.
+- Detectar asociaciones entre productos frecuentemente comprados juntos.
+- Diseñar recomendaciones personalizadas.
+- Proponer acciones comerciales para aumentar el ticket promedio.
 
-## Results and Analysis
-> [!NOTE]
-> For a comprehensive and interactive view please visit the following link https://basket-analysis.streamlit.app/
+---
 
-<h2>Top 5 Products based on support</h2>
-<div align=center>
+## 🔎 Metodología aplicada
 
-  ![image](https://github.com/Agungvpzz/Basket-Analysis/assets/48642326/37062fde-5881-4424-af4f-304b9453e2e2)
-</div>
-  
-<h2>Network Profile</h2>
-Using the Echarts network, we perform profiling to identify which groups of products are frequently purchased together. For the grouping method, we use nx.community.greedy_modularity_communities.<br><br>
-<div align=center>
-  
-  ![image](https://github.com/Agungvpzz/Basket-Analysis/assets/48642326/ca25a6b2-51db-4fda-a3ed-dbba479f4c84)
-</div>
+- Dataset real de transacciones online (UK, 2010–2011)
+- Algoritmo: **Apriori** (`mlxtend`)
+- Generación de matriz binaria `Factura x Producto`
+- Filtros aplicados: soporte ≥ 1%, confianza ≥ 20%, lift ≥ 2
+
+---
+
+## 📊 Exploraciones y Reglas
+
+- Visualización de productos más vendidos, transacciones por mes, ejemplo real de canasta.
+- Reglas de asociación exploradas en red, tabla y heatmap.
+- Reglas clave: confianza > 70%, lift > 20.
+
+---
+
+### 🖼️ Capturas de la App
+
+#### 🏠 Acerca del Proyecto
+>![Acerca del Proyecto](docs/img/1_home.png)
 
 
-<h2>Bundling Products with a Minimum Mean Confidence of 50%</h2>
-In this setting, with the mean confidence threshold at 50%, products like 'WHITE HANGING HEART T-LIGHT HOLDER' and 'RED HANGING HEART T-LIGHT HOLDER', despite having high support, did not appear as a result of the cross-selling products algorithm. This is because we aim to identify pairs or groups of products that are commonly purchased together, rather than individual popular items or items that are generally popular. <br><br>
-<div align=center>
-  
-  ![image](https://github.com/Agungvpzz/Basket-Analysis/assets/48642326/4bdb9878-5aa2-4cdd-a580-15bd66cb7911)
-  ![image](https://github.com/Agungvpzz/Basket-Analysis/assets/48642326/b33d56e2-3e1b-4232-bfa9-23544b34d324)
-</div>
+#### 📊 Exploración de Datos
+>![Exploración de Datos](docs/img/2_exploracion.png)
+
+#### 🔗 Reglas de Asociación
+
+##### 🗺️ Red de productos
+>![Red de Productos](docs/img/3_Red_de_Productos.png)
+
+##### 📋 Tabla de reglas generadas
+>![Tabla de Reglas](docs/img/3_Tabla_de_Reglas.png)
+
+##### 🏆 Top 5 reglas por score
+>![Top 5 Reglas](docs/img/3_Top5_by_Score.png)
+
+##### ♨️ Heatmap de asociación
+>![Heatmap](docs/img/3_Headmap.png)
+
+#### 🛍 Recomendaciones Personalizadas
+>![Recomendaciones](docs/img/4_recomendaciones.png)
+
+#### 📌 Heatmap por Producto
+
+##### 🎯 Relación con otros productos
+>![Heatmap Co-ocurrencia](docs/img/5_Headmap_Co-ocurrencia.png)
+
+##### 📍 Sugerencia de ubicación o agrupación
+>![Sugerencia Ubicación](docs/img/5_Headmap_Co-ocurrencia_2.png)
 
 
-<h2>Product Heatmap Layout</h2>
-Selected category: "RED STRIPE CERAMIC DRAWER KNOB" <br>
-The heatmap clearly indicates that "RED STRIPE" is the most interconnected product, showing strong support values with several other products. The implications are we need to put a RED STRIPE on the upper shelf and bundle it with other products at a special price. <br><br>
-<div align=center>
-
-  ![image](https://github.com/Agungvpzz/Basket-Analysis/assets/48642326/743f627d-c5a5-4264-9b0c-0ef510b708b5)  
-</div>
+#### 💼 Acciones Estratégicas
 
 
+##### 🧩 Sugerencias agrupadas por tipo
+>![Acciones sugeridas](docs/img/6_acciones_sugeridas.png)
 
+##### 🧾 Acciones seleccionadas y plan descargable
+>![Acciones seleccionadas](docs/img/6_acciones_seleccionadas.png)
 
 
 
+#### 📋 Conclusiones y Resultados
+>![Conclusiones](docs/img/7_conclusiones.png)
+
+
+
+---
+
+## 🛍️ Recomendaciones y Acciones Estratégicas
+
+- Recomendaciones personalizadas por producto
+- Heatmap para analizar asociaciones por soporte, confianza o lift
+- Sugerencias de bundles, promociones cruzadas, rediseño de layout y acciones operativas
+
+---
+
+## 📋 Conclusiones y aprendizajes
+
+Este proyecto permitió aplicar técnicas de análisis de canasta de productos con un enfoque práctico y orientado al negocio.
+
+Se logró:
+- Detectar reglas de asociación con alta confianza (hasta 76%) y lift mayor a 20
+- Generar bundles reales y recomendaciones personalizadas con base estadística
+- Transformar hallazgos en acciones estratégicas agrupadas, priorizables y exportables
+- Desarrollar una app interactiva, clara y profesional, pensada para tomadores de decisión
+
+💡 Todo esto sobre un dataset real del sector retail y utilizando herramientas 100% open source.
+
+---
+
+## 🛠️ Instrucciones Técnicas
+
+### 📁 Estructura del Proyecto
+
+```bash
+Final_Project_MBA/
+│
+├── app.py                    # Archivo principal para ejecutar la app Streamlit
+├── requirements.txt          # Librerías necesarias
+├── devcontainer.json         # Configuración para GitHub Codespaces / Docker
+├── /data/processed/          # CSVs con reglas y bundles procesados
+├── /sections/                # Código modular por sección (about, metodología, reglas, etc.)
+├── /charts/                  # Gráficos reutilizables (heatmap, redes, etc.)
+├── /utils/                   # Funciones auxiliares (loaders, visual helpers)
+└── /docs/img/                # Carpeta para capturas
+```
+
+### ⚙️ Requisitos del sistema
+
+- Python 3.11+
+- Docker (opcional, recomendado)
+- GitHub Codespaces (opcional)
+- Navegador web moderno
+
+### 📦 Instalación local
+
+```bash
+# 1. Clonar el repositorio
+git clone https://github.com/mvlarra/Final_Project_MBA.git
+cd Final_Project_MBA
+
+# 2. Crear entorno virtual (opcional)
+python -m venv venv
+source venv/bin/activate  # En Windows: venv\Scripts\activate
+
+# 3. Instalar dependencias
+pip install -r requirements.txt
+
+# 4. Ejecutar la app
+streamlit run app.py
+```
+
+### 🚀 Despliegue
+
+La app está desplegada en [Render](https://market-basket-analysis-xb0x.onrender.com/) y puede visualizarse sin instalar nada.
+
+### 🧪 Datos utilizados
+
+- Dataset original: **Online Retail Dataset (UCI)**
+- Procesado a formato `Factura x Producto`
+- Archivos clave:
+  - `summary_rules.csv`
+  - `bundle_products.csv`
+  - `tabular_bundle.csv`
+
+### 🧰 Librerías clave
+
+- `mlxtend`: reglas de asociación (Apriori)
+- `pandas`, `numpy`: manipulación de datos
+- `plotly`, `networkx`, `matplotlib`: visualizaciones
+- `streamlit`: app interactiva
+
+### 📌 Notas para desarrollo
+
+- `app.py` es el punto de entrada de la app (usado por Render)
+- Podés modificar secciones editando `/sections/*.py`
+- Los datos están en `/data/processed/`
+
+---
+
+## 👤 Autor y Créditos
+
+Desarrollado por [Valentina Larrañaga](https://www.linkedin.com/in/valentinalarranaga)  
+Bootcamp de Data Science & Machine Learning — 4Geeks Academy
 
